@@ -17,7 +17,7 @@ final GoRouter _router = GoRouter(
   initialLocation: "/home",
   routes: [
     ShellRoute(
-      builder: (BuildContext context, GoRouterState state, Widget child) {
+      builder: (context, state, child) {
         return Scaffold(
           appBar: AppBar(),
           body: child,
