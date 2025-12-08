@@ -10,28 +10,21 @@ class CustomAppbar extends StatelessWidget implements PreferredSizeWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      decoration: BoxDecoration(
-        border: Border(
-          bottom: BorderSide(
-            color: AppColors.black.withValues(alpha: 0.1),
-            width: 1,
-          ),
-        ),
-      ),
-      child: AppBar(
+    return AppBar(
         title: Text(title, style: TextStyle(fontWeight: FontWeight.bold)),
         titleSpacing: 25,
         backgroundColor: AppColors.white,
         foregroundColor: AppColors.black,
         shadowColor: AppColors.black,
         centerTitle: false,
+        elevation: 0,
+        scrolledUnderElevation: 0,
+        surfaceTintColor: Colors.transparent,
         // actionsPadding: EdgeInsets.only(right: 25),
         // actions: [
         //   IconButton(onPressed: () {}, icon: Icon(Icons.notifications_none))
         // ],
-      ),
-    );
+      );
   }
 
   @override
