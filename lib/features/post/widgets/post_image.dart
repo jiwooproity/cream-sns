@@ -1,0 +1,31 @@
+import 'package:flutter/material.dart';
+
+class PostImage extends StatelessWidget {
+  final List<String> images;
+
+  const PostImage({super.key, required this.images});
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: EdgeInsets.symmetric(horizontal: 12),
+      child: images.length == 1
+          ? ClipRRect(
+              borderRadius: BorderRadius.circular(12),
+              child: Image.network(images.first, fit: BoxFit.cover),
+            )
+          : ClipRRect(
+              borderRadius: BorderRadius.circular(12),
+              child: AspectRatio(
+                aspectRatio: 16 / 9,
+                child: PageView.builder(
+                  itemCount: images.length,
+                  itemBuilder: (context, index) {
+                    return Image.network(images[index], fit: BoxFit.cover);
+                  },
+                ),
+              ),
+            ),
+    );
+  }
+}
