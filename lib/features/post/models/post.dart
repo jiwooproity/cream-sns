@@ -19,13 +19,13 @@ class Post {
 
   factory Post.fromJson(Map<String, dynamic> json) {
     return Post(
-      user: json['user'] as int,
-      nickname: json['nickname'] as String,
-      images: json['images'] as List<String>,
-      content: json['content'] as String,
-      likeLength: json['likeLength'] as int,
-      commentLength: json['commentLength'] as int,
-      createTime: json['createTime'] as int,
+      user: json['user'],
+      nickname: json['nickname'],
+      images: json['images'],
+      content: json['content'],
+      likeLength: json['likeLength'],
+      commentLength: json['commentLength'],
+      createTime: json['createTime'],
     );
   }
 }
