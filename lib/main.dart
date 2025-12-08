@@ -1,9 +1,14 @@
-import 'package:cream_sns/navigation/custom_appbar.dart';
-import 'package:cream_sns/theme/colors.dart';
 import 'package:flutter/material.dart';
 
 // Libraries
 import 'package:go_router/go_router.dart';
+
+// Themes
+import 'package:cream_sns/theme/colors.dart';
+
+// Widgets
+import 'package:cream_sns/navigation/custom_appbar.dart';
+import 'package:cream_sns/navigation/custom_bottom_navigation_bar.dart';
 
 // Views
 import 'package:cream_sns/views/home/home_view.dart';
@@ -23,16 +28,7 @@ final GoRouter _router = GoRouter(
         return Scaffold(
           appBar: CustomAppbar(title: 'Cream'),
           body: child,
-          bottomNavigationBar: BottomNavigationBar(
-            type: BottomNavigationBarType.fixed,
-            backgroundColor: AppColors.white,
-            items: [
-              BottomNavigationBarItem(icon: Icon(Icons.add), label: "Home"),
-              BottomNavigationBarItem(icon: Icon(Icons.add), label: "Search"),
-              BottomNavigationBarItem(icon: Icon(Icons.add), label: "Like"),
-              BottomNavigationBarItem(icon: Icon(Icons.add), label: "Profile"),
-            ],
-          ),
+          bottomNavigationBar: CustomBottomNavigationBar(state: state),
         );
       },
       routes: [
