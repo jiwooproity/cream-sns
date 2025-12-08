@@ -1,3 +1,5 @@
+import 'package:cream_sns/navigation/custom_appbar.dart';
+import 'package:cream_sns/theme/colors.dart';
 import 'package:flutter/material.dart';
 
 // Libraries
@@ -19,9 +21,18 @@ final GoRouter _router = GoRouter(
     ShellRoute(
       builder: (context, state, child) {
         return Scaffold(
-          appBar: AppBar(),
+          appBar: CustomAppbar(title: 'Cream'),
           body: child,
-          bottomNavigationBar: BottomNavigationBar(items: []),
+          bottomNavigationBar: BottomNavigationBar(
+            type: BottomNavigationBarType.fixed,
+            backgroundColor: AppColors.white,
+            items: [
+              BottomNavigationBarItem(icon: Icon(Icons.add), label: "Home"),
+              BottomNavigationBarItem(icon: Icon(Icons.add), label: "Search"),
+              BottomNavigationBarItem(icon: Icon(Icons.add), label: "Like"),
+              BottomNavigationBarItem(icon: Icon(Icons.add), label: "Profile"),
+            ],
+          ),
         );
       },
       routes: [
@@ -47,7 +58,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp.router(
       title: "Cream SNS",
-      theme: ThemeData(),
+      theme: ThemeData(scaffoldBackgroundColor: AppColors.white),
       debugShowCheckedModeBanner: false,
       routerConfig: _router,
     );
