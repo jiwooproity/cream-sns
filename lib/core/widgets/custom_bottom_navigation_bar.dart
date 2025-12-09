@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 // Themes
-import 'package:cream_sns/theme/app_colors.dart';
+import 'package:cream_sns/core/theme/app_colors.dart';
 
 // Library
 import 'package:go_router/go_router.dart';

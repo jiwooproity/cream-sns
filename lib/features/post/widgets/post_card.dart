@@ -1,16 +1,16 @@
-import 'package:cream_sns/features/post/widgets/post_content.dart';
-import 'package:cream_sns/features/post/widgets/post_footer.dart';
-import 'package:cream_sns/features/post/widgets/post_image.dart';
 import 'package:flutter/material.dart';
 
 // Themes
-import 'package:cream_sns/theme/app_colors.dart';
+import 'package:cream_sns/core/theme/app_colors.dart';
 
 // Models
 import 'package:cream_sns/features/post/models/post.dart';
 
 // Widget
-import 'post_header.dart';
+import 'package:cream_sns/features/post/widgets/post_header.dart';
+import 'package:cream_sns/features/post/widgets/post_content.dart';
+import 'package:cream_sns/features/post/widgets/post_footer.dart';
+import 'package:cream_sns/features/post/widgets/post_image.dart';
 
 class PostCard extends StatelessWidget {
   final Post post;
