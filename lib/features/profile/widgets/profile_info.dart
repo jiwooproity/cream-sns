@@ -17,9 +17,9 @@ class ProfileInfo extends StatelessWidget {
     return Column(
       children: [
         SizedBox(height: 15),
-        ProfileImage(profile: profile.image),
+        ProfileImage(image: profile.image),
         SizedBox(height: 15),
-        ProfileDetail(nickname: profile.nickname),
+        ProfileDetail(nickname: profile.nickname, description: profile.description),
       ],
     );
   }

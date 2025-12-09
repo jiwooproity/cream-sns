@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 
 class ProfileImage extends StatelessWidget {
-  final String profile;
+  final String image;
 
-  const ProfileImage({super.key, required this.profile});
+  const ProfileImage({super.key, required this.image});
 
   @override
   Widget build(BuildContext context) {
@@ -11,11 +11,7 @@ class ProfileImage extends StatelessWidget {
       child: SizedBox(
         width: 100,
         height: 100,
-        child: CircleAvatar(
-          backgroundImage: NetworkImage(
-            "https://avatars.githubusercontent.com/u/58384366?v=4&size=64",
-          ),
-        ),
+        child: CircleAvatar(backgroundImage: NetworkImage(image)),
       ),
     );
   }

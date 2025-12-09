@@ -19,7 +19,8 @@ class _ProfileViewState extends State<ProfileView> {
   final Profile _profile = Profile(
     id: "mattinew_0208",
     nickname: "마띠뉴",
-    image: "https://avatars.githubusercontent.com/u/58384366?v=4&size=64",
+    description: "안녕하세요, 프론트엔드 개발자 소지우입니다.",
+    image: "https://avatars.githubusercontent.com/u/58384366?v=4",
     likeLength: 1,
     postLength: 1,
   );
