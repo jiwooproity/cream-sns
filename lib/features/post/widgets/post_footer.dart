@@ -17,12 +17,22 @@ class PostFooter extends StatelessWidget {
       child: Align(
         alignment: Alignment.centerLeft,
         child: Row(
-          spacing: 5,
+          spacing: 10,
           children: [
-            Icon(Icons.favorite_outline, size: 20),
-            Text("$likeLength"),
-            Icon(Icons.comment_outlined, size: 20),
-            Text("$commentLength"),
+            Row(
+              spacing: 3,
+              children: [
+                Icon(Icons.favorite_outline, size: 20),
+                Text("$likeLength"),
+              ],
+            ),
+            Row(
+              spacing: 3,
+              children: [
+                Icon(Icons.comment_outlined, size: 20),
+                Text("$commentLength"),
+              ],
+            ),
           ],
         ),
       ),
