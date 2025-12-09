@@ -1,3 +1,4 @@
+import 'package:cream_sns/shared/widgets/convert_time.dart';
 import 'package:flutter/material.dart';
 
 // Models
@@ -29,17 +30,14 @@ class PostHeader extends StatelessWidget {
                   post.nickname,
                   style: Theme.of(context).textTheme.titleMedium,
                 ),
-                Text(
-                  "${post.createTime}",
+                ConvertTime(
+                  msEpoch: post.createTime,
                   style: Theme.of(context).textTheme.bodySmall,
                 ),
               ],
             ),
           ),
-          GestureDetector(
-            onTap: () {},
-            child: Icon(Icons.more_vert),
-          )
+          GestureDetector(onTap: () {}, child: Icon(Icons.more_vert)),
         ],
       ),
     );

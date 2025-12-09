@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import 'package:timeago/timeago.dart' as time_ago;
+
 // Themes
 import 'package:cream_sns/core/theme/app_colors.dart';
 
@@ -7,6 +9,7 @@ import 'package:cream_sns/core/theme/app_colors.dart';
 import 'package:cream_sns/core/router/custom_router.dart';
 
 void main() {
+  time_ago.setLocaleMessages('ko', time_ago.KoMessages());
   runApp(const MyApp());
 }
 
