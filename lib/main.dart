@@ -26,18 +26,33 @@ final GoRouter _router = GoRouter(
     ShellRoute(
       builder: (context, state, child) {
         return Scaffold(
-          appBar: CustomAppbar(title: 'Cream'),
           body: child,
           bottomNavigationBar: CustomBottomNavigationBar(state: state),
         );
       },
       routes: [
-        GoRoute(path: "/home", builder: (context, state) => const HomeView()),
-        GoRoute(
-          path: "/search",
-          builder: (context, state) => const SearchView(),
+        ShellRoute(
+          builder: (context, state, child) {
+            return Scaffold(
+              appBar: CustomAppbar(title: 'Cream'),
+              body: child,
+            );
+          },
+          routes: [
+            GoRoute(
+              path: "/home",
+              builder: (context, state) => const HomeView(),
+            ),
+            GoRoute(
+              path: "/search",
+              builder: (context, state) => const SearchView(),
+            ),
+            GoRoute(
+              path: "/like",
+              builder: (context, state) => const LikeView(),
+            ),
+          ],
         ),
-        GoRoute(path: "/like", builder: (context, state) => const LikeView()),
         GoRoute(
           path: "/profile",
           builder: (context, state) => const ProfileView(),
@@ -53,7 +68,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp.router(
-      title: "Cream SNS",
+      title: "Cream",
       theme: ThemeData(scaffoldBackgroundColor: AppColors.white),
       debugShowCheckedModeBanner: false,
       routerConfig: _router,
