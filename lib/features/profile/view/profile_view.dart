@@ -1,12 +1,16 @@
-import 'package:cream_sns/theme/colors.dart';
+import 'package:cream_sns/theme/app_colors.dart';
 import 'package:flutter/material.dart';
 
 // Models
 import 'package:cream_sns/features/profile/model/profile.dart';
+import 'package:cream_sns/features/post/models/post.dart';
+
+// Navigation
+import 'package:cream_sns/core/widgets/custom_appbar.dart';
 
 // Widgets
-import 'package:cream_sns/navigation/custom_appbar.dart';
 import 'package:cream_sns/features/profile/widgets/profile_info.dart';
+import 'package:cream_sns/features/profile/tabs/tabs_grid.dart';
 
 class ProfileView extends StatefulWidget {
   const ProfileView({super.key});
@@ -52,7 +56,7 @@ class _ProfileViewState extends State<ProfileView> {
             Expanded(
               child: TabBarView(
                 children: [
-                  Center(child: Text("게시글 리스트")),
+                  PostTab(post: []),
                   Center(child: Text("멘션 리스트")),
                 ],
               ),

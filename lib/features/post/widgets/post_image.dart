@@ -12,7 +12,10 @@ class PostImage extends StatelessWidget {
       child: images.length == 1
           ? ClipRRect(
               borderRadius: BorderRadius.circular(12),
-              child: Image.network(images.first, fit: BoxFit.cover),
+              child: AspectRatio(
+                aspectRatio: 16 / 9,
+                child: Image.network(images.first, fit: BoxFit.cover),
+              ),
             )
           : ClipRRect(
               borderRadius: BorderRadius.circular(12),
