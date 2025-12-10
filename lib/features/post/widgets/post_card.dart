@@ -33,7 +33,7 @@ class PostCard extends StatelessWidget {
           children: [
             PostHeader(post: post),
             PostImage(images: post.images),
-            SizedBox(height: 8),
+            SizedBox(height: 12),
             PostContent(content: post.content),
             PostFooter(
               likeLength: post.likeLength,
