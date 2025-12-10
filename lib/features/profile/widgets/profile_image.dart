@@ -8,11 +8,7 @@ class ProfileImage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Center(
-      child: SizedBox(
-        width: 100,
-        height: 100,
-        child: CircleAvatar(backgroundImage: NetworkImage(image)),
-      ),
+      child: CircleAvatar(radius: 50, backgroundImage: NetworkImage(image)),
     );
   }
 }
