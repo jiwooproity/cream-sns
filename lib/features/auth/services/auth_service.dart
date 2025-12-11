@@ -1,0 +1,46 @@
+import 'package:dio/dio.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+
+// Models
+import 'package:cream_sns/features/auth/model/user.dart';
+
+// Services
+import 'package:cream_sns/core/services/api_client.dart';
+
+final apiClientProvider = Provider((ref) => ApiClient().dio);
+
+final authRepositoryProvider = Provider((ref) {
+  final apiClient = ref.watch(apiClientProvider);
+  return AuthRepository(apiClient);
+});
+
+class AuthRepository {
+  final Dio _dio;
+
+  AuthRepository(this._dio);
+
+  Future<User> me() async {
+    final response = await _dio.get("/me");
+    return User.fromJson(response.data);
+  }
+
+  Future<User> login(String userId, String password) async {
+    final response = await _dio.post(
+      "/login",
+      data: {'userId': userId, 'password': password},
+    );
+    return User.fromJson(response.data);
+  }
+
+  Future<void> signUp(String userId, String nickname, String password) async {
+    await _dio.post(
+      "/signup",
+      data: {'userId': userId, 'nickname': nickname, "password": password},
+    );
+  }
+
+  Future<String> logout() async {
+    final response = await _dio.post("/logout");
+    return response.data.message;
+  }
+}

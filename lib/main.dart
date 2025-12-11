@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'package:timeago/timeago.dart' as time_ago;
 
@@ -10,7 +11,7 @@ import 'package:cream_sns/core/router/custom_router.dart';
 
 void main() {
   time_ago.setLocaleMessages('ko', time_ago.KoMessages());
-  runApp(const MyApp());
+  runApp(ProviderScope(child: const MyApp()));
 }
 
 class MyApp extends StatelessWidget {

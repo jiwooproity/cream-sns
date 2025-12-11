@@ -23,14 +23,16 @@ class _HomeViewState extends State<HomeView> {
     createTime: DateTime.now().millisecondsSinceEpoch,
   );
 
-  late final List<Post> postList = [post, post, post];
+  late final List<Post> postList = [post];
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(8.0),
-      child: ListView(
-        children: postList.map((post) => PostCard(post: post)).toList(),
+    return SafeArea(
+      child: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: ListView(
+          children: postList.map((post) => PostCard(post: post)).toList(),
+        ),
       ),
     );
   }
