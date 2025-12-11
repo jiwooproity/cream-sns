@@ -1,3 +1,5 @@
+import 'package:cream_sns/features/auth/model/user.dart';
+import 'package:cream_sns/features/auth/provider/auth_provider.dart';
 import 'package:flutter/material.dart';
 
 // Themes
@@ -12,29 +14,18 @@ import 'package:cream_sns/core/widgets/custom_appbar.dart';
 // Widgets
 import 'package:cream_sns/features/profile/widgets/profile_info.dart';
 import 'package:cream_sns/features/profile/tabs/tabs_grid.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class ProfileView extends StatefulWidget {
-  const ProfileView({super.key});
-
-  @override
-  State<ProfileView> createState() => _ProfileViewState();
-}
-
-class _ProfileViewState extends State<ProfileView> {
-  final Profile _profile = Profile(
-    id: "mattinew_0208",
-    nickname: "마띠뉴",
-    description: "안녕하세요, 프론트엔드 개발자 소지우입니다.",
-    image: "https://avatars.githubusercontent.com/u/58384366?v=4",
-    likeLength: 1,
-    postLength: 1,
-  );
+class ProfileView extends ConsumerWidget {
+  ProfileView({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final authState = ref.watch(authStateProvider);
+
     return Scaffold(
       appBar: CustomAppbar(
-        title: _profile.id,
+        title: authState.user!.userId,
         titleSize: 15,
         centerTitle: true,
         actionsPadding: EdgeInsets.only(right: 12),
@@ -44,7 +35,7 @@ class _ProfileViewState extends State<ProfileView> {
         length: 2,
         child: Column(
           children: [
-            ProfileInfo(profile: _profile),
+            ProfileInfo(user: authState.user!),
             SizedBox(height: 15),
             TabBar(
               labelColor: AppColors.blue,

@@ -56,12 +56,12 @@ class CustomRouter {
           ),
           GoRoute(
             path: Paths.profile,
-            builder: (ctx, state) => const ProfileView(),
+            builder: (ctx, state) => ProfileView(),
           ),
         ],
       ),
-      GoRoute(path: Paths.login, builder: (ctx, state) => const LoginView()),
-      GoRoute(path: Paths.signup, builder: (ctx, state) => const SignupView()),
+      GoRoute(path: Paths.login, builder: (ctx, state) => LoginView()),
+      GoRoute(path: Paths.signup, builder: (ctx, state) => SignupView()),
     ],
   );
 }
