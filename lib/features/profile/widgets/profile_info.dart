@@ -3,10 +3,6 @@ import 'package:flutter/material.dart';
 // Models
 import 'package:cream_sns/features/auth/model/user.dart';
 
-// Widgets
-import 'package:cream_sns/features/profile/widgets/profile_detail.dart';
-import 'package:cream_sns/features/profile/widgets/profile_image.dart';
-
 class ProfileInfo extends StatelessWidget {
   final User user;
 
@@ -17,10 +13,23 @@ class ProfileInfo extends StatelessWidget {
     return Column(
       children: [
         SizedBox(height: 15),
-        ProfileImage(image: user.profile),
+        profileImage(profile: user.profile),
         SizedBox(height: 15),
-        ProfileDetail(nickname: user.nickname, description: "안녕하세요, 프론트엔드 개발자 소지우입니다."),
+        profileDetail(nickname: user.nickname),
       ],
+    );
+  }
+
+  Widget profileImage({required String profile}) {
+    return CircleAvatar(radius: 50, backgroundImage: NetworkImage(profile));
+  }
+
+  Widget profileDetail({
+    required String nickname,
+  }) {
+    return Text(
+      nickname,
+      style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
     );
   }
 }
