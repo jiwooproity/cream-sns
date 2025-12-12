@@ -12,18 +12,33 @@ import 'package:cream_sns/core/theme/app_colors.dart';
 import 'package:cream_sns/features/auth/widgets/auth_text_field.dart';
 import 'package:cream_sns/shared/widgets/round_button.dart';
 
-class LoginView extends ConsumerWidget {
+class LoginView extends ConsumerStatefulWidget {
+  const LoginView({super.key});
+
+  @override
+  ConsumerState<LoginView> createState() => _LoginViewState();
+}
+
+class _LoginViewState extends ConsumerState<LoginView> {
   final GlobalKey<FormState> _loginFormKey = GlobalKey<FormState>();
   final TextEditingController _userId = TextEditingController();
   final TextEditingController _password = TextEditingController();
 
-  LoginView({super.key});
+  @override
+  void initState() {
+    super.initState();
+    checkAuth();
+  }
+
+  Future<void> checkAuth() async {
+    await ref.read(authStateProvider.notifier).me();
+  }
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  Widget build(BuildContext context) {
     ref.watch(authStateProvider);
 
-    ref.listen(authStateProvider, (prev, cur) {
+    ref.listen(authStateProvider, (prev, cur) async {
       if (!prev!.isAuthenticated && cur.isAuthenticated) {
         context.go("/home");
       }
