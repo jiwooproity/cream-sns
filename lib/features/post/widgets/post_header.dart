@@ -1,4 +1,4 @@
-import 'package:cream_sns/shared/widgets/convert_time.dart';
+import 'package:cream_sns/shared/widgets/time_ago.dart';
 import 'package:flutter/material.dart';
 
 // Models

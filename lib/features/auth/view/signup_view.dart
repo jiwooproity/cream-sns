@@ -1,22 +1,37 @@
-import 'package:cream_sns/features/auth/provider/auth_provider.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+
+// Provider
+import 'package:cream_sns/features/auth/provider/auth_provider.dart';
 
 // Widgets
 import 'package:cream_sns/features/auth/widgets/auth_text_field.dart';
-import 'package:cream_sns/shared/widgets/round_button.dart';
+import 'package:cream_sns/shared/widgets/buttons/round_button.dart';
 
-class SignupView extends ConsumerWidget {
+class SignupView extends ConsumerStatefulWidget {
+  const SignupView({super.key});
+
+  @override
+  ConsumerState<SignupView> createState() => _SignupViewState();
+}
+
+class _SignupViewState extends ConsumerState<SignupView> {
   final GlobalKey _globalKey = GlobalKey<FormState>();
   final TextEditingController _userId = TextEditingController();
   final TextEditingController _nickname = TextEditingController();
   final TextEditingController _password = TextEditingController();
 
-  SignupView({super.key});
+  @override
+  void dispose() {
+    _userId.dispose();
+    _nickname.dispose();
+    _password.dispose();
+    super.dispose();
+  }
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  Widget build(BuildContext context) {
     return Scaffold(
       body: SafeArea(
         child: Center(
@@ -55,7 +70,9 @@ class SignupView extends ConsumerWidget {
                       final nickname = _nickname.text;
                       final password = _password.text;
 
-                      if(userId.isEmpty || nickname.isEmpty || password.isEmpty) {
+                      if (userId.isEmpty ||
+                          nickname.isEmpty ||
+                          password.isEmpty) {
                         return;
                       }
 

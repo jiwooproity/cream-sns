@@ -10,7 +10,7 @@ import 'package:cream_sns/core/theme/app_colors.dart';
 
 // Widgets
 import 'package:cream_sns/features/auth/widgets/auth_text_field.dart';
-import 'package:cream_sns/shared/widgets/round_button.dart';
+import 'package:cream_sns/shared/widgets/buttons/round_button.dart';
 
 class LoginView extends ConsumerStatefulWidget {
   const LoginView({super.key});
@@ -23,6 +23,13 @@ class _LoginViewState extends ConsumerState<LoginView> {
   final GlobalKey<FormState> _loginFormKey = GlobalKey<FormState>();
   final TextEditingController _userId = TextEditingController();
   final TextEditingController _password = TextEditingController();
+
+  @override
+  void dispose() {
+    _userId.dispose();
+    _password.dispose();
+    super.dispose();
+  }
 
   @override
   void initState() {

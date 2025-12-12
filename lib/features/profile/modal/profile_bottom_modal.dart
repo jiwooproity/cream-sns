@@ -24,9 +24,10 @@ class ProfileBottomModal extends StatelessWidget {
         children: [
           ListTile(
             onTap: () {
+              context.pop(context);
               context.push("/profile/edit");
             },
-            title: Center(child: Text("프로필 수정")),
+            title: Center(child: Text("프로필 편집")),
           ),
         ],
       ),
