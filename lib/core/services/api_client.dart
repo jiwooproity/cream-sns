@@ -23,12 +23,14 @@ class ApiClient {
     extra: {'withCredentials': true},
   );
 
-  void _addInterceptor() async {
+  Future<void> initCookie() async {
     final dir = await getApplicationDocumentsDirectory();
-    final cookieJar = PersistCookieJar(
-      storage: FileStorage("${dir.path}/.cookies"),
-    );
+    final storage = FileStorage("${dir.path}/.cookies");
+    final cookieJar = PersistCookieJar(storage: storage);
     dio.interceptors.add(CookieManager(cookieJar));
+  }
+
+  void _addInterceptor() async {
     dio.interceptors.add(LogInterceptor(responseBody: true));
   }
 }

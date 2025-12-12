@@ -7,7 +7,7 @@ import 'package:cream_sns/features/auth/model/user.dart';
 // Services
 import 'package:cream_sns/core/services/api_client.dart';
 
-final apiClientProvider = Provider((ref) => ApiClient().dio);
+final apiClientProvider = Provider((ref) => ApiClient());
 
 final authRepositoryProvider = Provider((ref) {
   final apiClient = ref.watch(apiClientProvider);
@@ -15,11 +15,13 @@ final authRepositoryProvider = Provider((ref) {
 });
 
 class AuthRepository {
-  final Dio _dio;
+  final ApiClient _apiClient;
+  late final Dio _dio = _apiClient.dio;
 
-  AuthRepository(this._dio);
+  AuthRepository(this._apiClient);
 
   Future<User> me() async {
+    await _apiClient.initCookie();
     final response = await _dio.get("/me");
     return User.fromJson(response.data);
   }
