@@ -20,15 +20,23 @@ class AuthRepository {
 
   AuthRepository(this._apiClient);
 
+  Future<User> editProfile(String nickname, String description) async {
+    final response = await _dio.patch(
+      "/profile/edit",
+      data: {'nickname': nickname, 'description': description},
+    );
+    return User.fromJson(response.data);
+  }
+
   Future<User> me() async {
     await _apiClient.initCookie();
-    final response = await _dio.get("/me");
+    final response = await _dio.get("/auth/me");
     return User.fromJson(response.data);
   }
 
   Future<User> login(String userId, String password) async {
     final response = await _dio.post(
-      "/login",
+      "/auth/login",
       data: {'userId': userId, 'password': password},
     );
     return User.fromJson(response.data);
@@ -36,13 +44,13 @@ class AuthRepository {
 
   Future<void> signUp(String userId, String nickname, String password) async {
     await _dio.post(
-      "/signup",
+      "/auth/signup",
       data: {'userId': userId, 'nickname': nickname, "password": password},
     );
   }
 
   Future<String> logout() async {
-    final response = await _dio.post("/logout");
+    final response = await _dio.post("/auth/logout");
     return response.data.message;
   }
 }

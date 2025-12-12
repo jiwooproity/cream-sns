@@ -29,7 +29,7 @@ class _HomeViewState extends State<HomeView> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Padding(
-        padding: const EdgeInsets.all(8.0),
+        padding: const EdgeInsets.symmetric(horizontal: 12),
         child: ListView(
           children: postList.map((post) => PostCard(post: post)).toList(),
         ),

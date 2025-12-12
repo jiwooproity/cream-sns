@@ -15,7 +15,11 @@ class ProfileInfo extends StatelessWidget {
         SizedBox(height: 15),
         profileImage(profile: user.profile),
         SizedBox(height: 15),
-        profileDetail(nickname: user.nickname),
+        profileDetail(
+          context,
+          nickname: user.nickname,
+          description: user.description,
+        ),
       ],
     );
   }
@@ -24,12 +28,21 @@ class ProfileInfo extends StatelessWidget {
     return CircleAvatar(radius: 50, backgroundImage: NetworkImage(profile));
   }
 
-  Widget profileDetail({
+  Widget profileDetail(
+    BuildContext context, {
     required String nickname,
+    required String description,
   }) {
-    return Text(
-      nickname,
-      style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+    return Column(
+      children: [
+        Text(
+          nickname,
+          style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+        ),
+        ?description != ""
+            ? Text(description, style: Theme.of(context).textTheme.bodyMedium)
+            : null,
+      ],
     );
   }
 }
