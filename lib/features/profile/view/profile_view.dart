@@ -1,12 +1,9 @@
-import 'package:cream_sns/features/auth/model/user.dart';
 import 'package:cream_sns/features/auth/provider/auth_provider.dart';
+import 'package:cream_sns/features/profile/modal/profile_bottom_modal.dart';
 import 'package:flutter/material.dart';
 
 // Themes
 import 'package:cream_sns/core/theme/app_colors.dart';
-
-// Models
-import 'package:cream_sns/features/profile/model/profile.dart';
 
 // Navigation
 import 'package:cream_sns/core/widgets/custom_appbar.dart';
@@ -17,7 +14,7 @@ import 'package:cream_sns/features/profile/tabs/tabs_grid.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class ProfileView extends ConsumerWidget {
-  ProfileView({super.key});
+  const ProfileView({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -28,8 +25,18 @@ class ProfileView extends ConsumerWidget {
         title: authState.user!.userId,
         titleSize: 15,
         centerTitle: true,
-        actionsPadding: EdgeInsets.only(right: 12),
-        actions: [Icon(Icons.more_horiz)],
+        actionsPadding: EdgeInsets.symmetric(horizontal: 15),
+        actions: [
+          GestureDetector(
+            child: Icon(Icons.more_horiz),
+            onTap: () {
+              showModalBottomSheet(
+                context: context,
+                builder: (context) => ProfileBottomModal(),
+              );
+            },
+          ),
+        ],
       ),
       body: DefaultTabController(
         length: 2,

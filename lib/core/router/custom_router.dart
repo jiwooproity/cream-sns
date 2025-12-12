@@ -11,6 +11,7 @@ import 'package:cream_sns/core/widgets/custom_bottom_navigation_bar.dart';
 import 'package:cream_sns/features/home/view/home_view.dart';
 import 'package:cream_sns/features/like/view/like_view.dart';
 import 'package:cream_sns/features/profile/view/profile_view.dart';
+import 'package:cream_sns/features/profile/view/profile_edit_view.dart';
 import 'package:cream_sns/features/search/search_view.dart';
 import 'package:cream_sns/features/auth/view/login_view.dart';
 import 'package:cream_sns/features/auth/view/signup_view.dart';
@@ -20,6 +21,7 @@ class Paths {
   static const search = "/search";
   static const like = "/like";
   static const profile = "/profile";
+  static const editProfile = "/profile/edit";
   static const login = "/login";
   static const signup = "/signup";
 }
@@ -62,6 +64,7 @@ class CustomRouter {
       ),
       GoRoute(path: Paths.login, builder: (ctx, state) => LoginView()),
       GoRoute(path: Paths.signup, builder: (ctx, state) => SignupView()),
+      GoRoute(path: Paths.editProfile, builder: (ctx, state) => ProfileEditView()),
     ],
   );
 }
