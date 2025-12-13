@@ -20,10 +20,11 @@ class AuthRepository {
 
   AuthRepository(this._apiClient);
 
-  Future<User> editProfile(String nickname, String description) async {
+  Future<User> editProfile(FormData formData) async {
     final response = await _dio.patch(
       "/profile/edit",
-      data: {'nickname': nickname, 'description': description},
+      data: formData,
+      options: Options(headers: {'Content-Type': 'multipart/form-data'}),
     );
     return User.fromJson(response.data);
   }
