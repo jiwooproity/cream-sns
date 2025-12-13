@@ -49,8 +49,8 @@ class AuthRepository {
     );
   }
 
-  Future<String> logout() async {
+  Future<Response<dynamic>> logout() async {
     final response = await _dio.post("/auth/logout");
-    return response.data.message;
+    return response;
   }
 }
