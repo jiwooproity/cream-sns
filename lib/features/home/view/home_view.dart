@@ -64,7 +64,6 @@ class _HomeViewState extends State<HomeView> {
         children: [
           Expanded(
             child: ListView.builder(
-              padding: const EdgeInsets.symmetric(horizontal: 20),
               itemCount: postList.length,
               itemBuilder: (BuildContext context, int idx) {
                 return PostCard(post: postList[idx]);
