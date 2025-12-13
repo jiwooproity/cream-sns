@@ -38,7 +38,7 @@ class _HomeViewState extends State<HomeView> {
     return Scaffold(
       appBar: CustomAppbar(
         title: "Cream",
-        actionsPadding: const EdgeInsets.symmetric(horizontal: 20),
+        actionsPadding: const EdgeInsets.symmetric(horizontal: 12),
         actions: [
           CustomModal(
             icon: Icons.post_add_outlined,
@@ -64,7 +64,6 @@ class _HomeViewState extends State<HomeView> {
         children: [
           Expanded(
             child: ListView.builder(
-              padding: const EdgeInsets.symmetric(horizontal: 20),
               itemCount: postList.length,
               itemBuilder: (BuildContext context, int idx) {
                 return PostCard(post: postList[idx]);
