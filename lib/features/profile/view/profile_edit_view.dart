@@ -1,6 +1,6 @@
-import 'package:cream_sns/features/profile/widgets/profile_changer.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -12,7 +12,7 @@ import 'package:cream_sns/core/theme/app_colors.dart';
 
 // Widgets
 import 'package:cream_sns/core/widgets/custom_appbar.dart';
-import 'package:go_router/go_router.dart';
+import 'package:cream_sns/features/profile/widgets/profile_changer.dart';
 
 class ProfileEditView extends ConsumerStatefulWidget {
   const ProfileEditView({super.key});
@@ -49,21 +49,8 @@ class _ProfileEditViewState extends ConsumerState<ProfileEditView> {
         actionsPadding: EdgeInsets.symmetric(horizontal: 15),
         actions: [
           GestureDetector(
-            onTap: () async {
-              final image = _selectedImage != null
-                  ? await MultipartFile.fromFile(
-                      _selectedImage!.path,
-                      filename: _selectedImage?.name,
-                    )
-                  : null;
-
-              final formData = FormData.fromMap({
-                'image': image,
-                'nickname': _nickname.text,
-                'description': _description.text,
-              });
-              await ref.read(authStateProvider.notifier).editProfile(formData);
-              if (context.mounted) ref.context.go("/profile");
+            onTap: () {
+              changeProfile();
             },
             child: Text("완료", style: TextStyle(fontSize: 15)),
           ),
@@ -119,5 +106,24 @@ class _ProfileEditViewState extends ConsumerState<ProfileEditView> {
         ),
       ),
     );
+  }
+
+  Future<void> changeProfile() async {
+    MultipartFile? image;
+
+    if (_selectedImage != null) {
+      final file = _selectedImage!.path;
+      final filename = _selectedImage!.name;
+      image = await MultipartFile.fromFile(file, filename: filename);
+    }
+
+    final formData = FormData.fromMap({
+      'image': image,
+      'nickname': _nickname.text,
+      'description': _description.text,
+    });
+
+    await ref.read(authStateProvider.notifier).editProfile(formData);
+    if (context.mounted) ref.context.go("/profile");
   }
 }

@@ -37,10 +37,6 @@ class _LoginViewState extends ConsumerState<LoginView> {
     checkAuth();
   }
 
-  Future<void> checkAuth() async {
-    await ref.read(authStateProvider.notifier).me();
-  }
-
   @override
   Widget build(BuildContext context) {
     ref.watch(authStateProvider);
@@ -107,6 +103,10 @@ class _LoginViewState extends ConsumerState<LoginView> {
         ),
       ),
     );
+  }
+
+  Future<void> checkAuth() async {
+    await ref.read(authStateProvider.notifier).me();
   }
 
   void _handleLogin(WidgetRef ref) {
