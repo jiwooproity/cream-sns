@@ -1,47 +1,59 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-// Models
-import 'package:cream_sns/features/auth/model/user.dart';
+// Provider
+import 'package:cream_sns/features/auth/provider/auth_provider.dart';
 
 class ProfileInfo extends StatelessWidget {
-  final User user;
-
-  const ProfileInfo({super.key, required this.user});
+  const ProfileInfo({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return Column(
+    return const Column(
       children: [
         SizedBox(height: 15),
-        profileImage(profile: user.profile),
+        ProfileImage(),
         SizedBox(height: 15),
-        profileDetail(
-          context,
-          nickname: user.nickname,
-          description: user.description,
-        ),
+        ProfileDetail(),
       ],
     );
   }
+}
 
-  Widget profileImage({required String profile}) {
-    return CircleAvatar(radius: 50, backgroundImage: NetworkImage(profile));
+// 프로필 이미지
+class ProfileImage extends ConsumerWidget {
+  const ProfileImage({super.key});
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final profile = ref.watch(authStateProvider.select((s) => s.user?.profile));
+
+    if (profile != null) {
+      return CircleAvatar(radius: 50, backgroundImage: NetworkImage(profile));
+    } else {
+      return const CircleAvatar();
+    }
   }
+}
 
-  Widget profileDetail(
-    BuildContext context, {
-    required String nickname,
-    required String description,
-  }) {
+// 사용자 정보 ["닉네임", "한 줄 소개"]
+class ProfileDetail extends ConsumerWidget {
+  const ProfileDetail({super.key});
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final nickname = ref.watch(
+      authStateProvider.select((s) => s.user?.nickname),
+    );
+
+    final description = ref.watch(
+      authStateProvider.select((s) => s.user?.description),
+    );
+
     return Column(
       children: [
-        Text(
-          nickname,
-          style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-        ),
-        ?description != ""
-            ? Text(description, style: Theme.of(context).textTheme.bodyMedium)
-            : null,
+        Text(nickname ?? "", style: Theme.of(context).textTheme.titleLarge),
+        Text(description ?? "", style: Theme.of(context).textTheme.bodyMedium),
       ],
     );
   }

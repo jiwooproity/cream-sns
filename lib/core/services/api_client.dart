@@ -17,8 +17,8 @@ class ApiClient {
 
   BaseOptions get _options => BaseOptions(
     baseUrl: "http://10.0.2.2:8080",
-    connectTimeout: Duration(seconds: 5),
-    receiveTimeout: Duration(seconds: 5),
+    connectTimeout: const Duration(seconds: 5),
+    receiveTimeout: const Duration(seconds: 5),
     headers: {"Content-Type": "application/json"},
     extra: {'withCredentials': true},
   );

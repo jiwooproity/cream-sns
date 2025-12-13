@@ -1,5 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
+import 'package:image_picker/image_picker.dart';
 
+// Widgets
+import 'package:cream_sns/core/widgets/custom_appbar.dart';
+import 'package:cream_sns/shared/widgets/divider/custom_divider.dart';
+import 'package:cream_sns/shared/widgets/modal/custom_modal.dart';
 import 'package:cream_sns/features/post/models/post.dart';
 import 'package:cream_sns/features/post/widgets/post_card.dart';
 
@@ -11,6 +17,8 @@ class HomeView extends StatefulWidget {
 }
 
 class _HomeViewState extends State<HomeView> {
+  final ImagePicker _picker = ImagePicker();
+
   final Post post = Post(
     user: 1,
     nickname: "마띠뉴",
@@ -27,13 +35,55 @@ class _HomeViewState extends State<HomeView> {
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 12),
-        child: ListView(
-          children: postList.map((post) => PostCard(post: post)).toList(),
-        ),
+    return Scaffold(
+      appBar: CustomAppbar(
+        title: "Cream",
+        actionsPadding: const EdgeInsets.symmetric(horizontal: 20),
+        actions: [
+          CustomModal(
+            icon: Icons.post_add_outlined,
+            widgets: [
+              ListTile(
+                onTap: () {
+                  doPost(context, ImageSource.camera);
+                },
+                title: const Center(child: Text("카메라")),
+              ),
+              const CustomDivider(),
+              ListTile(
+                onTap: () {
+                  doPost(context, ImageSource.gallery);
+                },
+                title: const Center(child: Text("갤러리")),
+              ),
+            ],
+          ),
+        ],
+      ),
+      body: Column(
+        children: [
+          Expanded(
+            child: ListView.builder(
+              padding: const EdgeInsets.symmetric(horizontal: 20),
+              itemCount: postList.length,
+              itemBuilder: (BuildContext context, int idx) {
+                return PostCard(post: postList[idx]);
+              },
+            ),
+          ),
+        ],
       ),
     );
+  }
+
+  Future<void> doPost(BuildContext context, ImageSource imageSource) async {
+    final image = await _picker.pickImage(
+      source: imageSource,
+      imageQuality: 85,
+    );
+
+    if(context.mounted && image != null) {
+      context.push("/post/create", extra: image);
+    }
   }
 }

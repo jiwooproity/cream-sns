@@ -7,6 +7,7 @@ import 'package:cream_sns/core/theme/app_colors.dart';
 import 'package:cream_sns/features/post/models/post.dart';
 
 // Widget
+import 'package:cream_sns/shared/widgets/divider/custom_divider.dart';
 import 'package:cream_sns/features/post/widgets/post_header.dart';
 import 'package:cream_sns/features/post/widgets/post_content.dart';
 import 'package:cream_sns/features/post/widgets/post_footer.dart';
@@ -20,25 +21,24 @@ class PostCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Card(
+      margin: EdgeInsets.zero,
       elevation: 0,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(16),
-      ),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
       shadowColor: AppColors.grey,
       color: AppColors.white,
-      child: InkWell(
+      child: GestureDetector(
         onTap: () {},
-        borderRadius: BorderRadius.circular(16),
         child: Column(
           children: [
             PostHeader(post: post),
             PostImage(images: post.images),
-            SizedBox(height: 12),
+            const SizedBox(height: 12),
             PostContent(content: post.content),
             PostFooter(
               likeLength: post.likeLength,
               commentLength: post.commentLength,
             ),
+            const CustomDivider(height: 25),
           ],
         ),
       ),
