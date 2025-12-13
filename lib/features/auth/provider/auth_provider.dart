@@ -32,9 +32,9 @@ class AuthStateNotifier extends StateNotifier<AuthState> {
 
   AuthStateNotifier(this._repository) : super(const AuthState());
 
-  Future<void> editProfile(String nickname, String description) async {
+  Future<void> editProfile(FormData formData) async {
     try {
-      final response = await _repository.editProfile(nickname, description);
+      final response = await _repository.editProfile(formData);
       state = state.copyWith(user: response, isLoading: false);
     } on DioException catch(e) {
       state = state.copyWith(isLoading: false);

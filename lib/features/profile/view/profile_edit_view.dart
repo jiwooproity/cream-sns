@@ -1,12 +1,14 @@
-import 'package:cream_sns/core/theme/app_colors.dart';
+import 'package:cream_sns/features/profile/widgets/profile_changer.dart';
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 // Provider
 import 'package:cream_sns/features/auth/provider/auth_provider.dart';
 
-// Models
-import 'package:cream_sns/features/auth/model/user.dart';
+// Themes
+import 'package:cream_sns/core/theme/app_colors.dart';
 
 // Widgets
 import 'package:cream_sns/core/widgets/custom_appbar.dart';
@@ -20,6 +22,9 @@ class ProfileEditView extends ConsumerStatefulWidget {
 }
 
 class _ProfileEditViewState extends ConsumerState<ProfileEditView> {
+  final ImagePicker _picker = ImagePicker();
+  XFile? _selectedImage;
+
   final TextEditingController _nickname = TextEditingController();
   final TextEditingController _description = TextEditingController();
 
@@ -45,10 +50,20 @@ class _ProfileEditViewState extends ConsumerState<ProfileEditView> {
         actions: [
           GestureDetector(
             onTap: () async {
-              final nickname = _nickname.text;
-              final description = _description.text;
-              await ref.read(authStateProvider.notifier).editProfile(nickname, description);
-              if(context.mounted) ref.context.go("/profile");
+              final image = _selectedImage != null
+                  ? await MultipartFile.fromFile(
+                      _selectedImage!.path,
+                      filename: _selectedImage?.name,
+                    )
+                  : null;
+
+              final formData = FormData.fromMap({
+                'image': image,
+                'nickname': _nickname.text,
+                'description': _description.text,
+              });
+              await ref.read(authStateProvider.notifier).editProfile(formData);
+              if (context.mounted) ref.context.go("/profile");
             },
             child: Text("완료", style: TextStyle(fontSize: 15)),
           ),
@@ -61,12 +76,22 @@ class _ProfileEditViewState extends ConsumerState<ProfileEditView> {
           children: [
             Center(
               child: GestureDetector(
-                onTap: () {},
+                onTap: () async {
+                  final image = await _picker.pickImage(
+                    source: ImageSource.gallery,
+                    maxWidth: 100,
+                    maxHeight: 100,
+                    imageQuality: 85,
+                  );
+                  setState(() {
+                    _selectedImage = image;
+                  });
+                },
                 child: Column(
                   children: [
-                    CircleAvatar(
-                      radius: 50,
-                      backgroundImage: NetworkImage(user.profile),
+                    ProfileChanger(
+                      originalImage: user.profile,
+                      pickedImage: _selectedImage,
                     ),
                     SizedBox(height: 5),
                     Text("사진 수정", style: TextStyle(color: AppColors.black)),
