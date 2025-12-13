@@ -19,23 +19,18 @@ class AuthTextField extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        SizedBox(height: 6),
+        const SizedBox(height: 6),
         TextField(
           controller: textEditingController,
           obscureText: obscureText,
           decoration: InputDecoration(
             hintText: hintText,
-            hintStyle: TextStyle(fontSize: 14),
-            enabledBorder: OutlineInputBorder(
-              borderSide: BorderSide(width: 0.1),
-              borderRadius: BorderRadius.circular(5),
-            ),
-            focusedBorder: OutlineInputBorder(
+            hintStyle: const TextStyle(fontSize: 14),
+            focusedBorder: const UnderlineInputBorder(
               borderSide: BorderSide(width: 1, color: AppColors.black),
-              borderRadius: BorderRadius.circular(5),
             ),
             contentPadding: const EdgeInsets.symmetric(
-              horizontal: 16,
+              horizontal: 5,
               vertical: 14,
             ),
           ),

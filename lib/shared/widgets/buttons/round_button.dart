@@ -24,7 +24,7 @@ class RoundButton extends StatelessWidget {
       child: ElevatedButton(
         onPressed: onPressed,
         style: ElevatedButton.styleFrom(
-          backgroundColor: AppColors.blue,
+          backgroundColor: AppColors.black,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(5),
           ),

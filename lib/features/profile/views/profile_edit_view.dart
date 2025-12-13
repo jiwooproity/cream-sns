@@ -108,6 +108,9 @@ class _ProfileEditViewState extends ConsumerState<ProfileEditView> {
             TextField(
               controller: _nickname,
               decoration: const InputDecoration(
+                focusedBorder: UnderlineInputBorder(
+                  borderSide: BorderSide(width: 1),
+                ),
                 contentPadding: EdgeInsets.symmetric(vertical: 5),
               ),
             ),
@@ -116,6 +119,9 @@ class _ProfileEditViewState extends ConsumerState<ProfileEditView> {
             TextField(
               controller: _description,
               decoration: const InputDecoration(
+                focusedBorder: UnderlineInputBorder(
+                  borderSide: BorderSide(width: 1),
+                ),
                 contentPadding: EdgeInsets.symmetric(vertical: 5),
               ),
             ),

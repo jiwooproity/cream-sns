@@ -89,7 +89,7 @@ class _LoginViewState extends ConsumerState<LoginView> {
                         child: const Text(
                           "회원가입",
                           style: TextStyle(
-                            color: AppColors.blue,
+                            color: AppColors.black,
                             fontWeight: FontWeight.w600,
                           ),
                         ),

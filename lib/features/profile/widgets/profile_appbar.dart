@@ -19,7 +19,7 @@ class ProfileAppbar extends ConsumerWidget implements PreferredSizeWidget {
       title: userId ?? "",
       titleSize: 15,
       centerTitle: true,
-      actionsPadding: const EdgeInsets.symmetric(horizontal: 20),
+      actionsPadding: const EdgeInsets.symmetric(horizontal: 15),
       actions: [
         CustomModal(
           icon: Icons.more_horiz,
