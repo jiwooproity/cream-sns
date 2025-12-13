@@ -16,7 +16,7 @@ class CreatePost extends StatelessWidget {
         title: "포스트 작성",
         titleSize: 15,
         centerTitle: true,
-        actionsPadding: EdgeInsets.symmetric(horizontal: 20),
+        actionsPadding: EdgeInsets.symmetric(horizontal: 15),
         actions: [Text("완료", style: TextStyle(fontSize: 15))],
       ),
     );
