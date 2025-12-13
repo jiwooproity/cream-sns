@@ -47,7 +47,7 @@ class AuthStateNotifier extends StateNotifier<AuthState> {
       state = state.copyWith(user: response, isLoading: false);
       return true;
     } on DioException catch (e) {
-      state = state.copyWith(isLoading: false);
+      state = AuthState();
       return false;
     }
   }
@@ -62,9 +62,8 @@ class AuthStateNotifier extends StateNotifier<AuthState> {
     }
   }
 
-  Future<String> logout() async {
+  Future<Response<dynamic>> logout() async {
     final response = await _repository.logout();
-    state = const AuthState();
     return response;
   }
 
