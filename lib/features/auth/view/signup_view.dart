@@ -42,27 +42,27 @@ class _SignupViewState extends ConsumerState<SignupView> {
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  Text(
+                  const Text(
                     "Sign Up",
                     style: TextStyle(fontSize: 50, fontWeight: FontWeight.bold),
                   ),
-                  SizedBox(height: 30),
+                  const SizedBox(height: 30),
                   AuthTextField(
                     textEditingController: _userId,
                     hintText: "사용자 아이디",
                   ),
-                  SizedBox(height: 5),
+                  const SizedBox(height: 5),
                   AuthTextField(
                     textEditingController: _nickname,
                     hintText: "닉네임",
                   ),
-                  SizedBox(height: 5),
+                  const SizedBox(height: 5),
                   AuthTextField(
                     textEditingController: _password,
                     hintText: "비밀번호",
                     obscureText: true,
                   ),
-                  SizedBox(height: 15),
+                  const SizedBox(height: 15),
                   RoundButton(
                     btnText: "회원가입",
                     onPressed: () async {

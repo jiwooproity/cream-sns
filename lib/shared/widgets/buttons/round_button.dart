@@ -31,7 +31,7 @@ class RoundButton extends StatelessWidget {
         ),
         child: Text(
           btnText,
-          style: TextStyle(color: AppColors.white, fontSize: 16),
+          style: const TextStyle(color: AppColors.white, fontSize: 16),
         ),
       ),
     );

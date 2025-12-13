@@ -12,10 +12,10 @@ class PostHeader extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.all(12),
+      padding: const EdgeInsets.only(bottom: 12),
       child: Row(
         children: [
-          CircleAvatar(
+          const CircleAvatar(
             radius: 18,
             backgroundImage: NetworkImage(
               "https://avatars.githubusercontent.com/u/58384366?v=4&size=64",
@@ -37,7 +37,7 @@ class PostHeader extends StatelessWidget {
               ],
             ),
           ),
-          GestureDetector(onTap: () {}, child: Icon(Icons.more_vert)),
+          GestureDetector(onTap: () {}, child: const Icon(Icons.more_vert)),
         ],
       ),
     );

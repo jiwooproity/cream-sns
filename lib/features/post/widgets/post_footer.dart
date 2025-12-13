@@ -13,7 +13,7 @@ class PostFooter extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.all(12),
+      padding: const EdgeInsets.only(top: 12),
       child: Align(
         alignment: Alignment.centerLeft,
         child: Row(
@@ -22,14 +22,14 @@ class PostFooter extends StatelessWidget {
             Row(
               spacing: 3,
               children: [
-                Icon(Icons.favorite_outline, size: 20),
+                const Icon(Icons.favorite_outline, size: 20),
                 Text("$likeLength"),
               ],
             ),
             Row(
               spacing: 3,
               children: [
-                Icon(Icons.comment_outlined, size: 20),
+                const Icon(Icons.comment_outlined, size: 20),
                 Text("$commentLength"),
               ],
             ),

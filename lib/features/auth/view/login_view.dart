@@ -58,26 +58,26 @@ class _LoginViewState extends ConsumerState<LoginView> {
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  Text(
+                  const Text(
                     "Cream",
                     style: TextStyle(fontSize: 50, fontWeight: FontWeight.bold),
                   ),
-                  SizedBox(height: 30),
+                  const SizedBox(height: 30),
                   AuthTextField(
                     textEditingController: _userId,
                     hintText: "사용자 아이디",
                   ),
-                  SizedBox(height: 5),
+                  const SizedBox(height: 5),
                   AuthTextField(
                     textEditingController: _password,
                     hintText: "비밀번호",
                   ),
-                  SizedBox(height: 15),
+                  const SizedBox(height: 15),
                   RoundButton(
                     btnText: "로그인",
                     onPressed: () => _handleLogin(ref),
                   ),
-                  SizedBox(height: 15),
+                  const SizedBox(height: 15),
                   Row(
                     spacing: 5,
                     children: [
