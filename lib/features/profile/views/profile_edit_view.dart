@@ -1,8 +1,14 @@
+import 'dart:typed_data';
+
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:crop_image/crop_image.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+
+// Model
+import 'package:cream_sns/features/crop/model/crop_param.dart';
 
 // Provider
 import 'package:cream_sns/features/auth/provider/auth_provider.dart';
@@ -25,13 +31,14 @@ class ProfileEditView extends ConsumerStatefulWidget {
 
 class _ProfileEditViewState extends ConsumerState<ProfileEditView> {
   final ImagePicker _picker = ImagePicker();
-  XFile? _selectedImage;
+  Uint8List? _selectedImage;
 
   final TextEditingController _nickname = TextEditingController();
   final TextEditingController _description = TextEditingController();
 
   @override
   void dispose() {
+    _selectedImage = null;
     _nickname.dispose();
     _description.dispose();
     super.dispose();
@@ -134,23 +141,30 @@ class _ProfileEditViewState extends ConsumerState<ProfileEditView> {
   Future<void> selectImage(ImageSource imageSource) async {
     final image = await _picker.pickImage(
       source: imageSource,
-      maxWidth: 100,
-      maxHeight: 100,
+      maxWidth: 512,
+      maxHeight: 512,
       imageQuality: 85,
     );
 
-    setState(() {
-      _selectedImage = image;
-    });
+    if (image != null && mounted) {
+      context.pop();
+
+      final cropped = await context.push<Uint8List>(
+        "/image/crop",
+        extra: CropParam(image: image, aspectRatio: 1),
+      );
+
+      setState(() {
+        _selectedImage = cropped;
+      });
+    }
   }
 
   Future<void> changeProfile() async {
     MultipartFile? image;
 
     if (_selectedImage != null) {
-      final file = _selectedImage!.path;
-      final filename = _selectedImage!.name;
-      image = await MultipartFile.fromFile(file, filename: filename);
+      image = MultipartFile.fromBytes(_selectedImage!, filename: "profile.png");
     }
 
     final formData = FormData.fromMap({
