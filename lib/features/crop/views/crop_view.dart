@@ -34,7 +34,6 @@ class _CropViewState extends State<CropView> {
     _cropController = CropController(
       defaultCrop: const Rect.fromLTWH(0, 0, 1, 1),
       aspectRatio: widget.aspectRatio,
-      minimumImageSize: 1,
     );
   }
 
@@ -70,8 +69,7 @@ class _CropViewState extends State<CropView> {
               child: CropImage(
                 controller: _cropController,
                 image: Image.file(File(widget.image.path), fit: BoxFit.cover),
-                minimumImageSize: 1.0,
-                maximumImageSize: 3.5,
+                minimumImageSize: 100,
               ),
             ),
             IgnorePointer(
