@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 
+// Models
+import 'package:cream_sns/features/crop/model/crop_param.dart';
+
 // Library
 import 'package:go_router/go_router.dart';
 
@@ -16,6 +19,7 @@ import 'package:cream_sns/features/profile/views/profile_edit_view.dart';
 import 'package:cream_sns/features/search/search_view.dart';
 import 'package:cream_sns/features/auth/view/login_view.dart';
 import 'package:cream_sns/features/auth/view/signup_view.dart';
+import 'package:cream_sns/features/crop/views/crop_view.dart';
 
 class Paths {
   static const home = "/home";
@@ -26,6 +30,7 @@ class Paths {
   static const editProfile = "/profile/edit";
   static const login = "/login";
   static const signup = "/signup";
+  static const cropImage = "/image/crop";
 }
 
 class CustomRouter {
@@ -65,6 +70,13 @@ class CustomRouter {
       GoRoute(
         path: Paths.editProfile,
         builder: (ctx, state) => const ProfileEditView(),
+      ),
+      GoRoute(
+        path: Paths.cropImage,
+        builder: (ctx, state) {
+          final params = state.extra as CropParam;
+          return CropView(image: params.image, aspectRatio: params.aspectRatio);
+        },
       ),
     ],
   );

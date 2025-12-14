@@ -1,11 +1,11 @@
 import 'dart:io';
+import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
-import 'package:image_picker/image_picker.dart';
 
 class ProfileChanger extends StatelessWidget {
   final String originalImage;
-  final XFile? pickedImage;
+  final Uint8List? pickedImage;
 
   const ProfileChanger({super.key, required this.originalImage, this.pickedImage});
 
@@ -14,7 +14,7 @@ class ProfileChanger extends StatelessWidget {
     ImageProvider imageProvider;
 
     if(pickedImage != null) {
-      imageProvider = FileImage(File(pickedImage!.path));
+      imageProvider = MemoryImage(pickedImage!);
     } else {
       imageProvider = NetworkImage(originalImage);
     }

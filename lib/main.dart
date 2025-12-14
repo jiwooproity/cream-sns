@@ -11,7 +11,7 @@ import 'package:cream_sns/core/router/custom_router.dart';
 
 void main() {
   time_ago.setLocaleMessages('ko', time_ago.KoMessages());
-  runApp(ProviderScope(child: const MyApp()));
+  runApp(const ProviderScope(child: MyApp()));
 }
 
 class MyApp extends StatelessWidget {

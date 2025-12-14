@@ -4,6 +4,9 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 // Provider
 import 'package:cream_sns/features/auth/provider/auth_provider.dart';
 
+// Themes
+import 'package:cream_sns/core/theme/app_colors.dart';
+
 class ProfileInfo extends StatelessWidget {
   const ProfileInfo({super.key});
 
@@ -29,7 +32,17 @@ class ProfileImage extends ConsumerWidget {
     final profile = ref.watch(authStateProvider.select((s) => s.user?.profile));
 
     if (profile != null) {
-      return CircleAvatar(radius: 50, backgroundImage: NetworkImage(profile));
+      precacheImage(NetworkImage(profile), context);
+
+      return ClipRRect(
+        borderRadius: BorderRadius.circular(50),
+        child: Image.network(
+          profile,
+          width: 100,
+          height: 100,
+          fit: BoxFit.cover,
+        ),
+      );
     } else {
       return const CircleAvatar();
     }
