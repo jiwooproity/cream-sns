@@ -32,12 +32,12 @@ class ProfileImage extends ConsumerWidget {
     final profile = ref.watch(authStateProvider.select((s) => s.user?.profile));
 
     if (profile != null) {
-      precacheImage(NetworkImage(profile), context);
+      precacheImage(NetworkImage(profile.url), context);
 
       return ClipRRect(
         borderRadius: BorderRadius.circular(50),
         child: Image.network(
-          profile,
+          profile.url,
           width: 100,
           height: 100,
           fit: BoxFit.cover,

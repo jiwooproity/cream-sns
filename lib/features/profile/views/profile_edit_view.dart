@@ -98,7 +98,7 @@ class _ProfileEditViewState extends ConsumerState<ProfileEditView> {
                 child: Column(
                   children: [
                     ProfileChanger(
-                      originalImage: user.profile,
+                      originalImage: user.profile.url,
                       pickedImage: _selectedImage,
                     ),
                     const SizedBox(height: 5),
