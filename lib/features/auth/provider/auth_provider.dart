@@ -47,7 +47,7 @@ class AuthStateNotifier extends StateNotifier<AuthState> {
       state = state.copyWith(user: response, isLoading: false);
       return true;
     } on DioException catch (e) {
-      state = AuthState();
+      state = const AuthState();
       return false;
     }
   }
