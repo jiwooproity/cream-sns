@@ -10,10 +10,21 @@ import 'package:crop_image/crop_image.dart';
 import 'package:cream_sns/core/widgets/custom_appbar.dart';
 
 class CropView extends StatefulWidget {
+  // Crop 대상 이미지 처리 정보
   final XFile image;
   final double aspectRatio;
 
-  const CropView({super.key, required this.image, required this.aspectRatio});
+  // Crop 이미지 전달 방법
+  final bool goBack;
+  final String path;
+
+  const CropView({
+    super.key,
+    required this.image,
+    required this.aspectRatio,
+    required this.goBack,
+    required this.path,
+  });
 
   @override
   State<CropView> createState() => _CropViewState();
@@ -41,7 +52,12 @@ class _CropViewState extends State<CropView> {
     final cropped = await _cropController.croppedBitmap();
     final imageData = await cropped.toByteData(format: ImageByteFormat.png);
     final bytes = imageData!.buffer.asUint8List();
-    if (mounted) context.pop(bytes);
+
+    if (mounted) {
+      widget.goBack
+          ? context.pop(bytes)
+          : context.push(widget.path, extra: bytes);
+    }
   }
 
   @override
@@ -68,7 +84,7 @@ class _CropViewState extends State<CropView> {
               height: size,
               child: CropImage(
                 controller: _cropController,
-                image: Image.file(File(widget.image.path), fit: BoxFit.cover),
+                image: Image.file(File(widget.image.path), fit: BoxFit.contain),
                 minimumImageSize: 100,
               ),
             ),

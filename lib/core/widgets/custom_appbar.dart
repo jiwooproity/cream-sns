@@ -26,6 +26,10 @@ class CustomAppbar extends StatelessWidget implements PreferredSizeWidget {
         title,
         style: TextStyle(fontWeight: FontWeight.bold, fontSize: titleSize),
       ),
+      bottom: PreferredSize(
+        preferredSize: const Size.fromHeight(1),
+        child: Container(color: AppColors.grey, height: 1),
+      ),
       leadingWidth: 40,
       titleSpacing: 15,
       backgroundColor: AppColors.white,
@@ -41,5 +45,5 @@ class CustomAppbar extends StatelessWidget implements PreferredSizeWidget {
   }
 
   @override
-  Size get preferredSize => Size.fromHeight(50);
+  Size get preferredSize => const Size.fromHeight(50);
 }

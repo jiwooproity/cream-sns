@@ -3,7 +3,7 @@ import 'package:go_router/go_router.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 // Provider
-import 'package:cream_sns/features/auth/provider/auth_provider.dart';
+import 'package:cream_sns/features/auth/provider/user_provider.dart';
 
 // Widgets
 import 'package:cream_sns/features/auth/widgets/auth_text_field.dart';
@@ -77,7 +77,7 @@ class _SignupViewState extends ConsumerState<SignupView> {
                       }
 
                       final response = await ref
-                          .read(authStateProvider.notifier)
+                          .read(userStateProvider.notifier)
                           .signUp(userId, nickname, password);
 
                       if (context.mounted) {

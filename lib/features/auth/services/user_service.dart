@@ -1,57 +1,50 @@
 import 'package:dio/dio.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+// Dio
+import 'package:cream_sns/core/network/dio_instance.dart';
+
 // Models
 import 'package:cream_sns/features/auth/model/user.dart';
 
-// Services
-import 'package:cream_sns/core/services/api_client.dart';
-
-final apiClientProvider = Provider((ref) => ApiClient());
-
-final authRepositoryProvider = Provider((ref) {
-  final apiClient = ref.watch(apiClientProvider);
-  return AuthRepository(apiClient);
+final userClientProvider = Provider((ref) {
+  final dioInstance = ref.watch(dioProvider);
+  return UserClient(dioInstance);
 });
 
-class AuthRepository {
-  final ApiClient _apiClient;
-  late final Dio _dio = _apiClient.dio;
+class UserClient {
+  UserClient(this._dio);
 
-  AuthRepository(this._apiClient);
+  final DioInstance _dio;
 
-  Future<User> editProfile(FormData formData) async {
-    final response = await _dio.patch(
-      "/profile/edit",
-      data: formData,
-      options: Options(headers: {'Content-Type': 'multipart/form-data'}),
-    );
+  Future<User> edit(FormData formData) async {
+    final response = await _dio.patch(path: "/profile/edit", data: formData);
     return User.fromJson(response.data);
   }
 
   Future<User> me() async {
-    await _apiClient.initCookie();
+    await _dio.initCookie();
     final response = await _dio.get("/auth/me");
     return User.fromJson(response.data);
   }
 
   Future<User> login(String userId, String password) async {
     final response = await _dio.post(
-      "/auth/login",
+      path: "/auth/login",
       data: {'userId': userId, 'password': password},
     );
+
     return User.fromJson(response.data);
   }
 
   Future<void> signUp(String userId, String nickname, String password) async {
     await _dio.post(
-      "/auth/signup",
+      path: "/auth/signup",
       data: {'userId': userId, 'nickname': nickname, "password": password},
     );
   }
 
   Future<Response<dynamic>> logout() async {
-    final response = await _dio.post("/auth/logout");
-    return response;
+    return await _dio.post(path: "/auth/logout");
   }
 }

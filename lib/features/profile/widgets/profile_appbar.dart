@@ -3,17 +3,20 @@ import 'package:go_router/go_router.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 // Provider
+import 'package:cream_sns/features/auth/provider/user_provider.dart';
+
+// Widgets
 import 'package:cream_sns/core/widgets/custom_appbar.dart';
 import 'package:cream_sns/shared/widgets/modal/custom_modal.dart';
 import 'package:cream_sns/shared/widgets/divider/custom_divider.dart';
-import 'package:cream_sns/features/auth/provider/auth_provider.dart';
+import 'package:cream_sns/shared/widgets/buttons/tile_text_button.dart';
 
 class ProfileAppbar extends ConsumerWidget implements PreferredSizeWidget {
   const ProfileAppbar({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final userId = ref.watch(authStateProvider.select((s) => s.user?.userId));
+    final userId = ref.watch(userStateProvider.select((s) => s.user?.userId));
 
     return CustomAppbar(
       title: userId ?? "",
@@ -23,40 +26,28 @@ class ProfileAppbar extends ConsumerWidget implements PreferredSizeWidget {
       actions: [
         CustomModal(
           icon: Icons.more_horiz,
-          widgets: [
-            editTile(ref),
+          children: [
+            TileTextButton("프로필 편집", onTap: () => editProfile(ref)),
             const CustomDivider(),
-            logoutTile(ref)
+            TileTextButton("로그아웃", onTap: () => logout(ref), color: Colors.red),
           ],
         ),
       ],
     );
   }
-  
-  Widget editTile(WidgetRef ref) {
-    return ListTile(
-      onTap: () {
-        ref.context.pop();
-        ref.context.push("/profile/edit");
-      },
-      title: const Center(child: Text("프로필 편집")),
-    );
+
+  void editProfile(WidgetRef ref) {
+    ref.context.pop();
+    ref.context.push("/profile/edit");
   }
 
-  Widget logoutTile(WidgetRef ref) {
-    return ListTile(
-      onTap: () async {
-        final res = await ref.read(authStateProvider.notifier).logout();
-        if(res.statusCode == 200 && ref.context.mounted) {
-          ref.context.go("/login");
-        }
-      },
-      title: const Center(
-        child: Text("로그아웃", style: TextStyle(color: Colors.red)),
-      ),
-    );
+  Future<void> logout(WidgetRef ref) async {
+    final res = await ref.read(userStateProvider.notifier).logout();
+    if (res.statusCode == 200 && ref.context.mounted) {
+      ref.context.go("/login");
+    }
   }
 
   @override
-  Size get preferredSize => Size.fromHeight(50);
+  Size get preferredSize => const Size.fromHeight(50);
 }

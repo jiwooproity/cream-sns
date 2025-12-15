@@ -1,24 +1,25 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-// Models
-import 'package:cream_sns/features/post/models/post.dart';
+// Provider
+import 'package:cream_sns/features/post/provider/post_provider.dart';
 
-class PostTab extends StatelessWidget {
-  final List<Post> post;
-
-  const PostTab({super.key, required this.post});
+class PostTab extends ConsumerWidget {
+  const PostTab({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final postState = ref.watch(postStateProvider);
+
     return GridView.builder(
       gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
         crossAxisCount: 3,
         mainAxisSpacing: 2,
         crossAxisSpacing: 2,
       ),
-      itemCount: post.length,
+      itemCount: postState.postList.length,
       itemBuilder: (context, index) {
-        return Image.network(post[index].images[0], fit: BoxFit.cover);
+        return Image.network(postState.postList[index].image.url, fit: BoxFit.cover);
       },
     );
   }

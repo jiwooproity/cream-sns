@@ -1,31 +1,17 @@
-class Post {
-  final int user;
-  final String nickname;
-  final List<String> images;
-  final String content;
-  final int likeLength;
-  final int commentLength;
-  final int createTime;
+import 'package:cream_sns/shared/models/image.dart';
 
-  Post({
-    required this.user,
-    required this.nickname,
-    required this.images,
-    required this.content,
-    required this.likeLength,
-    required this.commentLength,
-    required this.createTime,
-  });
+class Post {
+  final String postId;
+  final String content;
+  final Image image;
+
+  Post({required this.postId, required this.content, required this.image});
 
   factory Post.fromJson(Map<String, dynamic> json) {
     return Post(
-      user: json['user'],
-      nickname: json['nickname'],
-      images: json['images'],
+      postId: json['postId'],
       content: json['content'],
-      likeLength: json['likeLength'],
-      commentLength: json['commentLength'],
-      createTime: json['createTime'],
+      image: Image.fromJson(json['image'] as Map<String, dynamic>)
     );
   }
 }

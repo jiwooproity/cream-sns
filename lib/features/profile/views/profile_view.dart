@@ -23,7 +23,7 @@ class ProfileView extends StatelessWidget {
             TabsBar(),
             TabsView(
               children: [
-                PostTab(post: []),
+                PostTab(),
                 Center(child: Text("멘션 리스트")),
               ],
             ),
