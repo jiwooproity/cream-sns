@@ -6,14 +6,16 @@ import 'package:cream_sns/core/theme/app_colors.dart';
 class CustomModal extends StatelessWidget {
   final bool isAction;
   final IconData? icon;
+  final Widget? child;
 
-  final List<Widget> widgets;
+  final List<Widget> children;
 
   const CustomModal({
     super.key,
     this.isAction = true,
     this.icon,
-    required this.widgets,
+    this.child,
+    required this.children,
   });
 
   @override
@@ -24,25 +26,46 @@ class CustomModal extends StatelessWidget {
             onTap: () {
               showModalBottomSheet(
                 context: context,
-                builder: (context) => modalList(widgets),
+                builder: (context) => modalList(children),
+                backgroundColor: Colors.transparent, // 중요
               );
             },
           )
-        : modalList(widgets);
+        : GestureDetector(
+            onTap: () {
+              showModalBottomSheet(
+                context: context,
+                builder: (context) => modalList(children),
+                backgroundColor: Colors.transparent, // 중요
+              );
+            },
+            child: child,
+          );
   }
 
   Widget modalList(List<Widget> widgets) {
-    return Container(
-      width: double.infinity,
-      decoration: const BoxDecoration(
-        borderRadius: BorderRadius.vertical(top: Radius.circular(15)),
-        color: AppColors.white,
-      ),
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        mainAxisAlignment: MainAxisAlignment.start,
-        children: widgets.map((widget) => widget).toList(),
+    return Padding(
+      padding: const EdgeInsets.all(15),
+      child: Container(
+        width: double.infinity,
+        decoration: BoxDecoration(
+          border: Border.all(width: 5, color: AppColors.grey),
+          borderRadius: const BorderRadius.all(Radius.circular(15)),
+          color: AppColors.white,
+          boxShadow: const [
+            BoxShadow(
+              color: Color.fromRGBO(0, 0, 0, 0.2),
+              offset: Offset(2, 4),
+              blurRadius: 50
+            ),
+          ],
+        ),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: widgets.map((widget) => widget).toList(),
+        ),
       ),
     );
   }

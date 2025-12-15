@@ -2,10 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 // Provider
-import 'package:cream_sns/features/auth/provider/auth_provider.dart';
-
-// Themes
-import 'package:cream_sns/core/theme/app_colors.dart';
+import 'package:cream_sns/features/auth/provider/user_provider.dart';
 
 class ProfileInfo extends StatelessWidget {
   const ProfileInfo({super.key});
@@ -29,7 +26,7 @@ class ProfileImage extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final profile = ref.watch(authStateProvider.select((s) => s.user?.profile));
+    final profile = ref.watch(userStateProvider.select((s) => s.user?.profile));
 
     if (profile != null) {
       precacheImage(NetworkImage(profile.url), context);
@@ -56,11 +53,11 @@ class ProfileDetail extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final nickname = ref.watch(
-      authStateProvider.select((s) => s.user?.nickname),
+      userStateProvider.select((s) => s.user?.nickname),
     );
 
     final description = ref.watch(
-      authStateProvider.select((s) => s.user?.description),
+      userStateProvider.select((s) => s.user?.description),
     );
 
     return Column(

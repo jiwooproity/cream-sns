@@ -1,9 +1,10 @@
+import 'package:cream_sns/features/post/provider/post_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 // Providers
-import 'package:cream_sns/features/auth/provider/auth_provider.dart';
+import 'package:cream_sns/features/auth/provider/user_provider.dart';
 
 // Themes
 import 'package:cream_sns/core/theme/app_colors.dart';
@@ -34,70 +35,59 @@ class _LoginViewState extends ConsumerState<LoginView> {
   @override
   void initState() {
     super.initState();
+    initAuth();
     checkAuth();
   }
 
   @override
   Widget build(BuildContext context) {
-    ref.watch(authStateProvider);
-
-    ref.listen(authStateProvider, (prev, cur) async {
-      if (!prev!.isAuthenticated && cur.isAuthenticated) {
-        context.go("/home");
-      }
-    });
-
     return Scaffold(
       backgroundColor: AppColors.white,
-      body: SafeArea(
-        child: Center(
-          child: SingleChildScrollView(
-            padding: const EdgeInsets.symmetric(horizontal: 20),
-            child: Form(
-              key: _loginFormKey,
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  const Text(
-                    "Cream",
-                    style: TextStyle(fontSize: 50, fontWeight: FontWeight.bold),
-                  ),
-                  const SizedBox(height: 30),
-                  AuthTextField(
-                    textEditingController: _userId,
-                    hintText: "사용자 아이디",
-                  ),
-                  const SizedBox(height: 5),
-                  AuthTextField(
-                    textEditingController: _password,
-                    hintText: "비밀번호",
-                  ),
-                  const SizedBox(height: 15),
-                  RoundButton(
-                    btnText: "로그인",
-                    onPressed: () => _handleLogin(ref),
-                  ),
-                  const SizedBox(height: 15),
-                  Row(
-                    spacing: 5,
-                    children: [
-                      const Text("아직 계정이 없으신가요?"),
-                      GestureDetector(
-                        onTap: () {
-                          context.push("/signup");
-                        },
-                        child: const Text(
-                          "회원가입",
-                          style: TextStyle(
-                            color: AppColors.black,
-                            fontWeight: FontWeight.w600,
-                          ),
+      body: Center(
+        child: SingleChildScrollView(
+          padding: const EdgeInsets.symmetric(horizontal: 20),
+          child: Form(
+            key: _loginFormKey,
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                const Text(
+                  "Cream",
+                  style: TextStyle(fontSize: 50, fontWeight: FontWeight.bold),
+                ),
+                const SizedBox(height: 30),
+                AuthTextField(
+                  textEditingController: _userId,
+                  hintText: "사용자 아이디",
+                ),
+                const SizedBox(height: 5),
+                AuthTextField(
+                  textEditingController: _password,
+                  hintText: "비밀번호",
+                  obscureText: true,
+                ),
+                const SizedBox(height: 15),
+                RoundButton(btnText: "로그인", onPressed: () => _handleLogin(ref)),
+                const SizedBox(height: 15),
+                Row(
+                  spacing: 5,
+                  children: [
+                    const Text("아직 계정이 없으신가요?"),
+                    GestureDetector(
+                      onTap: () {
+                        context.push("/signup");
+                      },
+                      child: const Text(
+                        "회원가입",
+                        style: TextStyle(
+                          color: AppColors.black,
+                          fontWeight: FontWeight.w600,
                         ),
                       ),
-                    ],
-                  ),
-                ],
-              ),
+                    ),
+                  ],
+                ),
+              ],
             ),
           ),
         ),
@@ -106,7 +96,16 @@ class _LoginViewState extends ConsumerState<LoginView> {
   }
 
   Future<void> checkAuth() async {
-    await ref.read(authStateProvider.notifier).me();
+    await ref.read(userStateProvider.notifier).me();
+  }
+
+  Future<void> initAuth() async {
+    ref.listenManual(userStateProvider, (prev, cur) async {
+      if (!prev!.isAuthenticated && cur.isAuthenticated) {
+        await ref.read(postStateProvider.notifier).getPosts();
+        if(mounted) context.go("/home");
+      }
+    });
   }
 
   void _handleLogin(WidgetRef ref) {
@@ -117,6 +116,6 @@ class _LoginViewState extends ConsumerState<LoginView> {
       return;
     }
 
-    ref.read(authStateProvider.notifier).login(userId, password);
+    ref.read(userStateProvider.notifier).login(userId, password);
   }
 }

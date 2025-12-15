@@ -1,4 +1,4 @@
-import 'package:cream_sns/shared/widgets/time_ago.dart';
+import 'package:cream_sns/shared/widgets/time/time_ago.dart';
 import 'package:flutter/material.dart';
 
 // Models
@@ -27,11 +27,11 @@ class PostHeader extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  post.nickname,
+                  "",
                   style: Theme.of(context).textTheme.titleMedium,
                 ),
                 ConvertTime(
-                  msEpoch: post.createTime,
+                  msEpoch: 1,
                   style: Theme.of(context).textTheme.bodySmall,
                 ),
               ],

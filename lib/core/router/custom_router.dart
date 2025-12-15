@@ -1,5 +1,6 @@
+import 'dart:typed_data';
+
 import 'package:flutter/material.dart';
-import 'package:image_picker/image_picker.dart';
 
 // Models
 import 'package:cream_sns/features/crop/model/crop_param.dart';
@@ -43,18 +44,12 @@ class CustomRouter {
           bottomNavigationBar: CustomBottomNavigationBar(state: state),
         ),
         routes: [
-          GoRoute(
-            path: Paths.home,
-            builder: (ctx, state) => const HomeView(),
-          ),
+          GoRoute(path: Paths.home, builder: (ctx, state) => const HomeView()),
           GoRoute(
             path: Paths.search,
             builder: (ctx, state) => const SearchView(),
           ),
-          GoRoute(
-            path: Paths.like,
-            builder: (ctx, state) => const LikeView(),
-          ),
+          GoRoute(path: Paths.like, builder: (ctx, state) => const LikeView()),
           GoRoute(
             path: Paths.profile,
             builder: (ctx, state) => const ProfileView(),
@@ -65,7 +60,7 @@ class CustomRouter {
       GoRoute(path: Paths.signup, builder: (ctx, state) => const SignupView()),
       GoRoute(
         path: Paths.createPost,
-        builder: (ctx, state) => CreatePost(image: state.extra as XFile),
+        builder: (ctx, state) => CreatePost(image: state.extra as Uint8List),
       ),
       GoRoute(
         path: Paths.editProfile,
@@ -75,7 +70,12 @@ class CustomRouter {
         path: Paths.cropImage,
         builder: (ctx, state) {
           final params = state.extra as CropParam;
-          return CropView(image: params.image, aspectRatio: params.aspectRatio);
+          return CropView(
+            image: params.image,
+            aspectRatio: params.aspectRatio,
+            goBack: params.goBack,
+            path: params.path,
+          );
         },
       ),
     ],

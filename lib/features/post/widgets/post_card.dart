@@ -31,12 +31,12 @@ class PostCard extends StatelessWidget {
         child: Column(
           children: [
             PostHeader(post: post),
-            PostImage(images: post.images),
+            // PostImage(images: post.images),
             PostContent(content: post.content),
-            PostFooter(
-              likeLength: post.likeLength,
-              commentLength: post.commentLength,
-            ),
+            // PostFooter(
+            //   likeLength: post.likeLength,
+            //   commentLength: post.commentLength,
+            // ),
             const CustomDivider(height: 25),
           ],
         ),

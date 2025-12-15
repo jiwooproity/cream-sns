@@ -11,7 +11,7 @@ class AuthTextField extends StatelessWidget {
     super.key,
     required this.textEditingController,
     required this.hintText,
-    this.obscureText = false
+    this.obscureText = false,
   });
 
   @override
@@ -28,6 +28,9 @@ class AuthTextField extends StatelessWidget {
             hintStyle: const TextStyle(fontSize: 14),
             focusedBorder: const UnderlineInputBorder(
               borderSide: BorderSide(width: 1, color: AppColors.black),
+            ),
+            enabledBorder: const UnderlineInputBorder(
+              borderSide: BorderSide(width: 1, color: AppColors.grey),
             ),
             contentPadding: const EdgeInsets.symmetric(
               horizontal: 5,

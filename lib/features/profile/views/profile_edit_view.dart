@@ -4,14 +4,13 @@ import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:crop_image/crop_image.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 // Model
 import 'package:cream_sns/features/crop/model/crop_param.dart';
 
 // Provider
-import 'package:cream_sns/features/auth/provider/auth_provider.dart';
+import 'package:cream_sns/features/auth/provider/user_provider.dart';
 
 // Themes
 import 'package:cream_sns/core/theme/app_colors.dart';
@@ -19,8 +18,11 @@ import 'package:cream_sns/core/theme/app_colors.dart';
 // Widgets
 import 'package:cream_sns/core/widgets/custom_appbar.dart';
 import 'package:cream_sns/shared/widgets/modal/custom_modal.dart';
+import 'package:cream_sns/shared/widgets/buttons/action_button.dart';
+import 'package:cream_sns/shared/widgets/buttons/tile_text_button.dart';
 import 'package:cream_sns/shared/widgets/divider/custom_divider.dart';
 import 'package:cream_sns/features/profile/widgets/profile_changer.dart';
+import 'package:cream_sns/features/profile/widgets/profile_edit_text_field.dart';
 
 class ProfileEditView extends ConsumerStatefulWidget {
   const ProfileEditView({super.key});
@@ -46,7 +48,7 @@ class _ProfileEditViewState extends ConsumerState<ProfileEditView> {
 
   @override
   Widget build(BuildContext context) {
-    final user = ref.watch(authStateProvider).user!;
+    final user = ref.watch(userStateProvider).user!;
     _nickname.text = user.nickname;
     _description.text = user.description;
 
@@ -56,14 +58,7 @@ class _ProfileEditViewState extends ConsumerState<ProfileEditView> {
         titleSize: 15,
         centerTitle: true,
         actionsPadding: const EdgeInsets.symmetric(horizontal: 15),
-        actions: [
-          GestureDetector(
-            onTap: () {
-              changeProfile();
-            },
-            child: const Text("완료", style: TextStyle(fontSize: 15)),
-          ),
-        ],
+        actions: [ActionButton(onTap: () => changeProfile(), text: "완료")],
       ),
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
@@ -71,74 +66,49 @@ class _ProfileEditViewState extends ConsumerState<ProfileEditView> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Center(
-              child: GestureDetector(
-                onTap: () {
-                  showModalBottomSheet(
-                    context: context,
-                    builder: (BuildContext context) => CustomModal(
-                      isAction: false,
-                      widgets: [
-                        ListTile(
-                          onTap: () {
-                            selectImage(ImageSource.camera);
-                          },
-                          title: const Center(child: Text("사진 찍기")),
-                        ),
-                        const CustomDivider(),
-                        ListTile(
-                          onTap: () {
-                            selectImage(ImageSource.gallery);
-                          },
-                          title: const Center(child: Text("갤러리에서 가져오기")),
-                        ),
-                      ],
-                    ),
-                  );
-                },
-                child: Column(
-                  children: [
-                    ProfileChanger(
-                      originalImage: user.profile.url,
-                      pickedImage: _selectedImage,
-                    ),
-                    const SizedBox(height: 5),
-                    const Text(
-                      "사진 수정",
-                      style: TextStyle(color: AppColors.black),
-                    ),
-                  ],
-                ),
+              child: CustomModal(
+                isAction: false,
+                children: [
+                  TileTextButton(
+                    "사진 찍기",
+                    onTap: () => selectImage(ImageSource.camera),
+                  ),
+                  const CustomDivider(),
+                  TileTextButton(
+                    "갤러리에서 가져오기",
+                    onTap: () => selectImage(ImageSource.gallery),
+                  ),
+                ],
+                child: editProfile(user.profile.url),
               ),
             ),
+            // 닉네임 영역
             const SizedBox(height: 30),
             const Text("닉네임"),
-            TextField(
-              controller: _nickname,
-              decoration: const InputDecoration(
-                focusedBorder: UnderlineInputBorder(
-                  borderSide: BorderSide(width: 1),
-                ),
-                contentPadding: EdgeInsets.symmetric(vertical: 5),
-              ),
-            ),
-            const SizedBox(height: 12),
+            ProfileEditTextField(controller: _nickname),
+            // 한 줄 소개 영역
+            const SizedBox(height: 20),
             const Text("한 줄 소개"),
-            TextField(
-              controller: _description,
-              decoration: const InputDecoration(
-                focusedBorder: UnderlineInputBorder(
-                  borderSide: BorderSide(width: 1),
-                ),
-                contentPadding: EdgeInsets.symmetric(vertical: 5),
-              ),
-            ),
+            ProfileEditTextField(controller: _description),
           ],
         ),
       ),
     );
   }
 
+  Widget editProfile(String url) {
+    return Column(
+      children: [
+        ProfileChanger(originalImage: url, pickedImage: _selectedImage),
+        const SizedBox(height: 5),
+        const Text("사진 수정", style: TextStyle(color: AppColors.black)),
+      ],
+    );
+  }
+
   Future<void> selectImage(ImageSource imageSource) async {
+    context.pop(); // 하단 모달 닫기
+
     final image = await _picker.pickImage(
       source: imageSource,
       maxWidth: 512,
@@ -147,8 +117,6 @@ class _ProfileEditViewState extends ConsumerState<ProfileEditView> {
     );
 
     if (image != null && mounted) {
-      context.pop();
-
       final cropped = await context.push<Uint8List>(
         "/image/crop",
         extra: CropParam(image: image, aspectRatio: 1),
@@ -173,7 +141,7 @@ class _ProfileEditViewState extends ConsumerState<ProfileEditView> {
       'description': _description.text,
     });
 
-    await ref.read(authStateProvider.notifier).editProfile(formData);
-    if (context.mounted) ref.context.go("/profile");
+    await ref.read(userStateProvider.notifier).edit(formData);
+    if (mounted) context.go("/profile");
   }
 }

@@ -1,3 +1,6 @@
+import 'package:cream_sns/features/crop/model/crop_param.dart';
+import 'package:cream_sns/shared/utils/image_size.dart';
+import 'package:cream_sns/shared/widgets/buttons/tile_text_button.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:image_picker/image_picker.dart';
@@ -19,19 +22,7 @@ class HomeView extends StatefulWidget {
 class _HomeViewState extends State<HomeView> {
   final ImagePicker _picker = ImagePicker();
 
-  final Post post = Post(
-    user: 1,
-    nickname: "마띠뉴",
-    images: [
-      "https://i.namu.wiki/i/EhRuHPh2gVYjsfkfqsLKkmydpuvniZ4m0bYuRMQuOgb5lmqHAlyG1KvSSaM1kSh_frfCDLQ-VDLF79vhYPKAGQ.webp",
-    ],
-    content: "림버스 컴퍼니 재밌다\n완전 혜자 게임에 노력만 하면 모든 캐릭을 얻을 수 있다고 ..?\n말이 되는 건가?",
-    likeLength: 2,
-    commentLength: 0,
-    createTime: DateTime.now().millisecondsSinceEpoch,
-  );
-
-  late final List<Post> postList = [post];
+  late final List<Post> postList = [];
 
   @override
   Widget build(BuildContext context) {
@@ -42,19 +33,15 @@ class _HomeViewState extends State<HomeView> {
         actions: [
           CustomModal(
             icon: Icons.post_add_outlined,
-            widgets: [
-              ListTile(
-                onTap: () {
-                  doPost(context, ImageSource.camera);
-                },
-                title: const Center(child: Text("카메라")),
+            children: [
+              TileTextButton(
+                "카메라",
+                onTap: () => doPost(context, ImageSource.camera),
               ),
               const CustomDivider(),
-              ListTile(
-                onTap: () {
-                  doPost(context, ImageSource.gallery);
-                },
-                title: const Center(child: Text("갤러리")),
+              TileTextButton(
+                "갤러리",
+                onTap: () => doPost(context, ImageSource.gallery),
               ),
             ],
           ),
@@ -76,13 +63,28 @@ class _HomeViewState extends State<HomeView> {
   }
 
   Future<void> doPost(BuildContext context, ImageSource imageSource) async {
+    context.pop();
+
     final image = await _picker.pickImage(
       source: imageSource,
       imageQuality: 85,
     );
 
-    if(context.mounted && image != null) {
-      context.push("/post/create", extra: image);
+    if (image != null) {
+      final imageSize = await getImageSize(image);
+      final aspectRatio = getAspectRatio(imageSize);
+
+      if (context.mounted) {
+        context.push(
+          "/image/crop",
+          extra: CropParam(
+            image: image,
+            aspectRatio: aspectRatio,
+            goBack: false,
+            path: "/post/create",
+          ),
+        );
+      }
     }
   }
 }

@@ -20,17 +20,3 @@ class Profile {
     );
   }
 }
-
-class ProfileImage {
-  final String url;
-  final String publicId;
-
-  ProfileImage({required this.url, required this.publicId});
-
-  factory ProfileImage.fromJson(Map<String, dynamic> json) {
-    return ProfileImage(
-      url: json['url'],
-      publicId: json['public_id']
-    );
-  }
-}
