@@ -4,35 +4,45 @@ import "package:flutter_riverpod/legacy.dart";
 // Models
 import "package:cream_sns/features/post/models/post.dart";
 
-// Service
-import "package:cream_sns/features/post/services/post_service.dart";
+// Data
+import "package:cream_sns/features/post/data/post_service.dart";
 
 final postStateProvider = StateNotifierProvider<PostStateNotifier, PostState>((
   ref,
 ) {
-  final repository = ref.watch(postRepositoryProvider);
-  return PostStateNotifier(repository);
+  final client = ref.watch(postClientProvider);
+  return PostStateNotifier(client);
 });
 
 class PostState {
+  PostState({required this.postList, this.isLoading = false});
+
   final List<Post> postList;
+  final bool? isLoading;
 
-  PostState({required this.postList});
-
-  PostState copyWith({List<Post>? postList}) {
-    return PostState(postList: postList ?? this.postList);
+  PostState copyWith({List<Post>? postList, bool? isLoading}) {
+    return PostState(
+      postList: postList ?? this.postList,
+      isLoading: isLoading ?? this.isLoading,
+    );
   }
 }
 
 class PostStateNotifier extends StateNotifier<PostState> {
-  final PostRepository _repository;
+  PostStateNotifier(this._post) : super(PostState(postList: []));
 
-  PostStateNotifier(this._repository) : super(PostState(postList: []));
+  final PostClient _post;
+
+  void setLoading() {
+    state = state.copyWith(isLoading: true);
+  }
 
   Future<void> createPost(FormData formData) async {
     try {
-      final response = await _repository.createPost(formData);
-      state = state.copyWith(postList: response);
+      state = state.copyWith(
+        postList: await _post.createPost(formData),
+        isLoading: false,
+      );
     } on DioException catch (e) {
       state = PostState(postList: []);
     }
@@ -40,10 +50,8 @@ class PostStateNotifier extends StateNotifier<PostState> {
 
   Future<void> getPosts() async {
     try {
-      final response = await _repository.getPosts();
-      state = state.copyWith(postList: response);
+      state = state.copyWith(postList: await _post.getPosts());
     } on DioException catch (e) {
-      print(e);
       state = PostState(postList: []);
     }
   }

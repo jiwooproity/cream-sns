@@ -1,3 +1,4 @@
+import 'package:cream_sns/features/home/model/feed.dart';
 import 'package:flutter/material.dart';
 
 // Themes
@@ -14,9 +15,9 @@ import 'package:cream_sns/features/post/widgets/post_footer.dart';
 import 'package:cream_sns/features/post/widgets/post_image.dart';
 
 class PostCard extends StatelessWidget {
-  final Post post;
+  final Feed feed;
 
-  const PostCard({super.key, required this.post});
+  const PostCard({super.key, required this.feed});
 
   @override
   Widget build(BuildContext context) {
@@ -30,13 +31,10 @@ class PostCard extends StatelessWidget {
         onTap: () {},
         child: Column(
           children: [
-            PostHeader(post: post),
-            // PostImage(images: post.images),
-            PostContent(content: post.content),
-            // PostFooter(
-            //   likeLength: post.likeLength,
-            //   commentLength: post.commentLength,
-            // ),
+            PostHeader(feed: feed),
+            PostImage(image: feed.image.url),
+            PostContent(content: feed.content),
+            const PostFooter(likeLength: 0, commentLength: 0),
             const CustomDivider(height: 25),
           ],
         ),

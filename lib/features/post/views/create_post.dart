@@ -25,21 +25,6 @@ class CreatePost extends ConsumerStatefulWidget {
 class _CreatePostState extends ConsumerState<CreatePost> {
   final TextEditingController _content = TextEditingController();
 
-  Future<void> createPost() async {
-    final image = MultipartFile.fromBytes(
-      widget.image,
-      filename: "profile.png",
-    );
-
-    final formData = FormData.fromMap({
-      'image': image,
-      'content': _content.text,
-    });
-
-    await ref.read(postStateProvider.notifier).createPost(formData);
-    if(mounted) context.go("/home");
-  }
-
   @override
   void dispose() {
     _content.dispose();
@@ -48,13 +33,21 @@ class _CreatePostState extends ConsumerState<CreatePost> {
 
   @override
   Widget build(BuildContext context) {
+    final state = ref.watch(postStateProvider);
+
     return Scaffold(
       appBar: CustomAppbar(
         title: "포스트 작성",
         titleSize: 15,
         centerTitle: true,
         actionsPadding: const EdgeInsets.symmetric(horizontal: 15),
-        actions: [ActionButton(onTap: () => createPost(), text: "완료")],
+        actions: [
+          ActionButton(
+            onTap: () => createPost(),
+            text: "완료",
+            loading: state.isLoading!,
+          ),
+        ],
       ),
       body: Padding(
         padding: const EdgeInsets.all(15),
@@ -104,5 +97,23 @@ class _CreatePostState extends ConsumerState<CreatePost> {
         ),
       ),
     );
+  }
+
+  Future<void> createPost() async {
+    ref.read(postStateProvider.notifier).setLoading();
+
+    final image = MultipartFile.fromBytes(
+      widget.image,
+      filename: "profile.png",
+    );
+
+    final formData = FormData.fromMap({
+      'image': image,
+      'content': _content.text,
+      'createdAt': DateTime.now().millisecondsSinceEpoch
+    });
+
+    await ref.read(postStateProvider.notifier).createPost(formData);
+    if (mounted) context.go("/home");
   }
 }

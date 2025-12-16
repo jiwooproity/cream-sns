@@ -44,6 +44,7 @@ dependencies:
   cookie_jar: ^4.0.8
   path_provider: ^2.1.5
   crop_image: ^1.0.16
+  fluttertoast: ^9.0.0
 
 dev_dependencies:
   flutter_test:
