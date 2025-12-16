@@ -48,7 +48,9 @@ class _ProfileEditViewState extends ConsumerState<ProfileEditView> {
 
   @override
   Widget build(BuildContext context) {
-    final user = ref.watch(userStateProvider).user!;
+    final state = ref.watch(userStateProvider);
+    final user = state.user!;
+
     _nickname.text = user.nickname;
     _description.text = user.description;
 
@@ -58,7 +60,13 @@ class _ProfileEditViewState extends ConsumerState<ProfileEditView> {
         titleSize: 15,
         centerTitle: true,
         actionsPadding: const EdgeInsets.symmetric(horizontal: 15),
-        actions: [ActionButton(onTap: () => changeProfile(), text: "완료")],
+        actions: [
+          ActionButton(
+            onTap: () => changeProfile(),
+            loading: state.isLoading!,
+            text: "완료",
+          ),
+        ],
       ),
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
@@ -130,6 +138,8 @@ class _ProfileEditViewState extends ConsumerState<ProfileEditView> {
 
   Future<void> changeProfile() async {
     MultipartFile? image;
+
+    ref.read(userStateProvider.notifier).setLoading();
 
     if (_selectedImage != null) {
       image = MultipartFile.fromBytes(_selectedImage!, filename: "profile.png");

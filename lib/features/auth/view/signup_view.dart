@@ -1,3 +1,4 @@
+import 'package:cream_sns/shared/toast/show_toast.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -63,34 +64,7 @@ class _SignupViewState extends ConsumerState<SignupView> {
                     obscureText: true,
                   ),
                   const SizedBox(height: 15),
-                  RoundButton(
-                    btnText: "회원가입",
-                    onPressed: () async {
-                      final userId = _userId.text;
-                      final nickname = _nickname.text;
-                      final password = _password.text;
-
-                      if (userId.isEmpty ||
-                          nickname.isEmpty ||
-                          password.isEmpty) {
-                        return;
-                      }
-
-                      final response = await ref
-                          .read(userStateProvider.notifier)
-                          .signUp(userId, nickname, password);
-
-                      if (context.mounted) {
-                        if (response == null) {
-                          context.go("/login");
-                        } else {
-                          ScaffoldMessenger.of(
-                            context,
-                          ).showSnackBar(SnackBar(content: Text(response)));
-                        }
-                      }
-                    },
-                  ),
+                  RoundButton(btnText: "회원가입", onPressed: () => signUp()),
                 ],
               ),
             ),
@@ -98,5 +72,26 @@ class _SignupViewState extends ConsumerState<SignupView> {
         ),
       ),
     );
+  }
+
+  void complete() {
+    context.go("/login");
+  }
+
+  Future<void> signUp() async {
+    final nickname = _nickname.text;
+    final userId = _userId.text;
+    final password = _password.text;
+
+    if (userId.isNotEmpty || nickname.isNotEmpty || password.isNotEmpty) {
+      final provider = ref.read(userStateProvider.notifier);
+      final message = await provider.signUp(userId, nickname, password);
+      if(message != null && mounted) {
+        ShowToast().init(context);
+        ShowToast().show(message: message);
+      } else {
+        complete();
+      }
+    }
   }
 }

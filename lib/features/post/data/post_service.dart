@@ -1,18 +1,19 @@
 import 'package:dio/dio.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+// Dio
 import 'package:cream_sns/core/network/dio_instance.dart';
 
 // Models
 import 'package:cream_sns/features/post/models/post.dart';
 
-final postRepositoryProvider = Provider((ref) {
+final postClientProvider = Provider((ref) {
   final apiClient = ref.watch(dioProvider);
-  return PostRepository(apiClient);
+  return PostClient(apiClient);
 });
 
-class PostRepository {
-  PostRepository(this._dio);
+class PostClient {
+  PostClient(this._dio);
 
   final DioInstance _dio;
 

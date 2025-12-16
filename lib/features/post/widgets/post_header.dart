@@ -1,3 +1,4 @@
+import 'package:cream_sns/features/home/model/feed.dart';
 import 'package:cream_sns/shared/widgets/time/time_ago.dart';
 import 'package:flutter/material.dart';
 
@@ -5,9 +6,9 @@ import 'package:flutter/material.dart';
 import 'package:cream_sns/features/post/models/post.dart';
 
 class PostHeader extends StatelessWidget {
-  final Post post;
+  final Feed feed;
 
-  const PostHeader({super.key, required this.post});
+  const PostHeader({super.key, required this.feed});
 
   @override
   Widget build(BuildContext context) {
@@ -15,10 +16,10 @@ class PostHeader extends StatelessWidget {
       padding: const EdgeInsets.only(left: 15, right: 15, bottom: 12),
       child: Row(
         children: [
-          const CircleAvatar(
+          CircleAvatar(
             radius: 18,
             backgroundImage: NetworkImage(
-              "https://avatars.githubusercontent.com/u/58384366?v=4&size=64",
+              feed.user.profile.url,
             ),
           ),
           const SizedBox(width: 12),
@@ -27,11 +28,11 @@ class PostHeader extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  "",
+                  feed.user.nickname,
                   style: Theme.of(context).textTheme.titleMedium,
                 ),
                 ConvertTime(
-                  msEpoch: 1,
+                  msEpoch: feed.createdAt,
                   style: Theme.of(context).textTheme.bodySmall,
                 ),
               ],

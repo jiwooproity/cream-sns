@@ -1,7 +1,10 @@
 import 'package:cream_sns/features/crop/model/crop_param.dart';
+import 'package:cream_sns/features/home/data/feed_service.dart';
+import 'package:cream_sns/features/home/model/feed.dart';
 import 'package:cream_sns/shared/utils/image_size.dart';
 import 'package:cream_sns/shared/widgets/buttons/tile_text_button.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:image_picker/image_picker.dart';
 
@@ -12,17 +15,30 @@ import 'package:cream_sns/shared/widgets/modal/custom_modal.dart';
 import 'package:cream_sns/features/post/models/post.dart';
 import 'package:cream_sns/features/post/widgets/post_card.dart';
 
-class HomeView extends StatefulWidget {
+class HomeView extends ConsumerStatefulWidget {
   const HomeView({super.key});
 
   @override
-  State<HomeView> createState() => _HomeViewState();
+  ConsumerState<HomeView> createState() => _HomeViewState();
 }
 
-class _HomeViewState extends State<HomeView> {
+class _HomeViewState extends ConsumerState<HomeView> {
   final ImagePicker _picker = ImagePicker();
 
-  late final List<Post> postList = [];
+  List<Feed> feeds = [];
+
+  @override
+  void initState() {
+    super.initState();
+    getFeeds();
+  }
+
+  void getFeeds() async {
+    final response = await ref.read(feedClientProvider).getFeeds();
+    setState(() {
+      feeds = response;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -51,9 +67,10 @@ class _HomeViewState extends State<HomeView> {
         children: [
           Expanded(
             child: ListView.builder(
-              itemCount: postList.length,
+              padding: const EdgeInsets.only(top: 15),
+              itemCount: feeds.length,
               itemBuilder: (BuildContext context, int idx) {
-                return PostCard(post: postList[idx]);
+                return PostCard(feed: feeds[idx]);
               },
             ),
           ),
@@ -71,7 +88,7 @@ class _HomeViewState extends State<HomeView> {
     );
 
     if (image != null) {
-      final imageSize = await getImageSize(image);
+      final imageSize = await getFileImageSize(image);
       final aspectRatio = getAspectRatio(imageSize);
 
       if (context.mounted) {

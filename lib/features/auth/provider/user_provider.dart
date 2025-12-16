@@ -4,65 +4,58 @@ import "package:flutter_riverpod/legacy.dart";
 // Models
 import "package:cream_sns/features/auth/model/user.dart";
 
-// Service
-import "package:cream_sns/features/auth/services/user_service.dart";
+// Data
+import "package:cream_sns/features/auth/data/user_service.dart";
 
-final userStateProvider = StateNotifierProvider<UserStateNotifier, AuthState>((
+final userStateProvider = StateNotifierProvider<UserStateNotifier, UserState>((
   ref,
 ) {
-  final repository = ref.watch(userClientProvider);
-  return UserStateNotifier(repository);
+  final client = ref.watch(userClientProvider);
+  return UserStateNotifier(client);
 });
 
-class AuthState {
-  const AuthState({this.user});
+class UserState {
+  const UserState({this.user, this.isLoading = false});
 
   final User? user;
+  final bool? isLoading;
 
-  AuthState copyWith({User? user}) {
-    return AuthState(user: user ?? this.user);
+  UserState copyWith({User? user, bool? isLoading}) {
+    return UserState(
+      user: user ?? this.user,
+      isLoading: isLoading ?? this.isLoading,
+    );
   }
 
   bool get isAuthenticated => user != null;
 }
 
-class UserStateNotifier extends StateNotifier<AuthState> {
-  final UserClient _repository;
+class UserStateNotifier extends StateNotifier<UserState> {
+  UserStateNotifier(this._user) : super(const UserState());
 
-  UserStateNotifier(this._repository) : super(const AuthState());
+  final UserClient _user;
+
+  void setLoading() {
+    state = state.copyWith(isLoading: true);
+  }
 
   Future<void> edit(FormData formData) async {
     try {
-      final response = await _repository.edit(formData);
-      state = state.copyWith(user: response);
+      state = state.copyWith(
+        user: await _user.edit(formData),
+        isLoading: false,
+      );
     } on DioException catch (e) {
       state = state.copyWith();
     }
   }
 
-  Future<bool> me() async {
+  Future<void> me() async {
     try {
-      final response = await _repository.me();
-      state = state.copyWith(user: response);
-      return true;
+      state = state.copyWith(user: await _user.me());
     } on DioException catch (e) {
-      state = const AuthState();
-      return false;
+      state = const UserState();
     }
-  }
-
-  Future<void> login(String userId, String password) async {
-    try {
-      final response = await _repository.login(userId, password);
-      state = state.copyWith(user: response);
-    } on DioException catch (e) {
-      state = state.copyWith();
-      return e.response?.data['message'];
-    }
-  }
-
-  Future<Response<dynamic>> logout() async {
-    return await _repository.logout();
   }
 
   Future<String?> signUp(
@@ -71,10 +64,23 @@ class UserStateNotifier extends StateNotifier<AuthState> {
     String password,
   ) async {
     try {
-      await _repository.signUp(userId, nickname, password);
+      await _user.signUp(userId, nickname, password);
       return null;
     } on DioException catch (e) {
       return e.response?.data['message'];
     }
+  }
+
+  Future<void> login(String userId, String password) async {
+    try {
+      state = state.copyWith(user: await _user.login(userId, password));
+    } on DioException catch (e) {
+      state = state.copyWith();
+      return e.response?.data['message'];
+    }
+  }
+
+  Future<Response<dynamic>> logout() async {
+    return await _user.logout();
   }
 }
