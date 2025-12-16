@@ -5,7 +5,9 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:cream_sns/features/post/provider/post_provider.dart';
 
 class PostTab extends ConsumerWidget {
-  const PostTab({super.key});
+  final String? targetId;
+
+  const PostTab({super.key, this.targetId});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {

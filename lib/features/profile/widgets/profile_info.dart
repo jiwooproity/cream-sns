@@ -1,20 +1,81 @@
+import 'package:cream_sns/shared/widgets/divider/custom_divider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 // Provider
 import 'package:cream_sns/features/auth/provider/user_provider.dart';
+import 'package:cream_sns/shared/widgets/buttons/round_button.dart';
+import 'package:go_router/go_router.dart';
 
 class ProfileInfo extends StatelessWidget {
-  const ProfileInfo({super.key});
+  const ProfileInfo({super.key, this.targetId});
+
+  final String? targetId;
 
   @override
   Widget build(BuildContext context) {
-    return const Column(
+    return Padding(
+      padding: const EdgeInsets.all(15),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          const Row(
+            children: [
+              ProfileImage(),
+              Expanded(
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    ProfileCount(count: 1, title: "게시글"),
+                    ProfileCount(count: 1, title: "팔로워"),
+                    ProfileCount(count: 1, title: "팔로잉"),
+                  ],
+                ),
+              ),
+            ],
+          ),
+          const CustomDivider(height: 31),
+          const ProfileDetail(),
+          const SizedBox(height: 15),
+          InterActionButton(targetId: targetId),
+        ],
+      ),
+    );
+  }
+}
+
+class InterActionButton extends ConsumerWidget {
+  const InterActionButton({super.key, this.targetId});
+
+  final String? targetId;
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    return targetId == null
+        ? RoundButton(
+            onPressed: () => context.push("/profile/edit"),
+            btnText: "프로필 편집",
+          )
+        : RoundButton(onPressed: () {}, btnText: "팔로우");
+  }
+}
+
+class ProfileCount extends StatelessWidget {
+  const ProfileCount({super.key, required this.count, required this.title, this.targetId});
+
+  final String? targetId;
+  final int count;
+  final String title;
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
       children: [
-        SizedBox(height: 15),
-        ProfileImage(),
-        SizedBox(height: 15),
-        ProfileDetail(),
+        Text(
+          "$count",
+          style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+        ),
+        Text(title, style: const TextStyle(fontSize: 12)),
       ],
     );
   }
@@ -61,8 +122,12 @@ class ProfileDetail extends ConsumerWidget {
     );
 
     return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(nickname ?? "", style: Theme.of(context).textTheme.titleLarge),
+        Text(
+          nickname ?? "",
+          style: const TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
+        ),
         const SizedBox(height: 2),
         Text(description ?? "", style: Theme.of(context).textTheme.bodyMedium),
       ],
