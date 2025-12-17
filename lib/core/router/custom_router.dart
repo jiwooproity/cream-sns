@@ -14,6 +14,7 @@ import 'package:cream_sns/core/widgets/custom_bottom_navigation_bar.dart';
 // Views
 import 'package:cream_sns/features/home/view/home_view.dart';
 import 'package:cream_sns/features/post/views/create_post.dart';
+import 'package:cream_sns/features/post/views/post_detail.dart';
 import 'package:cream_sns/features/like/view/like_view.dart';
 import 'package:cream_sns/features/profile/views/profile_view.dart';
 import 'package:cream_sns/features/profile/views/profile_edit_view.dart';
@@ -25,6 +26,7 @@ import 'package:cream_sns/features/crop/views/crop_view.dart';
 class Paths {
   static const home = "/home";
   static const createPost = "/post/create";
+  static const postDetail = "/post/detail";
   static const search = "/search";
   static const like = "/like";
   static const profile = "/profile";
@@ -61,6 +63,10 @@ class CustomRouter {
       GoRoute(
         path: Paths.createPost,
         builder: (ctx, state) => CreatePost(image: state.extra as Uint8List),
+      ),
+      GoRoute(
+        path: Paths.postDetail,
+        builder: (ctx, state) => PostDetail(postId: state.extra as String),
       ),
       GoRoute(
         path: Paths.editProfile,

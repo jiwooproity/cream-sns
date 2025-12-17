@@ -1,8 +1,13 @@
 import 'package:dio/dio.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+// Custom Interceptor
+import 'package:cream_sns/core/network/pretty_logger.dart';
+
+// Provider
 import 'package:path_provider/path_provider.dart';
 
+// Cookie
 import 'package:cookie_jar/cookie_jar.dart';
 import 'package:dio_cookie_manager/dio_cookie_manager.dart';
 
@@ -37,7 +42,7 @@ class DioInstance {
   }
 
   void _initInterceptor() {
-    dio.interceptors.add(LogInterceptor(requestBody: true, responseBody: true));
+    dio.interceptors.add(PrettyLogger());
   }
 
   Future<Response<T>> get<T>(String path) async {

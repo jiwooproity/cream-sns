@@ -21,4 +21,10 @@ class FeedClient {
     final List<dynamic> feeds = response.data;
     return feeds.map((feed) => Feed.fromJson(feed)).toList();
   }
+
+  Future<Feed> getFeed(String postId) async {
+    final response = await _dio.get("/feed/detail/$postId");
+    final dynamic feed = response.data;
+    return Feed.fromJson(feed);
+  }
 }
