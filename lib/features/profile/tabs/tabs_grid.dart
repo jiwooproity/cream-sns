@@ -1,13 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 // Provider
 import 'package:cream_sns/features/post/provider/post_provider.dart';
 
 class PostTab extends ConsumerWidget {
-  final String? targetId;
-
-  const PostTab({super.key, this.targetId});
+  const PostTab({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -21,7 +20,13 @@ class PostTab extends ConsumerWidget {
       ),
       itemCount: postState.postList.length,
       itemBuilder: (context, index) {
-        return Image.network(postState.postList[index].image.url, fit: BoxFit.cover);
+        return GestureDetector(
+          onTap: () {
+            final id = postState.postList[index].id;
+            context.push("/post/detail", extra: id);
+          },
+          child: Image.network(postState.postList[index].image.url, fit: BoxFit.cover),
+        );
       },
     );
   }

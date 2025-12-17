@@ -1,11 +1,19 @@
 import "package:dio/dio.dart";
+import "package:flutter_riverpod/flutter_riverpod.dart";
 import "package:flutter_riverpod/legacy.dart";
 
 // Models
 import "package:cream_sns/features/post/models/post.dart";
+import "package:cream_sns/features/home/model/feed.dart";
 
 // Data
 import "package:cream_sns/features/post/data/post_service.dart";
+import "package:cream_sns/features/home/data/feed_service.dart";
+
+final postDetailProvider = FutureProvider.family<Feed, String>((ref, postId) async {
+  final feed = ref.watch(feedClientProvider);
+  return await feed.getFeed(postId);
+});
 
 final postStateProvider = StateNotifierProvider<PostStateNotifier, PostState>((
   ref,

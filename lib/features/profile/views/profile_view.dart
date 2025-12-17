@@ -23,10 +23,10 @@ class ProfileView extends StatelessWidget {
             ProfileInfo(targetId: targetId),
             const SizedBox(height: 15),
             const TabsBar(),
-            TabsView(
+            const TabsView(
               children: [
-                PostTab(targetId: targetId),
-                const Center(child: Text("멘션 리스트")),
+                PostTab(),
+                Center(child: Text("멘션 리스트")),
               ],
             ),
           ],

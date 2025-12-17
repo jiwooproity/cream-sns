@@ -2,9 +2,6 @@ import 'package:cream_sns/features/home/model/feed.dart';
 import 'package:cream_sns/shared/widgets/time/time_ago.dart';
 import 'package:flutter/material.dart';
 
-// Models
-import 'package:cream_sns/features/post/models/post.dart';
-
 class PostHeader extends StatelessWidget {
   final Feed feed;
 
@@ -19,7 +16,7 @@ class PostHeader extends StatelessWidget {
           CircleAvatar(
             radius: 18,
             backgroundImage: NetworkImage(
-              feed.user.profile.url,
+              feed.author.profile.url,
             ),
           ),
           const SizedBox(width: 12),
@@ -28,7 +25,7 @@ class PostHeader extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  feed.user.nickname,
+                  feed.author.nickname,
                   style: Theme.of(context).textTheme.titleMedium,
                 ),
                 ConvertTime(
