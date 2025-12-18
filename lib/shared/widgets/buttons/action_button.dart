@@ -1,5 +1,7 @@
-import 'package:cream_sns/core/theme/app_colors.dart';
 import 'package:flutter/material.dart';
+
+// Widgets
+import 'package:cream_sns/shared/loading/custom_indicator.dart';
 
 class ActionButton extends StatelessWidget {
   final Function onTap;
@@ -18,11 +20,7 @@ class ActionButton extends StatelessWidget {
     return GestureDetector(
       onTap: () => onTap(),
       child: loading
-          ? const SizedBox(
-              width: 15,
-              height: 15,
-              child: CircularProgressIndicator(color: AppColors.black),
-            )
+          ? const CustomIndicator()
           : Text(text, style: const TextStyle(fontSize: 15)),
     );
   }

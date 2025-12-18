@@ -3,16 +3,24 @@ import "package:flutter_riverpod/flutter_riverpod.dart";
 import "package:flutter_riverpod/legacy.dart";
 
 // Models
-import "package:cream_sns/features/post/models/post.dart";
 import "package:cream_sns/features/home/model/feed.dart";
+import "package:cream_sns/features/post/models/post.dart";
 
 // Data
 import "package:cream_sns/features/post/data/post_service.dart";
 import "package:cream_sns/features/home/data/feed_service.dart";
 
-final postDetailProvider = FutureProvider.family<Feed, String>((ref, postId) async {
+final postDetailProvider = FutureProvider.family<Feed, String>((
+  ref,
+  postId,
+) async {
   final feed = ref.watch(feedClientProvider);
   return await feed.getFeed(postId);
+});
+
+final myPostProvider = FutureProvider.family<List<Post>, String>((ref, id) async {
+  final posts = ref.watch(postClientProvider);
+  return posts.getPosts(id);
 });
 
 final postStateProvider = StateNotifierProvider<PostStateNotifier, PostState>((
@@ -23,21 +31,19 @@ final postStateProvider = StateNotifierProvider<PostStateNotifier, PostState>((
 });
 
 class PostState {
-  PostState({required this.postList, this.isLoading = false});
+  PostState({ this.isLoading = false});
 
-  final List<Post> postList;
-  final bool? isLoading;
+  final bool isLoading;
 
-  PostState copyWith({List<Post>? postList, bool? isLoading}) {
+  PostState copyWith({bool? isLoading}) {
     return PostState(
-      postList: postList ?? this.postList,
       isLoading: isLoading ?? this.isLoading,
     );
   }
 }
 
 class PostStateNotifier extends StateNotifier<PostState> {
-  PostStateNotifier(this._post) : super(PostState(postList: []));
+  PostStateNotifier(this._post) : super(PostState());
 
   final PostClient _post;
 
@@ -47,20 +53,10 @@ class PostStateNotifier extends StateNotifier<PostState> {
 
   Future<void> createPost(FormData formData) async {
     try {
-      state = state.copyWith(
-        postList: await _post.createPost(formData),
-        isLoading: false,
-      );
+      await _post.createPost(formData);
+      state = state.copyWith(isLoading: false);
     } on DioException catch (e) {
-      state = PostState(postList: []);
-    }
-  }
-
-  Future<void> getPosts() async {
-    try {
-      state = state.copyWith(postList: await _post.getPosts());
-    } on DioException catch (e) {
-      state = PostState(postList: []);
+      state = PostState();
     }
   }
 }

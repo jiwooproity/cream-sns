@@ -7,6 +7,7 @@ class PrettyLogger extends Interceptor {
   void onResponse(Response<dynamic> response, ResponseInterceptorHandler handler) {
     const encoder = JsonEncoder.withIndent('  ');
     if (kDebugMode) {
+      print('Request URL [${response.realUri}]');
       print('RESPONSE [${response.statusCode}]');
       print(encoder.convert(response.data));
     }

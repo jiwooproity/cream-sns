@@ -8,9 +8,10 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 // Model
 import 'package:cream_sns/features/crop/model/crop_param.dart';
+import 'package:cream_sns/features/profile/model/profile.dart';
 
 // Provider
-import 'package:cream_sns/features/auth/provider/user_provider.dart';
+import 'package:cream_sns/features/auth/provider/auth_provider.dart';
 
 // Themes
 import 'package:cream_sns/core/theme/app_colors.dart';
@@ -22,10 +23,13 @@ import 'package:cream_sns/shared/widgets/buttons/action_button.dart';
 import 'package:cream_sns/shared/widgets/buttons/tile_text_button.dart';
 import 'package:cream_sns/shared/widgets/divider/custom_divider.dart';
 import 'package:cream_sns/features/profile/widgets/profile_changer.dart';
-import 'package:cream_sns/features/profile/widgets/profile_edit_text_field.dart';
+import 'package:cream_sns/features/profile/widgets/profile_text_field.dart';
+import 'package:cream_sns/features/profile/provider/profile_provider.dart';
 
 class ProfileEditView extends ConsumerStatefulWidget {
-  const ProfileEditView({super.key});
+  const ProfileEditView({super.key, required this.user});
+
+  final Profile user;
 
   @override
   ConsumerState<ProfileEditView> createState() => _ProfileEditViewState();
@@ -47,12 +51,15 @@ class _ProfileEditViewState extends ConsumerState<ProfileEditView> {
   }
 
   @override
-  Widget build(BuildContext context) {
-    final state = ref.watch(userStateProvider);
-    final user = state.user!;
+  void initState() {
+    super.initState();
+    _nickname.text = widget.user.nickname;
+    _description.text = widget.user.description;
+  }
 
-    _nickname.text = user.nickname;
-    _description.text = user.description;
+  @override
+  Widget build(BuildContext context) {
+    final state = ref.watch(authStateProvider);
 
     return Scaffold(
       appBar: CustomAppbar(
@@ -87,7 +94,7 @@ class _ProfileEditViewState extends ConsumerState<ProfileEditView> {
                     onTap: () => selectImage(ImageSource.gallery),
                   ),
                 ],
-                child: editProfile(user.profile.url),
+                child: editProfile(widget.user.profile.url),
               ),
             ),
             // 닉네임 영역
@@ -139,7 +146,7 @@ class _ProfileEditViewState extends ConsumerState<ProfileEditView> {
   Future<void> changeProfile() async {
     MultipartFile? image;
 
-    ref.read(userStateProvider.notifier).setLoading();
+    ref.read(authStateProvider.notifier).setLoading();
 
     if (_selectedImage != null) {
       image = MultipartFile.fromBytes(_selectedImage!, filename: "profile.png");
@@ -151,7 +158,8 @@ class _ProfileEditViewState extends ConsumerState<ProfileEditView> {
       'description': _description.text,
     });
 
-    await ref.read(userStateProvider.notifier).edit(formData);
+    await ref.read(authStateProvider.notifier).edit(formData);
+    ref.invalidate(profileProvider(widget.user.id));
     if (mounted) context.go("/profile");
   }
 }

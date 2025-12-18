@@ -1,10 +1,9 @@
-import 'package:cream_sns/features/post/provider/post_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 // Providers
-import 'package:cream_sns/features/auth/provider/user_provider.dart';
+import 'package:cream_sns/features/auth/provider/auth_provider.dart';
 
 // Themes
 import 'package:cream_sns/core/theme/app_colors.dart';
@@ -96,13 +95,12 @@ class _LoginViewState extends ConsumerState<LoginView> {
   }
 
   Future<void> checkAuth() async {
-    await ref.read(userStateProvider.notifier).me();
+    await ref.read(authStateProvider.notifier).me();
   }
 
   Future<void> initAuth() async {
-    ref.listenManual(userStateProvider, (prev, cur) async {
+    ref.listenManual(authStateProvider, (prev, cur) async {
       if (!prev!.isAuthenticated && cur.isAuthenticated) {
-        await ref.read(postStateProvider.notifier).getPosts();
         if(mounted) context.go("/home");
       }
     });
@@ -116,6 +114,6 @@ class _LoginViewState extends ConsumerState<LoginView> {
       return;
     }
 
-    ref.read(userStateProvider.notifier).login(userId, password);
+    ref.read(authStateProvider.notifier).login(userId, password);
   }
 }

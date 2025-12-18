@@ -27,20 +27,14 @@ class PostCard extends StatelessWidget {
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
       shadowColor: AppColors.grey,
       color: AppColors.white,
-      child: GestureDetector(
-        behavior: HitTestBehavior.translucent,
-        onTap: () {
-          context.push("/post/detail", extra: feed.id);
-        },
-        child: Column(
-          children: [
-            PostHeader(feed: feed),
-            PostImage(image: feed.image.url),
-            PostContent(content: feed.content),
-            const PostFooter(likeLength: 0, commentLength: 0),
-            const CustomDivider(height: 25),
-          ],
-        ),
+      child: Column(
+        children: [
+          PostHeader(feed: feed),
+          PostImage(image: feed.image.url),
+          PostContent(content: feed.content),
+          const PostFooter(likeLength: 0, commentLength: 0),
+          const CustomDivider(height: 25),
+        ],
       ),
     );
   }

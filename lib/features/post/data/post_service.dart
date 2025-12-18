@@ -27,8 +27,8 @@ class PostClient {
     return posts.map((post) => Post.fromJson(post)).toList();
   }
 
-  Future<List<Post>> getPosts() async {
-    final response = await _dio.get("/post/list");
+  Future<List<Post>> getPosts(String id) async {
+    final response = await _dio.get("/post/list/$id");
     final List<dynamic> posts = response.data;
     return posts.map((post) => Post.fromJson(post)).toList();
   }
