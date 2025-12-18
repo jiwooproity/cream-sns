@@ -1,9 +1,9 @@
-import 'package:cream_sns/shared/models/image.dart';
+import 'package:cream_sns/shared/models/server_image.dart';
 
 class Post {
   final String id;
   final String content;
-  final Image image;
+  final ServerImage image;
 
   Post({required this.id, required this.content, required this.image});
 
@@ -11,7 +11,7 @@ class Post {
     return Post(
       id: json['id'],
       content: json['content'],
-      image: Image.fromJson(json['image'] as Map<String, dynamic>)
+      image: ServerImage.fromJson(json['image'] as Map<String, dynamic>)
     );
   }
 }

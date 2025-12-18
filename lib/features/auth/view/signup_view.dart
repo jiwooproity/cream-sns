@@ -4,7 +4,7 @@ import 'package:go_router/go_router.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 // Provider
-import 'package:cream_sns/features/auth/provider/user_provider.dart';
+import 'package:cream_sns/features/auth/provider/auth_provider.dart';
 
 // Widgets
 import 'package:cream_sns/features/auth/widgets/auth_text_field.dart';
@@ -84,7 +84,7 @@ class _SignupViewState extends ConsumerState<SignupView> {
     final password = _password.text;
 
     if (userId.isNotEmpty || nickname.isNotEmpty || password.isNotEmpty) {
-      final provider = ref.read(userStateProvider.notifier);
+      final provider = ref.read(authStateProvider.notifier);
       final message = await provider.signUp(userId, nickname, password);
       if(message != null && mounted) {
         ShowToast().init(context);

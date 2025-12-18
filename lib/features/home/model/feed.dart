@@ -1,9 +1,9 @@
-import 'package:cream_sns/shared/models/image.dart';
+import 'package:cream_sns/shared/models/server_image.dart';
 
 class Feed {
   final String id;
   final String content;
-  final Image image;
+  final ServerImage image;
   final int createdAt;
   final FeedAuthor author;
 
@@ -19,7 +19,7 @@ class Feed {
     return Feed(
       id: json['id'],
       content: json['content'],
-      image: Image.fromJson(json['image'] as Map<String, dynamic>),
+      image: ServerImage.fromJson(json['image'] as Map<String, dynamic>),
       createdAt: json['createdAt'],
       author: FeedAuthor.fromJson(json['author'] as Map<String, dynamic>),
     );
@@ -29,7 +29,7 @@ class Feed {
 class FeedAuthor {
   final String id;
   final String nickname;
-  final Image profile;
+  final ServerImage profile;
 
   FeedAuthor({
     required this.id,
@@ -41,7 +41,7 @@ class FeedAuthor {
     return FeedAuthor(
       id: json['id'],
       nickname: json['nickname'],
-      profile: Image.fromJson(json['profile'] as Map<String, dynamic>),
+      profile: ServerImage.fromJson(json['profile'] as Map<String, dynamic>),
     );
   }
 }

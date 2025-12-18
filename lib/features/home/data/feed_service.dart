@@ -16,8 +16,8 @@ class FeedClient {
 
   final DioInstance _dio;
 
-  Future<List<Feed>> getFeeds() async {
-    final response = await _dio.get("/feed/list");
+  Future<List<Feed>> getFeeds(String id) async {
+    final response = await _dio.get("/feed/list/$id");
     final List<dynamic> feeds = response.data;
     return feeds.map((feed) => Feed.fromJson(feed)).toList();
   }

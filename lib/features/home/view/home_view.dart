@@ -6,15 +6,18 @@ import 'package:image_picker/image_picker.dart';
 // Models
 import 'package:cream_sns/shared/widgets/modal/custom_modal.dart';
 
+// Provider
+import 'package:cream_sns/features/auth/provider/auth_provider.dart';
+import 'package:cream_sns/features/home/provider/feed_provider.dart';
+
 // Widgets
 import 'package:cream_sns/core/widgets/custom_appbar.dart';
 import 'package:cream_sns/shared/widgets/divider/custom_divider.dart';
 import 'package:cream_sns/features/post/widgets/post_card.dart';
 import 'package:cream_sns/features/crop/model/crop_param.dart';
-import 'package:cream_sns/features/home/data/feed_service.dart';
-import 'package:cream_sns/features/home/model/feed.dart';
 import 'package:cream_sns/shared/utils/image_size.dart';
 import 'package:cream_sns/shared/widgets/buttons/tile_text_button.dart';
+import 'package:cream_sns/shared/loading/custom_indicator.dart';
 
 class HomeView extends ConsumerStatefulWidget {
   const HomeView({super.key});
@@ -26,23 +29,11 @@ class HomeView extends ConsumerStatefulWidget {
 class _HomeViewState extends ConsumerState<HomeView> {
   final ImagePicker _picker = ImagePicker();
 
-  List<Feed> feeds = [];
-
-  @override
-  void initState() {
-    super.initState();
-    getFeeds();
-  }
-
-  void getFeeds() async {
-    final response = await ref.read(feedClientProvider).getFeeds();
-    setState(() {
-      feeds = response;
-    });
-  }
-
   @override
   Widget build(BuildContext context) {
+    final myId = ref.read(authStateProvider).userId!;
+    final feedsAsync = ref.watch(feedListProvider(myId));
+
     return Scaffold(
       appBar: CustomAppbar(
         title: "Cream",
@@ -64,18 +55,35 @@ class _HomeViewState extends ConsumerState<HomeView> {
           ),
         ],
       ),
-      body: Column(
-        children: [
-          Expanded(
-            child: ListView.builder(
-              padding: const EdgeInsets.only(top: 15),
-              itemCount: feeds.length,
-              itemBuilder: (BuildContext context, int idx) {
-                return PostCard(feed: feeds[idx]);
-              },
-            ),
-          ),
-        ],
+      body: feedsAsync.when(
+        data: (feeds) {
+          if (feeds.isNotEmpty) {
+            return Column(
+              children: [
+                Expanded(
+                  child: ListView.builder(
+                    padding: const EdgeInsets.only(top: 15),
+                    itemCount: feeds.length,
+                    itemBuilder: (BuildContext context, int idx) {
+                      return GestureDetector(
+                        behavior: HitTestBehavior.translucent,
+                        onTap: () {
+                          context.push("/post/detail", extra: feeds[idx].id);
+                        },
+                        child: PostCard(feed: feeds[idx]),
+                      );
+                    },
+                  ),
+                ),
+              ],
+            );
+          } else {
+            return const Center(child: Text("불러올 피드 목록이 없습니다."));
+          }
+        },
+        error: (err, stack) =>
+            const Center(child: Text("피드 목록을 불러오는데 실패하였습니다.")),
+        loading: () => const CustomIndicator(),
       ),
     );
   }

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 // Themes
 import 'package:cream_sns/core/theme/app_colors.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 // Library
 import 'package:go_router/go_router.dart';
@@ -9,17 +10,18 @@ import 'package:go_router/go_router.dart';
 // Widgets
 import 'package:cream_sns/shared/widgets/divider/custom_divider.dart';
 
-class CustomBottomNavigationBar extends StatefulWidget {
+class CustomBottomNavigationBar extends ConsumerStatefulWidget {
   final GoRouterState state;
 
   const CustomBottomNavigationBar({super.key, required this.state});
 
   @override
-  State<CustomBottomNavigationBar> createState() =>
-      _CustomBottomNavigationBarState();
+  ConsumerState<CustomBottomNavigationBar> createState() {
+    return _CustomBottomNavigationBarState();
+  }
 }
 
-class _CustomBottomNavigationBarState extends State<CustomBottomNavigationBar> {
+class _CustomBottomNavigationBarState extends ConsumerState<CustomBottomNavigationBar> {
   int currentIndex = 0;
 
   void onTap(BuildContext context, int index) {

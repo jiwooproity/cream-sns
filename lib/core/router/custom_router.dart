@@ -1,5 +1,6 @@
 import 'dart:typed_data';
 
+import 'package:cream_sns/features/profile/model/profile.dart';
 import 'package:flutter/material.dart';
 
 // Models
@@ -30,6 +31,7 @@ class Paths {
   static const search = "/search";
   static const like = "/like";
   static const profile = "/profile";
+  static const profileWithId = "/profile/:id";
   static const editProfile = "/profile/edit";
   static const login = "/login";
   static const signup = "/signup";
@@ -37,10 +39,15 @@ class Paths {
 }
 
 class CustomRouter {
+  static final _rootNavigatorKey = GlobalKey<NavigatorState>();
+  static final _shellNavigatorKey = GlobalKey<NavigatorState>();
+
   static final router = GoRouter(
+    navigatorKey: _rootNavigatorKey,
     initialLocation: Paths.login,
     routes: [
       ShellRoute(
+        navigatorKey: _shellNavigatorKey,
         builder: (ctx, state, child) => Scaffold(
           body: child,
           bottomNavigationBar: CustomBottomNavigationBar(state: state),
@@ -61,16 +68,24 @@ class CustomRouter {
       GoRoute(path: Paths.login, builder: (ctx, state) => const LoginView()),
       GoRoute(path: Paths.signup, builder: (ctx, state) => const SignupView()),
       GoRoute(
+        path: Paths.editProfile,
+        builder: (ctx, state) {
+          return ProfileEditView(user: state.extra as Profile);
+        },
+      ),
+      GoRoute(
+        path: Paths.profileWithId,
+        builder: (ctx, state) {
+          return ProfileView(targetId: state.pathParameters['id']);
+        },
+      ),
+      GoRoute(
         path: Paths.createPost,
         builder: (ctx, state) => CreatePost(image: state.extra as Uint8List),
       ),
       GoRoute(
         path: Paths.postDetail,
         builder: (ctx, state) => PostDetail(postId: state.extra as String),
-      ),
-      GoRoute(
-        path: Paths.editProfile,
-        builder: (ctx, state) => const ProfileEditView(),
       ),
       GoRoute(
         path: Paths.cropImage,

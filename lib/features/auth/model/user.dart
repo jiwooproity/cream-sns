@@ -1,11 +1,11 @@
-import 'package:cream_sns/shared/models/image.dart';
+import 'package:cream_sns/shared/models/server_image.dart';
 
 class User {
   final String id;
   final String userId;
   final String nickname;
   final String description;
-  final Image profile;
+  final ServerImage profile;
 
   User({
     required this.id,
@@ -21,7 +21,7 @@ class User {
       userId: json['userId'],
       nickname: json['nickname'],
       description: json['description'],
-      profile: Image.fromJson(json['profile'] as Map<String, dynamic>),
+      profile: ServerImage.fromJson(json['profile'] as Map<String, dynamic>),
     );
   }
 }
