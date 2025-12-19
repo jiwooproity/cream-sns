@@ -1,14 +1,13 @@
 import 'dart:typed_data';
 
-import 'package:cream_sns/features/auth/provider/auth_provider.dart';
-import 'package:cream_sns/features/profile/provider/profile_provider.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 // Provider
-import 'package:cream_sns/features/post/provider/post_provider.dart';
+import 'package:cream_sns/features/post/provider/main_provider.dart';
+import 'package:cream_sns/features/post/provider/action_provider.dart';
 
 // Widgets
 import 'package:cream_sns/core/widgets/custom_appbar.dart';
@@ -102,8 +101,6 @@ class _CreatePostState extends ConsumerState<CreatePost> {
   }
 
   Future<void> createPost() async {
-    ref.read(postStateProvider.notifier).setLoading();
-
     final image = MultipartFile.fromBytes(
       widget.image,
       filename: "profile.png",
@@ -115,10 +112,7 @@ class _CreatePostState extends ConsumerState<CreatePost> {
       'createdAt': DateTime.now().millisecondsSinceEpoch
     });
 
-    await ref.read(postStateProvider.notifier).createPost(formData);
-    final myId = ref.read(authStateProvider).userId!;
-    ref.invalidate(profileProvider(myId));
-    ref.invalidate(myPostProvider(myId));
+    await ref.read(postActionProvider).createPost(formData: formData);
     if (mounted) context.go("/home");
   }
 }

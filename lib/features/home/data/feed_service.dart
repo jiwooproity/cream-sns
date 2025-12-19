@@ -4,7 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:cream_sns/core/network/dio_instance.dart';
 
 // Models
-import 'package:cream_sns/features/home/model/feed.dart';
+import 'package:cream_sns/features/post/models/post.dart';
 
 final feedClientProvider = Provider((ref) {
   final apiClient = ref.watch(dioProvider);
@@ -16,15 +16,9 @@ class FeedClient {
 
   final DioInstance _dio;
 
-  Future<List<Feed>> getFeeds(String id) async {
+  Future<List<PostDetail>> getFeeds(String id) async {
     final response = await _dio.get("/feed/list/$id");
     final List<dynamic> feeds = response.data;
-    return feeds.map((feed) => Feed.fromJson(feed)).toList();
-  }
-
-  Future<Feed> getFeed(String postId) async {
-    final response = await _dio.get("/feed/detail/$postId");
-    final dynamic feed = response.data;
-    return Feed.fromJson(feed);
+    return feeds.map((feed) => PostDetail.fromJson(feed)).toList();
   }
 }

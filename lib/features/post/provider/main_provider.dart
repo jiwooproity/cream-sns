@@ -3,24 +3,23 @@ import "package:flutter_riverpod/flutter_riverpod.dart";
 import "package:flutter_riverpod/legacy.dart";
 
 // Models
-import "package:cream_sns/features/home/model/feed.dart";
 import "package:cream_sns/features/post/models/post.dart";
 
 // Data
 import "package:cream_sns/features/post/data/post_service.dart";
-import "package:cream_sns/features/home/data/feed_service.dart";
 
-final postDetailProvider = FutureProvider.family<Feed, String>((
+final postDetailProvider = FutureProvider.family<PostDetail, String>((
   ref,
   postId,
 ) async {
-  final feed = ref.watch(feedClientProvider);
-  return await feed.getFeed(postId);
+  return await ref.watch(postClientProvider).getPost(postId);
 });
 
-final myPostProvider = FutureProvider.family<List<Post>, String>((ref, id) async {
-  final posts = ref.watch(postClientProvider);
-  return posts.getPosts(id);
+final myPostProvider = FutureProvider.family<List<Post>, String>((
+  ref,
+  userId,
+) async {
+  return ref.watch(postClientProvider).getPosts(userId);
 });
 
 final postStateProvider = StateNotifierProvider<PostStateNotifier, PostState>((
@@ -31,14 +30,12 @@ final postStateProvider = StateNotifierProvider<PostStateNotifier, PostState>((
 });
 
 class PostState {
-  PostState({ this.isLoading = false});
+  PostState({this.isLoading = false});
 
   final bool isLoading;
 
   PostState copyWith({bool? isLoading}) {
-    return PostState(
-      isLoading: isLoading ?? this.isLoading,
-    );
+    return PostState(isLoading: isLoading ?? this.isLoading);
   }
 }
 
@@ -57,6 +54,26 @@ class PostStateNotifier extends StateNotifier<PostState> {
       state = state.copyWith(isLoading: false);
     } on DioException catch (e) {
       state = PostState();
+    }
+  }
+
+  Future<void> deletePost(String postId) async {
+    try {
+      await _post.deletePost(postId);
+      state = state.copyWith(isLoading: false);
+    } on DioException catch (e) {
+      state = PostState();
+    }
+  }
+
+  Future<PostDetail?> getPost(String postId) async {
+    try {
+      final response = await _post.getPost(postId);
+      state = state.copyWith(isLoading: false);
+      return response;
+    } on DioException catch (e) {
+      state = PostState();
+      return null;
     }
   }
 }
