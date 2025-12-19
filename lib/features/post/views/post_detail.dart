@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 // Provider
-import 'package:cream_sns/features/post/provider/post_provider.dart';
+import 'package:cream_sns/features/post/provider/main_provider.dart';
 
 // Widgets
 import 'package:cream_sns/core/widgets/custom_appbar.dart';
@@ -23,7 +23,7 @@ class PostDetail extends ConsumerWidget {
       body: SingleChildScrollView(
         padding: const EdgeInsets.symmetric(vertical: 15),
         child: postAsync.when(
-          data: (post) => PostCard(feed: post),
+          data: (post) => PostCard(post: post),
           error: (err, stack) {
             return const Center(child: Text("게시글 조회를 실패하였습니다."));
           },

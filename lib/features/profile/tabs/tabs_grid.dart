@@ -3,7 +3,7 @@ import 'package:go_router/go_router.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 // Provider
-import 'package:cream_sns/features/post/provider/post_provider.dart';
+import 'package:cream_sns/features/post/provider/main_provider.dart';
 
 // Widgets
 import 'package:cream_sns/shared/loading/custom_indicator.dart';

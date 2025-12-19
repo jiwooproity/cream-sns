@@ -17,19 +17,26 @@ class PostClient {
 
   final DioInstance _dio;
 
-  Future<List<Post>> createPost(FormData formData) async {
-    final response = await _dio.post(
+  Future<Response> deletePost(String postId) async {
+    return await _dio.delete("/post/delete/$postId");
+  }
+
+  Future<Response> createPost(FormData formData) async {
+    return await _dio.post(
       path: "/post/create",
       data: formData,
     );
+  }
 
+  Future<List<Post>> getPosts(String userId) async {
+    final response = await _dio.get("/post/list/$userId");
     final List<dynamic> posts = response.data;
     return posts.map((post) => Post.fromJson(post)).toList();
   }
 
-  Future<List<Post>> getPosts(String id) async {
-    final response = await _dio.get("/post/list/$id");
-    final List<dynamic> posts = response.data;
-    return posts.map((post) => Post.fromJson(post)).toList();
+  Future<PostDetail> getPost(String postId) async {
+    final response = await _dio.get("/post/detail/$postId");
+    final dynamic feed = response.data;
+    return PostDetail.fromJson(feed);
   }
 }

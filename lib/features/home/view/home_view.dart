@@ -56,21 +56,21 @@ class _HomeViewState extends ConsumerState<HomeView> {
         ],
       ),
       body: feedsAsync.when(
-        data: (feeds) {
-          if (feeds.isNotEmpty) {
+        data: (posts) {
+          if (posts.isNotEmpty) {
             return Column(
               children: [
                 Expanded(
                   child: ListView.builder(
                     padding: const EdgeInsets.only(top: 15),
-                    itemCount: feeds.length,
+                    itemCount: posts.length,
                     itemBuilder: (BuildContext context, int idx) {
                       return GestureDetector(
                         behavior: HitTestBehavior.translucent,
                         onTap: () {
-                          context.push("/post/detail", extra: feeds[idx].id);
+                          context.push("/post/detail", extra: posts[idx].id);
                         },
-                        child: PostCard(feed: feeds[idx]),
+                        child: PostCard(post: posts[idx]),
                       );
                     },
                   ),
@@ -81,8 +81,9 @@ class _HomeViewState extends ConsumerState<HomeView> {
             return const Center(child: Text("불러올 피드 목록이 없습니다."));
           }
         },
-        error: (err, stack) =>
-            const Center(child: Text("피드 목록을 불러오는데 실패하였습니다.")),
+        error: (err, stack) {
+          return const Center(child: Text("피드 목록을 불러오는데 실패하였습니다."));
+        },
         loading: () => const CustomIndicator(),
       ),
     );

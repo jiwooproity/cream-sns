@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:cream_sns/core/theme/app_colors.dart';
 
 // Models
-import 'package:cream_sns/features/home/model/feed.dart';
+import 'package:cream_sns/features/post/models/post.dart';
 
 // Widget
 import 'package:cream_sns/shared/widgets/divider/custom_divider.dart';
@@ -12,12 +12,11 @@ import 'package:cream_sns/features/post/widgets/post_header.dart';
 import 'package:cream_sns/features/post/widgets/post_content.dart';
 import 'package:cream_sns/features/post/widgets/post_footer.dart';
 import 'package:cream_sns/features/post/widgets/post_image.dart';
-import 'package:go_router/go_router.dart';
 
 class PostCard extends StatelessWidget {
-  final Feed feed;
+  final PostDetail post;
 
-  const PostCard({super.key, required this.feed});
+  const PostCard({super.key, required this.post});
 
   @override
   Widget build(BuildContext context) {
@@ -29,9 +28,9 @@ class PostCard extends StatelessWidget {
       color: AppColors.white,
       child: Column(
         children: [
-          PostHeader(feed: feed),
-          PostImage(image: feed.image.url),
-          PostContent(content: feed.content),
+          PostHeader(post: post),
+          PostImage(image: post.image.url),
+          PostContent(content: post.content),
           const PostFooter(likeLength: 0, commentLength: 0),
           const CustomDivider(height: 25),
         ],
