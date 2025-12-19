@@ -34,13 +34,13 @@ class ProfileInfo extends ConsumerWidget {
               Row(
                 children: [
                   ProfileImage(profile: user.profile),
-                  const Expanded(
+                  Expanded(
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
-                        ProfileCount(count: 1, title: "게시글"),
-                        ProfileCount(count: 1, title: "팔로워"),
-                        ProfileCount(count: 1, title: "팔로잉"),
+                        ProfileCount(count: user.postCount, title: "게시글"),
+                        ProfileCount(count: user.followerCount, title: "팔로워"),
+                        ProfileCount(count: user.followingCount, title: "팔로잉"),
                       ],
                     ),
                   ),

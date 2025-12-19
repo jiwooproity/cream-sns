@@ -6,6 +6,9 @@ class Profile {
   final String nickname;
   final String description;
   final ServerImage profile;
+  final int postCount;
+  final int followerCount;
+  final int followingCount;
 
   Profile({
     required this.id,
@@ -13,6 +16,9 @@ class Profile {
     required this.nickname,
     required this.description,
     required this.profile,
+    required this.postCount,
+    required this.followerCount,
+    required this.followingCount
   });
 
   factory Profile.fromJson(Map<String, dynamic> json) {
@@ -22,6 +28,9 @@ class Profile {
       nickname: json['nickname'],
       description: json['description'],
       profile: ServerImage.fromJson(json['profile']),
+      postCount: json['postCount'],
+      followerCount: json['followerCount'],
+      followingCount: json['followingCount'],
     );
   }
 }

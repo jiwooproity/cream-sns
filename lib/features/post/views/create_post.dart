@@ -1,6 +1,7 @@
 import 'dart:typed_data';
 
 import 'package:cream_sns/features/auth/provider/auth_provider.dart';
+import 'package:cream_sns/features/profile/provider/profile_provider.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
@@ -116,6 +117,7 @@ class _CreatePostState extends ConsumerState<CreatePost> {
 
     await ref.read(postStateProvider.notifier).createPost(formData);
     final myId = ref.read(authStateProvider).userId!;
+    ref.invalidate(profileProvider(myId));
     ref.invalidate(myPostProvider(myId));
     if (mounted) context.go("/home");
   }
