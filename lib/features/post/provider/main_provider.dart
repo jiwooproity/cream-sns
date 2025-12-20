@@ -76,4 +76,13 @@ class PostStateNotifier extends StateNotifier<PostState> {
       return null;
     }
   }
+
+  Future<void> editPost(String postId, String content) async {
+    try {
+      await _post.editPosts(postId, content);
+      state = state.copyWith(isLoading: false);
+    } on DioException catch(e) {
+      state = PostState();
+    }
+  }
 }

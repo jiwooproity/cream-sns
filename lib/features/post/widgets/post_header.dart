@@ -1,4 +1,3 @@
-import 'package:cream_sns/shared/widgets/divider/custom_divider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -14,6 +13,7 @@ import 'package:cream_sns/features/post/models/post.dart';
 import 'package:cream_sns/shared/widgets/buttons/tile_text_button.dart';
 import 'package:cream_sns/shared/widgets/modal/custom_modal.dart';
 import 'package:cream_sns/shared/widgets/time/time_ago.dart';
+import 'package:cream_sns/shared/widgets/divider/custom_divider.dart';
 
 class PostHeader extends ConsumerWidget {
   final PostDetail post;
@@ -59,17 +59,22 @@ class PostHeader extends ConsumerWidget {
             CustomModal(
               icon: Icons.more_vert,
               children: [
-                TileTextButton("게시글 수정", onTap: () {}),
+                TileTextButton("게시글 수정", onTap: () => editPost(context, post)),
                 const CustomDivider(height: 1),
-                TileTextButton(
-                  "게시글 삭제",
-                  onTap: () => deletePost(context, ref),
-                ),
+                TileTextButton("게시글 삭제", onTap: () => deletePost(context, ref)),
               ],
             ),
         ],
       ),
     );
+  }
+
+  void editPost(BuildContext context, PostDetail post) {
+    if (context.mounted) {
+      context.pop();
+      final extra = Post(id: post.id, content: post.content, image: post.image);
+      context.push("/post/edit", extra: extra);
+    }
   }
 
   void deletePost(BuildContext context, WidgetRef ref) async {

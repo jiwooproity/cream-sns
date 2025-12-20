@@ -15,6 +15,14 @@ class PostAction {
 
   final Ref ref;
 
+  Future<void> editPost({required String postId, required String content}) async {
+    ref.read(postStateProvider.notifier).setLoading();
+
+    await ref.read(postStateProvider.notifier).editPost(postId, content);
+
+    ref.invalidate(postDetailProvider(postId));
+  }
+
   Future<void> createPost({required FormData formData}) async {
     ref.read(postStateProvider.notifier).setLoading();
 
