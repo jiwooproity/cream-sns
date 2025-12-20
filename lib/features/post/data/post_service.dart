@@ -22,10 +22,7 @@ class PostClient {
   }
 
   Future<Response> createPost(FormData formData) async {
-    return await _dio.post(
-      path: "/post/create",
-      data: formData,
-    );
+    return await _dio.post(path: "/post/create", data: formData);
   }
 
   Future<List<Post>> getPosts(String userId) async {
@@ -38,5 +35,9 @@ class PostClient {
     final response = await _dio.get("/post/detail/$postId");
     final dynamic feed = response.data;
     return PostDetail.fromJson(feed);
+  }
+
+  Future<void> editPosts(String postId, String content) async {
+    await _dio.patch(path: "/post/edit/$postId", data: {"content": content});
   }
 }

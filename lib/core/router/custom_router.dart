@@ -1,9 +1,11 @@
 import 'dart:typed_data';
 
-import 'package:cream_sns/features/profile/model/profile.dart';
+import 'package:cream_sns/features/post/views/edit_post.dart';
 import 'package:flutter/material.dart';
 
 // Models
+import 'package:cream_sns/features/post/models/post.dart' hide PostDetail;
+import 'package:cream_sns/features/profile/model/profile.dart';
 import 'package:cream_sns/features/crop/model/crop_param.dart';
 
 // Library
@@ -19,7 +21,7 @@ import 'package:cream_sns/features/post/views/post_detail.dart';
 import 'package:cream_sns/features/like/view/like_view.dart';
 import 'package:cream_sns/features/profile/views/profile_view.dart';
 import 'package:cream_sns/features/profile/views/profile_edit_view.dart';
-import 'package:cream_sns/features/search/search_view.dart';
+import 'package:cream_sns/features/search/views/search_view.dart';
 import 'package:cream_sns/features/auth/view/login_view.dart';
 import 'package:cream_sns/features/auth/view/signup_view.dart';
 import 'package:cream_sns/features/crop/views/crop_view.dart';
@@ -27,6 +29,7 @@ import 'package:cream_sns/features/crop/views/crop_view.dart';
 class Paths {
   static const home = "/home";
   static const createPost = "/post/create";
+  static const editPost = "/post/edit";
   static const postDetail = "/post/detail";
   static const search = "/search";
   static const like = "/like";
@@ -82,6 +85,10 @@ class CustomRouter {
       GoRoute(
         path: Paths.createPost,
         builder: (ctx, state) => CreatePost(image: state.extra as Uint8List),
+      ),
+      GoRoute(
+        path: Paths.editPost,
+        builder: (ctx, state) => EditPost(post: state.extra as Post),
       ),
       GoRoute(
         path: Paths.postDetail,

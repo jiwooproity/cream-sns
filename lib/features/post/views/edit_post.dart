@@ -1,29 +1,27 @@
-import 'dart:typed_data';
-
-import 'package:dio/dio.dart';
+import 'package:cream_sns/features/post/models/post.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 // Provider
-import 'package:cream_sns/features/post/provider/main_provider.dart';
 import 'package:cream_sns/features/post/provider/action_provider.dart';
+import 'package:cream_sns/features/post/provider/main_provider.dart';
 
 // Widgets
 import 'package:cream_sns/core/widgets/custom_appbar.dart';
-import 'package:cream_sns/shared/widgets/divider/custom_divider.dart';
 import 'package:cream_sns/shared/widgets/buttons/action_button.dart';
+import 'package:cream_sns/shared/widgets/divider/custom_divider.dart';
 
-class CreatePost extends ConsumerStatefulWidget {
-  final Uint8List image;
+class EditPost extends ConsumerStatefulWidget {
+  const EditPost({super.key, required this.post});
 
-  const CreatePost({super.key, required this.image});
+  final Post post;
 
   @override
-  ConsumerState<CreatePost> createState() => _CreatePostState();
+  ConsumerState<EditPost> createState() => _EditPostState();
 }
 
-class _CreatePostState extends ConsumerState<CreatePost> {
+class _EditPostState extends ConsumerState<EditPost> {
   final TextEditingController _content = TextEditingController();
 
   @override
@@ -33,18 +31,24 @@ class _CreatePostState extends ConsumerState<CreatePost> {
   }
 
   @override
+  void initState() {
+    super.initState();
+    _content.text = widget.post.content;
+  }
+
+  @override
   Widget build(BuildContext context) {
     final state = ref.watch(postStateProvider);
 
     return Scaffold(
       appBar: CustomAppbar(
-        title: "게시글 작성",
+        title: "게시글 편집",
         titleSize: 15,
         centerTitle: true,
         actionsPadding: const EdgeInsets.symmetric(horizontal: 15),
         actions: [
           ActionButton(
-            onTap: () => createPost(),
+            onTap: () => editPost(),
             text: "완료",
             loading: state.isLoading,
           ),
@@ -86,7 +90,10 @@ class _CreatePostState extends ConsumerState<CreatePost> {
                     child: SizedBox(
                       width: 100,
                       height: 100,
-                      child: Image.memory(widget.image, fit: BoxFit.cover),
+                      child: Image.network(
+                        widget.post.image.url,
+                        fit: BoxFit.cover,
+                      ),
                     ),
                   ),
                 ),
@@ -100,19 +107,17 @@ class _CreatePostState extends ConsumerState<CreatePost> {
     );
   }
 
-  Future<void> createPost() async {
-    final image = MultipartFile.fromBytes(
-      widget.image,
-      filename: "profile.png",
-    );
+  Future<void> editPost() async {
+    final content = _content.text;
 
-    final formData = FormData.fromMap({
-      'image': image,
-      'content': _content.text,
-      'createdAt': DateTime.now().millisecondsSinceEpoch
-    });
+    if (content == "") return;
 
-    await ref.read(postActionProvider).createPost(formData: formData);
-    if (mounted) context.go("/home");
+    if (widget.post.content != content) {
+      await ref
+          .read(postActionProvider)
+          .editPost(postId: widget.post.id, content: content);
+    }
+
+    if (mounted) context.pop();
   }
 }
