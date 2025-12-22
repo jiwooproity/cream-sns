@@ -79,8 +79,6 @@ class AuthStateNotifier extends StateNotifier<AuthState> {
   Future<void> login(String userId, String password) async {
     try {
       final response = await _user.login(userId, password);
-      ref.invalidate(feedProvider);
-      ref.invalidate(postProvider(response.id));
       state = state.copyWith(userId: response.id, isAuthenticated: true);
     } on DioException catch (e) {
       state = const AuthState();
@@ -88,9 +86,12 @@ class AuthStateNotifier extends StateNotifier<AuthState> {
     }
   }
 
-  Future<Response<dynamic>> logout() async {
-    ref.read(feedProvider.notifier).clear();
+  Future<void> logout() async {
+    await _user.logout();
+    state = state.copyWith(userId: null, isAuthenticated: false);
     ref.read(postStoreProvider).clear();
-    return await _user.logout();
+    ref.invalidate(feedProvider);
+    ref.invalidate(postProvider);
+    ref.invalidate(postActionProvider);
   }
 }

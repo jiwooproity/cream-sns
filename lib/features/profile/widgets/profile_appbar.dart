@@ -68,10 +68,8 @@ class ProfileAppbar extends ConsumerWidget implements PreferredSizeWidget {
   }
 
   Future<void> logout(WidgetRef ref) async {
-    final res = await ref.read(authStateProvider.notifier).logout();
-    if (res.statusCode == 200 && ref.context.mounted) {
-      ref.context.go("/login");
-    }
+    await ref.read(authStateProvider.notifier).logout();
+    if (ref.context.mounted) ref.context.go("/login");
   }
 
   @override
