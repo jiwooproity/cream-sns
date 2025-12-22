@@ -36,7 +36,7 @@ class ProfileView extends ConsumerWidget {
         length: 2,
         child: Column(
           children: [
-            ProfileInfo(targetId: id, isMe: isMe),
+            ProfileInfo(myId: loginId,targetId: id, isMe: isMe),
             const TabBar(
               labelColor: AppColors.black,
               indicatorColor: AppColors.black,

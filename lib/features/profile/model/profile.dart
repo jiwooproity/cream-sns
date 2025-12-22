@@ -9,6 +9,7 @@ class Profile {
   final int postCount;
   final int followerCount;
   final int followingCount;
+  final bool isFollowed;
 
   Profile({
     required this.id,
@@ -18,7 +19,8 @@ class Profile {
     required this.profile,
     required this.postCount,
     required this.followerCount,
-    required this.followingCount
+    required this.followingCount,
+    required this.isFollowed,
   });
 
   factory Profile.fromJson(Map<String, dynamic> json) {
@@ -31,6 +33,7 @@ class Profile {
       postCount: json['postCount'],
       followerCount: json['followerCount'],
       followingCount: json['followingCount'],
+      isFollowed: json['isFollowed'],
     );
   }
 }

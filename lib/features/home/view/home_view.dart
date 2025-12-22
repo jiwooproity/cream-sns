@@ -55,36 +55,38 @@ class _HomeViewState extends ConsumerState<HomeView> {
           ),
         ],
       ),
-      body: feedsAsync.when(
-        data: (posts) {
-          if (posts.isNotEmpty) {
-            return Column(
-              children: [
-                Expanded(
-                  child: ListView.builder(
-                    padding: const EdgeInsets.only(top: 15),
-                    itemCount: posts.length,
-                    itemBuilder: (BuildContext context, int idx) {
-                      return GestureDetector(
-                        behavior: HitTestBehavior.translucent,
-                        onTap: () {
-                          context.push("/post/detail", extra: posts[idx].id);
-                        },
-                        child: PostCard(post: posts[idx]),
-                      );
-                    },
+      body: Container(
+        child: feedsAsync.when(
+          data: (posts) {
+            if (posts.isNotEmpty) {
+              return Column(
+                children: [
+                  Expanded(
+                    child: ListView.builder(
+                      padding: const EdgeInsets.only(top: 15),
+                      itemCount: posts.length,
+                      itemBuilder: (BuildContext context, int idx) {
+                        return GestureDetector(
+                          behavior: HitTestBehavior.translucent,
+                          onTap: () {
+                            context.push("/post/detail", extra: posts[idx].id);
+                          },
+                          child: PostCard(post: posts[idx]),
+                        );
+                      },
+                    ),
                   ),
-                ),
-              ],
-            );
-          } else {
-            return const Center(child: Text("불러올 피드 목록이 없습니다."));
-          }
-        },
-        error: (err, stack) {
-          return const Center(child: Text("피드 목록을 불러오는데 실패하였습니다."));
-        },
-        loading: () => const CustomIndicator(),
+                ],
+              );
+            } else {
+              return const Center(child: Text("불러올 피드 목록이 없습니다."));
+            }
+          },
+          error: (err, stack) {
+            return const Center(child: Text("피드 목록을 불러오는데 실패하였습니다."));
+          },
+          loading: () => const CustomIndicator(),
+        ),
       ),
     );
   }

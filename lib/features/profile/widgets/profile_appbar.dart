@@ -17,7 +17,11 @@ import 'package:cream_sns/shared/widgets/buttons/tile_text_button.dart';
 import 'package:cream_sns/shared/loading/custom_indicator.dart';
 
 class ProfileAppbar extends ConsumerWidget implements PreferredSizeWidget {
-  const ProfileAppbar({super.key, required this.targetId, required this.isMe});
+  const ProfileAppbar({
+    super.key,
+    required this.targetId,
+    required this.isMe,
+  });
 
   final String targetId;
   final bool isMe;
@@ -34,22 +38,22 @@ class ProfileAppbar extends ConsumerWidget implements PreferredSizeWidget {
           centerTitle: true,
           actionsPadding: const EdgeInsets.symmetric(horizontal: 15),
           actions: [
-            CustomModal(
-              icon: Icons.more_horiz,
-              children: [
-                TileTextButton(
-                  isMe ? "프로필 편집" : "팔로우",
-                  onTap: () => isMe ? editProfile(ref, profile) : () {},
-                ),
-                const CustomDivider(),
-                if (isMe)
+            if (isMe)
+              CustomModal(
+                icon: Icons.more_horiz,
+                children: [
+                  TileTextButton(
+                    "프로필 편집",
+                    onTap: () => editProfile(ref, profile),
+                  ),
+                  const CustomDivider(),
                   TileTextButton(
                     "로그아웃",
                     onTap: () => logout(ref),
                     color: Colors.red,
                   ),
-              ],
-            ),
+                ],
+              ),
           ],
         );
       },

@@ -20,4 +20,12 @@ class ProfileClient {
     final response = await _dio.get("/profile/info/$id");
     return Profile.fromJson(response.data);
   }
+
+  Future<void> following(String targetId) async {
+    await _dio.post(path: "/follows", data: {"targetId": targetId});
+  }
+  
+  Future<void> unFollow(String targetId) async {
+    await _dio.delete("/follows/$targetId");
+  }
 }
