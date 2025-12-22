@@ -1,13 +1,13 @@
 import 'dart:typed_data';
 
+import 'package:cream_sns/features/auth/provider/auth_provider.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 // Provider
-import 'package:cream_sns/features/post/provider/main_provider.dart';
-import 'package:cream_sns/features/post/provider/action_provider.dart';
+import 'package:cream_sns/features/post/provider/post_provider.dart';
 
 // Widgets
 import 'package:cream_sns/core/widgets/custom_appbar.dart';
@@ -34,7 +34,7 @@ class _CreatePostState extends ConsumerState<CreatePost> {
 
   @override
   Widget build(BuildContext context) {
-    final state = ref.watch(postStateProvider);
+    final action = ref.watch(postActionProvider);
 
     return Scaffold(
       appBar: CustomAppbar(
@@ -46,7 +46,7 @@ class _CreatePostState extends ConsumerState<CreatePost> {
           ActionButton(
             onTap: () => createPost(),
             text: "완료",
-            loading: state.isLoading,
+            loading: action == PostActionState.loading,
           ),
         ],
       ),
@@ -109,10 +109,11 @@ class _CreatePostState extends ConsumerState<CreatePost> {
     final formData = FormData.fromMap({
       'image': image,
       'content': _content.text,
-      'createdAt': DateTime.now().millisecondsSinceEpoch
+      'createdAt': DateTime.now().millisecondsSinceEpoch,
     });
 
-    await ref.read(postActionProvider).createPost(formData: formData);
+    final userId = ref.read(authStateProvider).userId!;
+    await ref.read(postActionProvider.notifier).createPost(userId, formData);
     if (mounted) context.go("/home");
   }
 }

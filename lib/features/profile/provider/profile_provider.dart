@@ -1,13 +1,13 @@
 import 'package:cream_sns/features/home/provider/feed_provider.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_riverpod/legacy.dart';
 
 // Models
 import 'package:cream_sns/features/profile/model/profile.dart';
 
 // Service
 import 'package:cream_sns/features/profile/data/profile_service.dart';
-import 'package:flutter_riverpod/legacy.dart';
 
 final profileProvider = FutureProvider.family<Profile, String>((ref, id) async {
   return ref.read(profileClientProvider).info(id);
@@ -35,7 +35,7 @@ class ProfileActionNotifier extends StateNotifier<ProfileActionState> {
 
       ref.invalidate(profileProvider(targetId));
       ref.invalidate(profileProvider(myId));
-      ref.invalidate(feedListProvider);
+      ref.invalidate(feedProvider);
     } on DioException catch (e) {
       return;
     } finally {
