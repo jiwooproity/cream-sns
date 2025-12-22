@@ -57,7 +57,10 @@ class DioInstance {
     return await dio.patch(path, data: data);
   }
 
-  Future<Response<T>> delete<T>(String path) async {
-    return await dio.delete(path);
+  Future<Response<T>> delete<T, F extends Object>(
+    String path, {
+    F? data,
+  }) async {
+    return await dio.delete(path, data: data);
   }
 }

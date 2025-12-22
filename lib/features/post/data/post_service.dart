@@ -17,6 +17,14 @@ class PostClient {
 
   final DioInstance _dio;
 
+  Future<void> doLike(String postId) async {
+    await _dio.post(path: "/like/add", data: {'postId': postId});
+  }
+
+  Future<void> cancelLike(String postId) async {
+    await _dio.delete("/like/remove", data: {'postId': postId});
+  }
+
   Future<Response> deletePost(String postId) async {
     return await _dio.delete("/post/delete/$postId");
   }
@@ -40,7 +48,10 @@ class PostClient {
   }
 
   Future<PostDetail> editPosts(String postId, String content) async {
-    final response = await _dio.patch(path: "/post/edit/$postId", data: {"content": content});
+    final response = await _dio.patch(
+      path: "/post/edit/$postId",
+      data: {"content": content},
+    );
     final dynamic post = response.data;
     return PostDetail.fromJson(post);
   }

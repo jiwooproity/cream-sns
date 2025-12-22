@@ -24,6 +24,7 @@ class PostDetail {
   final PostAuthor author;
   final int likeCount;
   final int commentCount;
+  final bool isLiked;
 
   PostDetail({
     required this.id,
@@ -33,6 +34,7 @@ class PostDetail {
     required this.author,
     required this.likeCount,
     required this.commentCount,
+    required this.isLiked
   });
 
   factory PostDetail.fromJson(Map<String, dynamic> json) {
@@ -44,6 +46,29 @@ class PostDetail {
       author: PostAuthor.fromJson(json['author'] as Map<String, dynamic>),
       likeCount: json['likeCount'],
       commentCount: json['commentCount'],
+      isLiked: json['isLiked']
+    );
+  }
+
+  PostDetail copyWith({
+    String? id,
+    String? content,
+    ServerImage? image,
+    int? createdAt,
+    PostAuthor? author,
+    int? likeCount,
+    int? commentCount,
+    bool? isLiked
+  }) {
+    return PostDetail(
+      id: id ?? this.id,
+      content: content ?? this.content,
+      image: image ?? this.image,
+      createdAt: createdAt ?? this.createdAt,
+      author: author ?? this.author,
+      likeCount: likeCount ?? this.likeCount,
+      commentCount: commentCount ?? this.commentCount,
+      isLiked: isLiked ?? this.isLiked
     );
   }
 }
