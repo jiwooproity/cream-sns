@@ -31,8 +31,7 @@ class _HomeViewState extends ConsumerState<HomeView> {
 
   @override
   Widget build(BuildContext context) {
-    final myId = ref.read(authStateProvider).userId!;
-    final feedsAsync = ref.watch(feedListProvider(myId));
+    final feedsAsync = ref.watch(feedListProvider);
 
     return Scaffold(
       appBar: CustomAppbar(
@@ -96,6 +95,7 @@ class _HomeViewState extends ConsumerState<HomeView> {
 
     final image = await _picker.pickImage(
       source: imageSource,
+      maxWidth: 512,
       imageQuality: 85,
     );
 

@@ -35,7 +35,7 @@ class ProfileActionNotifier extends StateNotifier<ProfileActionState> {
 
       ref.invalidate(profileProvider(targetId));
       ref.invalidate(profileProvider(myId));
-      ref.invalidate(feedListProvider(myId));
+      ref.invalidate(feedListProvider);
     } on DioException catch (e) {
       return;
     } finally {
