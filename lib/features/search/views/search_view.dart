@@ -19,45 +19,48 @@ class SearchView extends ConsumerWidget {
     final users = searchState.users;
 
     return SafeArea(
-      child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 20),
-        child: Column(
-          children: [
-            TextField(
-              onChanged: (value) => onChange(ref, value),
-              decoration: const InputDecoration(
-                hintText: "검색할 내용을 입력해 주세요.",
-                hintStyle: TextStyle(fontSize: 15),
-                focusedBorder: UnderlineInputBorder(
-                  borderSide: BorderSide(width: 1, color: AppColors.black),
-                ),
-                enabledBorder: UnderlineInputBorder(
-                  borderSide: BorderSide(width: 1, color: AppColors.grey),
-                ),
-                contentPadding: EdgeInsets.symmetric(
-                  horizontal: 5,
-                  vertical: 20,
+      child: Container(
+        color: AppColors.white,
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 20),
+          child: Column(
+            children: [
+              TextField(
+                onChanged: (value) => onChange(ref, value),
+                decoration: const InputDecoration(
+                  hintText: "검색할 내용을 입력해 주세요.",
+                  hintStyle: TextStyle(fontSize: 15),
+                  focusedBorder: UnderlineInputBorder(
+                    borderSide: BorderSide(width: 1, color: AppColors.black),
+                  ),
+                  enabledBorder: UnderlineInputBorder(
+                    borderSide: BorderSide(width: 1, color: AppColors.grey),
+                  ),
+                  contentPadding: EdgeInsets.symmetric(
+                    horizontal: 5,
+                    vertical: 20,
+                  ),
                 ),
               ),
-            ),
-            Expanded(
-              child: users.isNotEmpty
-                  ? ListView(
-                      children: users.map((user) {
-                        return Container(
-                          padding: const EdgeInsets.symmetric(vertical: 10),
-                          decoration: const BoxDecoration(
-                            border: Border(
-                              bottom: BorderSide(color: AppColors.grey),
+              Expanded(
+                child: users.isNotEmpty
+                    ? ListView(
+                        children: users.map((user) {
+                          return Container(
+                            padding: const EdgeInsets.symmetric(vertical: 10),
+                            decoration: const BoxDecoration(
+                              border: Border(
+                                bottom: BorderSide(color: AppColors.grey),
+                              ),
                             ),
-                          ),
-                          child: UserBox(user: user),
-                        );
-                      }).toList(),
-                    )
-                  : const Center(child: Text("검색 결과가 없습니다.")),
-            ),
-          ],
+                            child: UserBox(user: user),
+                          );
+                        }).toList(),
+                      )
+                    : const Center(child: Text("검색 결과가 없습니다.")),
+              ),
+            ],
+          ),
         ),
       ),
     );

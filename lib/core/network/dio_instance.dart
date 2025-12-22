@@ -18,7 +18,7 @@ class DioInstance {
   late final Dio dio;
 
   final _options = BaseOptions(
-    baseUrl: "http://10.0.2.2:8080",
+    baseUrl: "https://port-0-cream-sns-server-mizowz3jcbb29421.sel3.cloudtype.app",
     connectTimeout: const Duration(seconds: 10),
     receiveTimeout: const Duration(seconds: 10),
     headers: {"Content-Type": Headers.formUrlEncodedContentType},
