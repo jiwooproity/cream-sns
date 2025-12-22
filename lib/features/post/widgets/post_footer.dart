@@ -1,13 +1,14 @@
 import 'package:flutter/material.dart';
 
+// Models
+import 'package:cream_sns/features/post/models/post.dart';
+
 class PostFooter extends StatelessWidget {
-  final int likeLength;
-  final int commentLength;
+  final PostDetail post;
 
   const PostFooter({
     super.key,
-    required this.likeLength,
-    required this.commentLength,
+    required this.post
   });
 
   @override
@@ -23,14 +24,14 @@ class PostFooter extends StatelessWidget {
               spacing: 3,
               children: [
                 const Icon(Icons.favorite_outline, size: 20),
-                Text("$likeLength"),
+                Text("${post.likeCount}"),
               ],
             ),
             Row(
               spacing: 3,
               children: [
                 const Icon(Icons.comment_outlined, size: 20),
-                Text("$commentLength"),
+                Text("${post.commentCount}"),
               ],
             ),
           ],

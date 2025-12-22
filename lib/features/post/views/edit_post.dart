@@ -1,7 +1,9 @@
-import 'package:cream_sns/features/post/models/post.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+
+// Models
+import 'package:cream_sns/features/post/models/post.dart';
 
 // Provider
 import 'package:cream_sns/features/post/provider/post_provider.dart';

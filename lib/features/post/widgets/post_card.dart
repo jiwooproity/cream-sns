@@ -31,7 +31,7 @@ class PostCard extends StatelessWidget {
           PostHeader(post: post),
           PostImage(image: post.image.url),
           PostContent(content: post.content),
-          const PostFooter(likeLength: 0, commentLength: 0),
+          PostFooter(post: post),
           const CustomDivider(height: 25),
         ],
       ),

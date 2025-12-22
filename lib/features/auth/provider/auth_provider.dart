@@ -1,4 +1,8 @@
+import "package:cream_sns/features/home/provider/feed_provider.dart";
+import "package:cream_sns/features/post/provider/post_provider.dart";
+import "package:cream_sns/store/post_store.dart";
 import "package:dio/dio.dart";
+import "package:flutter_riverpod/flutter_riverpod.dart";
 import "package:flutter_riverpod/legacy.dart";
 
 // Data
@@ -8,7 +12,7 @@ final authStateProvider = StateNotifierProvider<AuthStateNotifier, AuthState>((
   ref,
 ) {
   final client = ref.watch(authClientProvider);
-  return AuthStateNotifier(client);
+  return AuthStateNotifier(ref, client);
 });
 
 class AuthState {
@@ -32,8 +36,9 @@ class AuthState {
 }
 
 class AuthStateNotifier extends StateNotifier<AuthState> {
-  AuthStateNotifier(this._user) : super(const AuthState());
+  AuthStateNotifier(this.ref, this._user) : super(const AuthState());
 
+  final Ref ref;
   final AuthClient _user;
 
   void setLoading() {
@@ -74,6 +79,8 @@ class AuthStateNotifier extends StateNotifier<AuthState> {
   Future<void> login(String userId, String password) async {
     try {
       final response = await _user.login(userId, password);
+      ref.invalidate(feedProvider);
+      ref.invalidate(postProvider(response.id));
       state = state.copyWith(userId: response.id, isAuthenticated: true);
     } on DioException catch (e) {
       state = const AuthState();
@@ -82,6 +89,8 @@ class AuthStateNotifier extends StateNotifier<AuthState> {
   }
 
   Future<Response<dynamic>> logout() async {
+    ref.read(feedProvider.notifier).clear();
+    ref.read(postStoreProvider).clear();
     return await _user.logout();
   }
 }

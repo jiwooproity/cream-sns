@@ -36,4 +36,8 @@ class FeedNotifier extends StateNotifier<IndexState> {
       state = state.copyWith(isLoading: false);
     }
   }
+
+  void clear() {
+    state = const IndexState();
+  }
 }

@@ -107,8 +107,8 @@ class _LoginViewState extends ConsumerState<LoginView> {
   }
 
   void _handleLogin(WidgetRef ref) {
-    final userId = _userId.text;
-    final password = _password.text;
+    final userId = _userId.text.trim();
+    final password = _password.text.trim();
 
     if (userId.isEmpty || password.isEmpty) {
       return;
