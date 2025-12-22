@@ -1,3 +1,4 @@
+import 'package:cream_sns/store/post_store.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -31,7 +32,7 @@ class _HomeViewState extends ConsumerState<HomeView> {
 
   @override
   Widget build(BuildContext context) {
-    final feedsAsync = ref.watch(feedListProvider);
+    final state = ref.watch(feedProvider);
 
     return Scaffold(
       appBar: CustomAppbar(
@@ -54,39 +55,23 @@ class _HomeViewState extends ConsumerState<HomeView> {
           ),
         ],
       ),
-      body: Container(
-        child: feedsAsync.when(
-          data: (posts) {
-            if (posts.isNotEmpty) {
-              return Column(
-                children: [
-                  Expanded(
-                    child: ListView.builder(
-                      padding: const EdgeInsets.only(top: 15),
-                      itemCount: posts.length,
-                      itemBuilder: (BuildContext context, int idx) {
-                        return GestureDetector(
-                          behavior: HitTestBehavior.translucent,
-                          onTap: () {
-                            context.push("/post/detail", extra: posts[idx].id);
-                          },
-                          child: PostCard(post: posts[idx]),
-                        );
-                      },
-                    ),
-                  ),
-                ],
-              );
-            } else {
-              return const Center(child: Text("불러올 피드 목록이 없습니다."));
-            }
-          },
-          error: (err, stack) {
-            return const Center(child: Text("피드 목록을 불러오는데 실패하였습니다."));
-          },
-          loading: () => const CustomIndicator(),
-        ),
-      ),
+      body: state.ids.isEmpty
+          ? const Center(child: Text("불러올 피드 목록이 없습니다."))
+          : ListView.builder(
+              padding: const EdgeInsets.only(top: 15),
+              itemCount: state.ids.length,
+              itemBuilder: (BuildContext context, int idx) {
+                final post = ref.watch(postStoreProvider)[state.ids[idx]];
+                if (post == null) return const CustomIndicator();
+                return GestureDetector(
+                  behavior: HitTestBehavior.translucent,
+                  onTap: () {
+                    context.push("/post/detail", extra: post.id);
+                  },
+                  child: PostCard(post: post),
+                );
+              },
+            ),
     );
   }
 

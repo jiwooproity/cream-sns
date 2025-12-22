@@ -21,14 +21,16 @@ class PostClient {
     return await _dio.delete("/post/delete/$postId");
   }
 
-  Future<Response> createPost(FormData formData) async {
-    return await _dio.post(path: "/post/create", data: formData);
+  Future<PostDetail> createPost(FormData formData) async {
+    final response = await _dio.post(path: "/post/create", data: formData);
+    final dynamic post = response.data;
+    return PostDetail.fromJson(post);
   }
 
-  Future<List<Post>> getPosts(String userId) async {
+  Future<List<PostDetail>> getPosts(String userId) async {
     final response = await _dio.get("/post/list/$userId");
     final List<dynamic> posts = response.data;
-    return posts.map((post) => Post.fromJson(post)).toList();
+    return posts.map((post) => PostDetail.fromJson(post)).toList();
   }
 
   Future<PostDetail> getPost(String postId) async {
@@ -37,7 +39,9 @@ class PostClient {
     return PostDetail.fromJson(feed);
   }
 
-  Future<void> editPosts(String postId, String content) async {
-    await _dio.patch(path: "/post/edit/$postId", data: {"content": content});
+  Future<PostDetail> editPosts(String postId, String content) async {
+    final response = await _dio.patch(path: "/post/edit/$postId", data: {"content": content});
+    final dynamic post = response.data;
+    return PostDetail.fromJson(post);
   }
 }

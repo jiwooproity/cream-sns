@@ -1,8 +1,9 @@
+import 'package:cream_sns/store/post_store.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 // Provider
-import 'package:cream_sns/features/post/provider/main_provider.dart';
+import 'package:cream_sns/features/post/provider/post_provider.dart';
 
 // Widgets
 import 'package:cream_sns/core/widgets/custom_appbar.dart';
@@ -16,19 +17,17 @@ class PostDetail extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final postAsync = ref.watch(postDetailProvider(postId));
+    final post = ref.watch(postStoreProvider)[postId];
+
+    if(post == null) {
+      return const CustomIndicator();
+    }
 
     return Scaffold(
       appBar: const CustomAppbar(title: "게시글", titleSize: 15),
       body: SingleChildScrollView(
         padding: const EdgeInsets.symmetric(vertical: 15),
-        child: postAsync.when(
-          data: (post) => PostCard(post: post),
-          error: (err, stack) {
-            return const Center(child: Text("게시글 조회를 실패하였습니다."));
-          },
-          loading: () => const CustomIndicator(),
-        ),
+        child: PostCard(post: post),
       ),
     );
   }

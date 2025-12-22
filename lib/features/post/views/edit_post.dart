@@ -4,8 +4,7 @@ import 'package:go_router/go_router.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 // Provider
-import 'package:cream_sns/features/post/provider/action_provider.dart';
-import 'package:cream_sns/features/post/provider/main_provider.dart';
+import 'package:cream_sns/features/post/provider/post_provider.dart';
 
 // Widgets
 import 'package:cream_sns/core/widgets/custom_appbar.dart';
@@ -38,7 +37,7 @@ class _EditPostState extends ConsumerState<EditPost> {
 
   @override
   Widget build(BuildContext context) {
-    final state = ref.watch(postStateProvider);
+    final action = ref.watch(postActionProvider);
 
     return Scaffold(
       appBar: CustomAppbar(
@@ -50,7 +49,7 @@ class _EditPostState extends ConsumerState<EditPost> {
           ActionButton(
             onTap: () => editPost(),
             text: "완료",
-            loading: state.isLoading,
+            loading: action == PostActionState.loading,
           ),
         ],
       ),
@@ -114,8 +113,8 @@ class _EditPostState extends ConsumerState<EditPost> {
 
     if (widget.post.content != content) {
       await ref
-          .read(postActionProvider)
-          .editPost(postId: widget.post.id, content: content);
+          .read(postActionProvider.notifier)
+          .editPost(widget.post.id, content);
     }
 
     if (mounted) context.pop();

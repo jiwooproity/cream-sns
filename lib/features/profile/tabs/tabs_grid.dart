@@ -1,9 +1,10 @@
+import 'package:cream_sns/store/post_store.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 // Provider
-import 'package:cream_sns/features/post/provider/main_provider.dart';
+import 'package:cream_sns/features/post/provider/post_provider.dart';
 
 // Widgets
 import 'package:cream_sns/shared/loading/custom_indicator.dart';
@@ -15,34 +16,34 @@ class PostTab extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final postAsync = ref.watch(myPostProvider(targetId));
+    final state = ref.watch(postProvider(targetId));
 
-    return postAsync.when(
-      data: (posts) {
-        if (posts.isNotEmpty) {
-          return GridView.builder(
-            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-              crossAxisCount: 3,
-              mainAxisSpacing: 2,
-              crossAxisSpacing: 2,
-            ),
-            itemCount: posts.length,
-            itemBuilder: (context, index) {
-              return GestureDetector(
-                onTap: () {
-                  final id = posts[index].id;
-                  context.push("/post/detail", extra: id);
-                },
-                child: Image.network(posts[index].image.url, fit: BoxFit.cover),
-              );
-            },
-          );
-        } else {
-          return const Center(child: Text("등록한 게시글이 없습니다."));
-        }
+    if (state.isLoading) {
+      return const CustomIndicator();
+    }
+
+    if (state.ids.isEmpty) {
+      return const Center(child: Text("작성한 게시글이 없습니다."));
+    }
+
+    return GridView.builder(
+      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+        crossAxisCount: 3,
+        mainAxisSpacing: 2,
+        crossAxisSpacing: 2,
+      ),
+      itemCount: state.ids.length,
+      itemBuilder: (context, index) {
+        final post = ref.watch(postStoreProvider)[state.ids[index]];
+        if (post == null) return const CustomIndicator();
+        return GestureDetector(
+          onTap: () {
+            final id = post.id;
+            context.push("/post/detail", extra: id);
+          },
+          child: Image.network(post.image.url, fit: BoxFit.cover),
+        );
       },
-      error: (err, stack) => const Center(child: Text("게시글 조회에 실패하였습니다.")),
-      loading: () => const CustomIndicator(),
     );
   }
 }

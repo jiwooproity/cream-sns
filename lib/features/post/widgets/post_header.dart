@@ -1,9 +1,9 @@
+import 'package:cream_sns/features/post/provider/post_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
 // Provider
-import 'package:cream_sns/features/post/provider/action_provider.dart';
 import 'package:cream_sns/features/auth/provider/auth_provider.dart';
 
 // Models
@@ -79,11 +79,8 @@ class PostHeader extends ConsumerWidget {
 
   void deletePost(BuildContext context, WidgetRef ref) async {
     if (context.mounted) context.pop();
-
-    await ref
-        .read(postActionProvider)
-        .deletePost(postId: post.id, authorId: post.author.id);
-
+    final userId = ref.read(authStateProvider).userId!;
+    await ref.read(postActionProvider.notifier).deletePost(userId, post.id);
     if (context.mounted) context.pop();
   }
 
