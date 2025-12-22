@@ -9,9 +9,9 @@ class Post {
 
   factory Post.fromJson(Map<String, dynamic> json) {
     return Post(
-        id: json['id'],
-        content: json['content'],
-        image: ServerImage.fromJson(json['image'] as Map<String, dynamic>)
+      id: json['id'],
+      content: json['content'],
+      image: ServerImage.fromJson(json['image'] as Map<String, dynamic>),
     );
   }
 }
@@ -22,6 +22,8 @@ class PostDetail {
   final ServerImage image;
   final int createdAt;
   final PostAuthor author;
+  final int likeCount;
+  final int commentCount;
 
   PostDetail({
     required this.id,
@@ -29,6 +31,8 @@ class PostDetail {
     required this.image,
     required this.createdAt,
     required this.author,
+    required this.likeCount,
+    required this.commentCount,
   });
 
   factory PostDetail.fromJson(Map<String, dynamic> json) {
@@ -38,6 +42,8 @@ class PostDetail {
       image: ServerImage.fromJson(json['image'] as Map<String, dynamic>),
       createdAt: json['createdAt'],
       author: PostAuthor.fromJson(json['author'] as Map<String, dynamic>),
+      likeCount: json['likeCount'],
+      commentCount: json['commentCount'],
     );
   }
 }
@@ -47,11 +53,7 @@ class PostAuthor {
   final String nickname;
   final ServerImage profile;
 
-  PostAuthor({
-    required this.id,
-    required this.nickname,
-    required this.profile,
-  });
+  PostAuthor({required this.id, required this.nickname, required this.profile});
 
   factory PostAuthor.fromJson(Map<String, dynamic> json) {
     return PostAuthor(

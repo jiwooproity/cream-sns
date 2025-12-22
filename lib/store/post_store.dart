@@ -33,4 +33,8 @@ class PostStore extends StateNotifier<Map<String, PostDetail>> {
     next.remove(postId);
     state = next;
   }
+
+  void clear() {
+    state = {};
+  }
 }

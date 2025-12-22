@@ -1,14 +1,16 @@
-import 'package:cream_sns/store/post_store.dart';
+import 'package:cream_sns/features/auth/provider/auth_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:image_picker/image_picker.dart';
 
+// Store
+import 'package:cream_sns/store/post_store.dart';
+
 // Models
 import 'package:cream_sns/shared/widgets/modal/custom_modal.dart';
 
 // Provider
-import 'package:cream_sns/features/auth/provider/auth_provider.dart';
 import 'package:cream_sns/features/home/provider/feed_provider.dart';
 
 // Widgets

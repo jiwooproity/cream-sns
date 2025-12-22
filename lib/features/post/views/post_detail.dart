@@ -1,9 +1,8 @@
-import 'package:cream_sns/store/post_store.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-// Provider
-import 'package:cream_sns/features/post/provider/post_provider.dart';
+// Store
+import 'package:cream_sns/store/post_store.dart';
 
 // Widgets
 import 'package:cream_sns/core/widgets/custom_appbar.dart';

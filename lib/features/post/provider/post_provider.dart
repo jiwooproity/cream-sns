@@ -47,6 +47,10 @@ class PostNotifier extends StateNotifier<IndexState> {
   void remove(String postId) {
     state = state.copyWith(ids: state.ids.where((id) => id != postId).toList());
   }
+
+  void clear() {
+    state = const IndexState();
+  }
 }
 
 enum PostActionState { idle, loading, success, error }

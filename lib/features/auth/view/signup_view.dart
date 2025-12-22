@@ -79,9 +79,9 @@ class _SignupViewState extends ConsumerState<SignupView> {
   }
 
   Future<void> signUp() async {
-    final nickname = _nickname.text;
-    final userId = _userId.text;
-    final password = _password.text;
+    final nickname = _nickname.text.trim();
+    final userId = _userId.text.trim();
+    final password = _password.text.trim();
 
     if (userId.isNotEmpty || nickname.isNotEmpty || password.isNotEmpty) {
       final provider = ref.read(authStateProvider.notifier);
