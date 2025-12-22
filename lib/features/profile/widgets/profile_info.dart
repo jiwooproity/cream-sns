@@ -15,8 +15,14 @@ import 'package:cream_sns/shared/loading/custom_indicator.dart';
 import 'package:cream_sns/shared/models/server_image.dart';
 
 class ProfileInfo extends ConsumerWidget {
-  const ProfileInfo({super.key, required this.targetId, required this.isMe});
+  const ProfileInfo({
+    super.key,
+    required this.myId,
+    required this.targetId,
+    required this.isMe,
+  });
 
+  final String myId;
   final String targetId;
   final bool isMe;
 
@@ -52,7 +58,7 @@ class ProfileInfo extends ConsumerWidget {
                 description: user.description,
               ),
               const SizedBox(height: 15),
-              InterActionButton(isMe: isMe, user: user),
+              InterActionButton(myId: myId, isMe: isMe, user: user),
             ],
           ),
         );
@@ -64,19 +70,36 @@ class ProfileInfo extends ConsumerWidget {
 }
 
 class InterActionButton extends ConsumerWidget {
-  const InterActionButton({super.key, required this.user, required this.isMe});
+  const InterActionButton({
+    super.key,
+    required this.myId,
+    required this.user,
+    required this.isMe,
+  });
 
+  final String myId;
   final bool isMe;
   final Profile user;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final actionState = ref.watch(profileActionProvider);
+
     return isMe
         ? RoundButton(
             onPressed: () => context.push("/profile/edit", extra: user),
             btnText: "프로필 편집",
           )
-        : RoundButton(onPressed: () {}, btnText: "팔로우");
+        : RoundButton(
+            onPressed: () => actionState.isLoading ? null : following(ref),
+            btnText: user.isFollowed ? "팔로잉 중" : "팔로우",
+          );
+  }
+
+  Future<void> following(WidgetRef ref) async {
+    await ref
+        .read(profileActionProvider.notifier)
+        .following(user.isFollowed, myId, user.id);
   }
 }
 
