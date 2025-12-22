@@ -34,6 +34,18 @@ class PostStore extends StateNotifier<Map<String, PostDetail>> {
     state = next;
   }
 
+  void toggleLike(String postId) {
+    final post = state[postId];
+    if (post == null) return;
+    state = {
+      ...state,
+      postId: post.copyWith(
+        isLiked: !post.isLiked,
+        likeCount: post.likeCount + (post.isLiked ? -1 : 1),
+      ),
+    };
+  }
+
   void clear() {
     state = {};
   }

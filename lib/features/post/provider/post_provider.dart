@@ -65,6 +65,30 @@ class PostActionNotifier extends StateNotifier<PostActionState> {
 
   final Ref ref;
 
+  Future<void> doLike(String postId) async {
+    state = PostActionState.loading;
+
+    try {
+      await ref.read(postClientProvider).doLike(postId);
+      ref.read(postStoreProvider.notifier).toggleLike(postId);
+      state = PostActionState.success;
+    } on DioException catch (e) {
+      state = PostActionState.error;
+    }
+  }
+
+  Future<void> cancelLike(String postId) async {
+    state = PostActionState.loading;
+
+    try {
+      await ref.read(postClientProvider).cancelLike(postId);
+      ref.read(postStoreProvider.notifier).toggleLike(postId);
+      state = PostActionState.success;
+    } on DioException catch(e) {
+      state = PostActionState.error;
+    }
+  }
+
   Future<void> createPost(String userId, FormData formData) async {
     state = PostActionState.loading;
 
