@@ -113,7 +113,12 @@ class _CreatePostState extends ConsumerState<CreatePost> {
     });
 
     final userId = ref.read(authStateProvider).userId!;
-    await ref.read(postActionProvider.notifier).createPost(userId, formData);
-    if (mounted) context.go("/home");
+    final createdId = await ref
+        .read(postActionProvider.notifier)
+        .createPost(userId, formData);
+
+    if (mounted) {
+      context.go("/post/detail", extra: createdId);
+    }
   }
 }

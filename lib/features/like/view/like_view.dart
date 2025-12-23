@@ -23,7 +23,7 @@ class LikeView extends ConsumerWidget {
         titleSize: 15,
       ),
       body: state.ids.isEmpty
-          ? const Center(child: Text("불러올 좋아요를 누른 게시글이 없습니다."))
+          ? const Center(child: Text("좋아요를 누른 게시글이 없습니다."))
           : ListView.builder(
         padding: const EdgeInsets.only(top: 15),
         itemCount: state.ids.length,

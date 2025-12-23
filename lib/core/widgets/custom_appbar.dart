@@ -9,6 +9,7 @@ class CustomAppbar extends StatelessWidget implements PreferredSizeWidget {
   final bool? centerTitle;
   final EdgeInsetsGeometry? actionsPadding;
   final List<Widget>? actions;
+  final Widget? leading;
 
   const CustomAppbar({
     super.key,
@@ -17,6 +18,7 @@ class CustomAppbar extends StatelessWidget implements PreferredSizeWidget {
     this.centerTitle = false,
     this.actionsPadding = EdgeInsets.zero,
     this.actions,
+    this.leading
   });
 
   @override
@@ -30,6 +32,7 @@ class CustomAppbar extends StatelessWidget implements PreferredSizeWidget {
         preferredSize: const Size.fromHeight(1),
         child: Container(color: AppColors.grey, height: 1),
       ),
+      leading: leading,
       leadingWidth: 40,
       titleSpacing: 15,
       backgroundColor: AppColors.white,
