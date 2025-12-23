@@ -36,7 +36,7 @@ class ProfileView extends ConsumerWidget {
         length: 2,
         child: Column(
           children: [
-            ProfileInfo(myId: loginId,targetId: id, isMe: isMe),
+            ProfileInfo(myId: loginId, targetId: id, isMe: isMe),
             const TabBar(
               labelColor: AppColors.black,
               indicatorColor: AppColors.black,
@@ -47,8 +47,8 @@ class ProfileView extends ConsumerWidget {
             ),
             TabsView(
               children: [
-                PostTab(targetId: id),
-                const Center(child: Text("좋아요를 누른 게시글이 없습니다.")),
+                PostTab(gridType: "작성글", targetId: id),
+                PostTab(gridType: "좋아요", targetId: id),
               ],
             ),
           ],

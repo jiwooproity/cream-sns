@@ -46,7 +46,7 @@ class PostDetail {
       author: PostAuthor.fromJson(json['author'] as Map<String, dynamic>),
       likeCount: json['likeCount'],
       commentCount: json['commentCount'],
-      isLiked: json['isLiked']
+      isLiked: json['isLiked'] ?? false
     );
   }
 

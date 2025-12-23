@@ -1,5 +1,7 @@
 import "package:cream_sns/features/home/provider/feed_provider.dart";
+import "package:cream_sns/features/like/provider/likes_provider.dart";
 import "package:cream_sns/features/post/provider/post_provider.dart";
+import "package:cream_sns/features/profile/provider/profile_provider.dart";
 import "package:cream_sns/store/post_store.dart";
 import "package:dio/dio.dart";
 import "package:flutter_riverpod/flutter_riverpod.dart";
@@ -90,8 +92,10 @@ class AuthStateNotifier extends StateNotifier<AuthState> {
     await _user.logout();
     state = state.copyWith(userId: null, isAuthenticated: false);
     ref.read(postStoreProvider).clear();
+    ref.invalidate(profileProvider);
     ref.invalidate(feedProvider);
     ref.invalidate(postProvider);
+    ref.invalidate(likesProvider);
     ref.invalidate(postActionProvider);
   }
 }
