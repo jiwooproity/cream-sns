@@ -1,3 +1,4 @@
+import "package:cream_sns/features/like/provider/likes_provider.dart";
 import "package:dio/dio.dart";
 import "package:flutter_riverpod/flutter_riverpod.dart";
 import "package:flutter_riverpod/legacy.dart";
@@ -8,9 +9,11 @@ import "package:cream_sns/store/post_store.dart";
 
 // Data
 import "package:cream_sns/features/post/data/post_service.dart";
+import "package:cream_sns/features/like/data/like_service.dart";
 
 // Provider
 import "package:cream_sns/features/profile/provider/profile_provider.dart";
+
 
 final postProvider =
     StateNotifierProvider.family<PostNotifier, IndexState, String>(
@@ -69,8 +72,9 @@ class PostActionNotifier extends StateNotifier<PostActionState> {
     state = PostActionState.loading;
 
     try {
-      await ref.read(postClientProvider).doLike(postId);
+      await ref.read(likeClientProvider).doLike(postId);
       ref.read(postStoreProvider.notifier).toggleLike(postId);
+      ref.invalidate(likesProvider);
       state = PostActionState.success;
     } on DioException catch (e) {
       state = PostActionState.error;
@@ -81,10 +85,11 @@ class PostActionNotifier extends StateNotifier<PostActionState> {
     state = PostActionState.loading;
 
     try {
-      await ref.read(postClientProvider).cancelLike(postId);
+      await ref.read(likeClientProvider).cancelLike(postId);
       ref.read(postStoreProvider.notifier).toggleLike(postId);
+      ref.invalidate(likesProvider);
       state = PostActionState.success;
-    } on DioException catch(e) {
+    } on DioException catch (e) {
       state = PostActionState.error;
     }
   }
@@ -107,10 +112,12 @@ class PostActionNotifier extends StateNotifier<PostActionState> {
     state = PostActionState.loading;
 
     try {
-      final edited = await ref.read(postClientProvider).editPosts(postId, content);
+      final edited = await ref
+          .read(postClientProvider)
+          .editPosts(postId, content);
       ref.read(postStoreProvider.notifier).upsert(edited);
       state = PostActionState.success;
-    } on DioException catch(e) {
+    } on DioException catch (e) {
       state = PostActionState.error;
     }
   }
@@ -124,7 +131,7 @@ class PostActionNotifier extends StateNotifier<PostActionState> {
       ref.read(postProvider(userId).notifier).remove(postId);
       ref.invalidate(profileProvider(userId));
       state = PostActionState.success;
-    } on DioException catch(e) {
+    } on DioException catch (e) {
       state = PostActionState.error;
     }
   }

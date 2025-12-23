@@ -1,3 +1,6 @@
+import 'package:cream_sns/features/auth/provider/auth_provider.dart';
+import 'package:cream_sns/features/like/provider/likes_provider.dart';
+import 'package:cream_sns/store/index_state.dart';
 import 'package:cream_sns/store/post_store.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
@@ -10,13 +13,22 @@ import 'package:cream_sns/features/post/provider/post_provider.dart';
 import 'package:cream_sns/shared/loading/custom_indicator.dart';
 
 class PostTab extends ConsumerWidget {
-  const PostTab({super.key, required this.targetId});
+  const PostTab({super.key, required this.gridType, required this.targetId});
 
+  final String gridType;
   final String targetId;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final state = ref.watch(postProvider(targetId));
+    late final IndexState state;
+
+    if(gridType == "작성글") {
+      state = ref.watch(postProvider(targetId));
+    }
+
+    if(gridType == "좋아요") {
+      state = ref.watch(likesProvider(targetId));
+    }
 
     if (state.isLoading) {
       return const CustomIndicator();
