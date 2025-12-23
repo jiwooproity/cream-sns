@@ -22,12 +22,11 @@ class PostTab extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     late final IndexState state;
 
-    if(gridType == "작성글") {
-      state = ref.watch(postProvider(targetId));
-    }
-
-    if(gridType == "좋아요") {
-      state = ref.watch(likesProvider(targetId));
+    switch (gridType) {
+      case "작성글":
+        state = ref.watch(postProvider(targetId));
+      case "좋아요":
+        state = ref.watch(likesProvider(targetId));
     }
 
     if (state.isLoading) {
@@ -35,7 +34,8 @@ class PostTab extends ConsumerWidget {
     }
 
     if (state.ids.isEmpty) {
-      return const Center(child: Text("작성한 게시글이 없습니다."));
+      final text = gridType == "작성글" ? "작성한 게시글이 없습니다" : "좋아요를 누른 게시글이 없습니다.";
+      return Center(child: Text(text));
     }
 
     return GridView.builder(

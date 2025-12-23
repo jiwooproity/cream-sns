@@ -1,3 +1,4 @@
+import 'package:cream_sns/core/utils/location_to_index.dart';
 import 'package:flutter/material.dart';
 
 // Themes
@@ -38,6 +39,14 @@ class _CustomBottomNavigationBarState extends ConsumerState<CustomBottomNavigati
 
     setState(() {
       currentIndex = index;
+    });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    setState(() {
+      currentIndex = locationToIndex(widget.state.matchedLocation);
     });
   }
 

@@ -1,4 +1,5 @@
 import "package:cream_sns/features/like/provider/likes_provider.dart";
+import "package:cream_sns/features/post/models/post.dart";
 import "package:dio/dio.dart";
 import "package:flutter_riverpod/flutter_riverpod.dart";
 import "package:flutter_riverpod/legacy.dart";
@@ -94,7 +95,7 @@ class PostActionNotifier extends StateNotifier<PostActionState> {
     }
   }
 
-  Future<void> createPost(String userId, FormData formData) async {
+  Future<String?> createPost(String userId, FormData formData) async {
     state = PostActionState.loading;
 
     try {
@@ -103,8 +104,10 @@ class PostActionNotifier extends StateNotifier<PostActionState> {
       ref.read(postProvider(userId).notifier).add(post.id);
       ref.invalidate(profileProvider(userId));
       state = PostActionState.success;
+      return post.id;
     } on DioException catch (e) {
       state = PostActionState.error;
+      return null;
     }
   }
 

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 
 // Store
 import 'package:cream_sns/store/post_store.dart';
@@ -18,12 +19,25 @@ class PostDetail extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final post = ref.watch(postStoreProvider)[postId];
 
-    if(post == null) {
+    if (post == null) {
       return const CustomIndicator();
     }
 
     return Scaffold(
-      appBar: const CustomAppbar(title: "게시글", titleSize: 15),
+      appBar: CustomAppbar(
+        title: "게시글",
+        titleSize: 15,
+        leading: IconButton(
+          onPressed: () {
+            if (Navigator.of(context).canPop()) {
+              context.pop();
+            } else {
+              context.go('/profile');
+            }
+          },
+          icon: const Icon(Icons.arrow_back),
+        ),
+      ),
       body: SingleChildScrollView(
         padding: const EdgeInsets.symmetric(vertical: 15),
         child: PostCard(post: post),
