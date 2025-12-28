@@ -11,28 +11,22 @@ import 'package:path_provider/path_provider.dart';
 import 'package:cookie_jar/cookie_jar.dart';
 import 'package:dio_cookie_manager/dio_cookie_manager.dart';
 
-final dioProvider = Provider((ref) => DioInstance());
+final dioProvider = Provider((ref) {
+  final dioInstance = DioInstance();
+  dioInstance.initInterceptor();
+  return dioInstance;
+});
 
 class DioInstance {
-  static final DioInstance _instance = DioInstance._internal();
-  late final Dio dio;
+  DioInstance();
 
-  final _options = BaseOptions(
+  final Dio dio = Dio(BaseOptions(
     baseUrl: "http://10.0.2.2:8080",
     connectTimeout: const Duration(seconds: 10),
     receiveTimeout: const Duration(seconds: 10),
     headers: {"Content-Type": Headers.formUrlEncodedContentType},
     extra: {'withCredentials': true},
-  );
-
-  factory DioInstance() {
-    return _instance;
-  }
-
-  DioInstance._internal() {
-    dio = Dio(_options);
-    _initInterceptor();
-  }
+  ));
 
   Future<void> initCookie() async {
     final dir = await getApplicationDocumentsDirectory();
@@ -41,7 +35,7 @@ class DioInstance {
     dio.interceptors.add(CookieManager(cookieJar));
   }
 
-  void _initInterceptor() {
+  void initInterceptor() {
     dio.interceptors.add(PrettyLogger());
   }
 
