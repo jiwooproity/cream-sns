@@ -74,24 +74,15 @@ class _SignupViewState extends ConsumerState<SignupView> {
     );
   }
 
-  void complete() {
-    context.go("/login");
-  }
-
   Future<void> signUp() async {
     final nickname = _nickname.text.trim();
     final userId = _userId.text.trim();
     final password = _password.text.trim();
 
-    if (userId.isNotEmpty || nickname.isNotEmpty || password.isNotEmpty) {
+    if (userId.isNotEmpty && nickname.isNotEmpty && password.isNotEmpty) {
       final provider = ref.read(authStateProvider.notifier);
       final message = await provider.signUp(userId, nickname, password);
-      if(message != null && mounted) {
-        ShowToast().init(context);
-        ShowToast().show(message: message);
-      } else {
-        complete();
-      }
+      if (message == null && mounted) context.go("/login");
     }
   }
 }
