@@ -132,6 +132,7 @@ class PostActionNotifier extends StateNotifier<PostActionState> {
       await ref.read(postClientProvider).deletePost(postId);
       ref.read(postStoreProvider.notifier).remove(postId);
       ref.read(postProvider(userId).notifier).remove(postId);
+      ref.read(likesProvider(userId).notifier).remove(postId);
       ref.invalidate(profileProvider(userId));
       state = PostActionState.success;
     } on DioException catch (e) {
