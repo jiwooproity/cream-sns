@@ -46,6 +46,15 @@ class PostStore extends StateNotifier<Map<String, PostDetail>> {
     };
   }
 
+  void increaseCommentCount(String postId) {
+    final post = state[postId];
+    if (post == null) return;
+    state = {
+      ...state,
+      postId: post.copyWith(commentCount: post.commentCount + 1),
+    };
+  }
+
   void clear() {
     state = {};
   }

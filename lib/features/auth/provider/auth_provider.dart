@@ -89,13 +89,18 @@ class AuthStateNotifier extends StateNotifier<AuthState> {
   }
 
   Future<void> logout() async {
-    await _user.logout();
-    state = state.copyWith(userId: null, isAuthenticated: false);
-    ref.read(postStoreProvider).clear();
-    ref.invalidate(profileProvider);
-    ref.invalidate(feedProvider);
-    ref.invalidate(postProvider);
-    ref.invalidate(likesProvider);
-    ref.invalidate(postActionProvider);
+    try {
+      await _user.logout();
+      state = state.copyWith(userId: null, isAuthenticated: false);
+      ref.read(postStoreProvider).clear();
+      ref.invalidate(profileProvider);
+      ref.invalidate(feedProvider);
+      ref.invalidate(postProvider);
+      ref.invalidate(likesProvider);
+      ref.invalidate(postActionProvider);
+    } on DioException catch (e) {
+      state = const AuthState();
+      return e.response?.data['message'];
+    }
   }
 }
