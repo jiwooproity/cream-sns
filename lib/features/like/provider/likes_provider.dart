@@ -37,4 +37,10 @@ class LikesNotifier extends StateNotifier<IndexState> {
       state= state.copyWith(isLoading: false);
     }
   }
+
+  void remove(String postId) async {
+    final ids = {...state.ids};
+    ids.remove(postId);
+    state = state.copyWith(ids: ids.toList());
+  }
 }
