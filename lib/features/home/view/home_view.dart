@@ -16,7 +16,7 @@ import 'package:cream_sns/features/home/provider/feed_provider.dart';
 // Widgets
 import 'package:cream_sns/core/widgets/custom_appbar.dart';
 import 'package:cream_sns/shared/widgets/divider/custom_divider.dart';
-import 'package:cream_sns/features/post/widgets/post_card.dart';
+import 'package:cream_sns/features/post/ui/post_card.dart';
 import 'package:cream_sns/features/crop/model/crop_param.dart';
 import 'package:cream_sns/shared/utils/image_size.dart';
 import 'package:cream_sns/shared/widgets/buttons/tile_text_button.dart';

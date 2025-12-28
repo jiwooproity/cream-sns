@@ -1,7 +1,7 @@
 import 'package:cream_sns/core/widgets/custom_appbar.dart';
 import 'package:cream_sns/features/auth/provider/auth_provider.dart';
 import 'package:cream_sns/features/like/provider/likes_provider.dart';
-import 'package:cream_sns/features/post/widgets/post_card.dart';
+import 'package:cream_sns/features/post/ui/post_card.dart';
 import 'package:cream_sns/shared/loading/custom_indicator.dart';
 import 'package:cream_sns/store/post_store.dart';
 import 'package:flutter/material.dart';

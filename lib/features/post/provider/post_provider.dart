@@ -1,5 +1,3 @@
-import "package:cream_sns/features/like/provider/likes_provider.dart";
-import "package:cream_sns/features/post/models/post.dart";
 import "package:dio/dio.dart";
 import "package:flutter_riverpod/flutter_riverpod.dart";
 import "package:flutter_riverpod/legacy.dart";
@@ -14,7 +12,7 @@ import "package:cream_sns/features/like/data/like_service.dart";
 
 // Provider
 import "package:cream_sns/features/profile/provider/profile_provider.dart";
-
+import "package:cream_sns/features/like/provider/likes_provider.dart";
 
 final postProvider =
     StateNotifierProvider.family<PostNotifier, IndexState, String>(

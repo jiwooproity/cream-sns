@@ -1,3 +1,5 @@
+import 'package:cream_sns/features/post/ui/comment_input.dart';
+import 'package:cream_sns/features/post/ui/comment_list.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -7,7 +9,7 @@ import 'package:cream_sns/store/post_store.dart';
 
 // Widgets
 import 'package:cream_sns/core/widgets/custom_appbar.dart';
-import 'package:cream_sns/features/post/widgets/post_card.dart';
+import 'package:cream_sns/features/post/ui/post_card.dart';
 import 'package:cream_sns/shared/loading/custom_indicator.dart';
 
 class PostDetail extends ConsumerWidget {
@@ -38,9 +40,25 @@ class PostDetail extends ConsumerWidget {
           icon: const Icon(Icons.arrow_back),
         ),
       ),
+      bottomNavigationBar: SafeArea(
+        child: AnimatedPadding(
+          duration: const Duration(milliseconds: 200),
+          curve: Curves.easeOut,
+          padding: EdgeInsets.only(
+            bottom: MediaQuery.of(context).viewInsets.bottom,
+          ),
+          child: CommentInput(postId: post.id),
+        ),
+      ),
       body: SingleChildScrollView(
-        padding: const EdgeInsets.symmetric(vertical: 15),
-        child: PostCard(post: post),
+        padding: const EdgeInsets.only(top: 15),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            PostCard(post: post),
+            CommentList(postId: post.id),
+          ],
+        ),
       ),
     );
   }

@@ -1,3 +1,4 @@
+import 'package:cream_sns/features/post/models/author.dart';
 import 'package:cream_sns/shared/models/server_image.dart';
 
 class Post {
@@ -21,7 +22,7 @@ class PostDetail {
   final String content;
   final ServerImage image;
   final int createdAt;
-  final PostAuthor author;
+  final Author author;
   final int likeCount;
   final int commentCount;
   final bool isLiked;
@@ -43,7 +44,7 @@ class PostDetail {
       content: json['content'],
       image: ServerImage.fromJson(json['image'] as Map<String, dynamic>),
       createdAt: json['createdAt'],
-      author: PostAuthor.fromJson(json['author'] as Map<String, dynamic>),
+      author: Author.fromJson(json['author'] as Map<String, dynamic>),
       likeCount: json['likeCount'],
       commentCount: json['commentCount'],
       isLiked: json['isLiked'] ?? false
@@ -55,7 +56,7 @@ class PostDetail {
     String? content,
     ServerImage? image,
     int? createdAt,
-    PostAuthor? author,
+    Author? author,
     int? likeCount,
     int? commentCount,
     bool? isLiked
@@ -69,22 +70,6 @@ class PostDetail {
       likeCount: likeCount ?? this.likeCount,
       commentCount: commentCount ?? this.commentCount,
       isLiked: isLiked ?? this.isLiked
-    );
-  }
-}
-
-class PostAuthor {
-  final String id;
-  final String nickname;
-  final ServerImage profile;
-
-  PostAuthor({required this.id, required this.nickname, required this.profile});
-
-  factory PostAuthor.fromJson(Map<String, dynamic> json) {
-    return PostAuthor(
-      id: json['id'],
-      nickname: json['nickname'],
-      profile: ServerImage.fromJson(json['profile'] as Map<String, dynamic>),
     );
   }
 }

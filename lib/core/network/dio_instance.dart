@@ -20,13 +20,15 @@ final dioProvider = Provider((ref) {
 class DioInstance {
   DioInstance();
 
-  final Dio dio = Dio(BaseOptions(
-    baseUrl: "http://10.0.2.2:8080",
-    connectTimeout: const Duration(seconds: 10),
-    receiveTimeout: const Duration(seconds: 10),
-    headers: {"Content-Type": Headers.formUrlEncodedContentType},
-    extra: {'withCredentials': true},
-  ));
+  final Dio dio = Dio(
+    BaseOptions(
+      baseUrl: "http://10.0.2.2:8080",
+      connectTimeout: const Duration(seconds: 10),
+      receiveTimeout: const Duration(seconds: 10),
+      headers: {"Content-Type": Headers.formUrlEncodedContentType},
+      extra: {'withCredentials': true},
+    ),
+  );
 
   Future<void> initCookie() async {
     final dir = await getApplicationDocumentsDirectory();
