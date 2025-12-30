@@ -48,7 +48,7 @@ class CommentsActionNotifier extends StateNotifier<CommentsActionState> {
     }
   }
 
-  Future<Response?> deleteComment(String commentId, String postId) async {
+  Future<void> deleteComment(String commentId, String postId) async {
     state = state.copyWith(isLoading: true);
 
     try {
@@ -61,11 +61,8 @@ class CommentsActionNotifier extends StateNotifier<CommentsActionState> {
         ref.invalidate(commentsProvider(postId));
         ref.read(postStoreProvider.notifier).decreaseCommentCount(postId);
       }
-
-      return response;
     } on DioException catch (e) {
       state = state.copyWith(isLoading: false);
-      return null;
     }
   }
 }
