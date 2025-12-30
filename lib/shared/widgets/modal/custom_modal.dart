@@ -6,6 +6,7 @@ import 'package:cream_sns/core/theme/app_colors.dart';
 class CustomModal extends StatelessWidget {
   final bool isAction;
   final IconData? icon;
+  final double iconSize;
   final Widget? child;
 
   final List<Widget> children;
@@ -14,6 +15,7 @@ class CustomModal extends StatelessWidget {
     super.key,
     this.isAction = true,
     this.icon,
+    this.iconSize = 24.0,
     this.child,
     required this.children,
   });
@@ -22,7 +24,7 @@ class CustomModal extends StatelessWidget {
   Widget build(BuildContext context) {
     return isAction
         ? GestureDetector(
-            child: Icon(icon),
+            child: Icon(icon, size: iconSize),
             onTap: () {
               showModalBottomSheet(
                 context: context,

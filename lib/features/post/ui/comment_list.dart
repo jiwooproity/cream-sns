@@ -3,9 +3,13 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 // Provider
 import 'package:cream_sns/features/post/provider/comments_provider.dart';
+import 'package:cream_sns/features/auth/provider/auth_provider.dart';
 
 // Widgets
 import 'package:cream_sns/shared/loading/custom_indicator.dart';
+import 'package:cream_sns/shared/widgets/buttons/tile_text_button.dart';
+import 'package:cream_sns/shared/widgets/modal/custom_modal.dart';
+import 'package:go_router/go_router.dart';
 
 class CommentList extends ConsumerWidget {
   const CommentList({super.key, required this.postId});
@@ -14,16 +18,17 @@ class CommentList extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final userId = ref.watch(authStateProvider).userId!;
     final commentsAsync = ref.watch(commentsProvider(postId));
 
     return commentsAsync.when(
       data: (comments) {
         return comments.isEmpty
-            ? const Text("댓글이 없습니다.")
+            ? const Center(child: Text("작성된 댓글이 없습니다."))
             : ListView.builder(
                 shrinkWrap: true,
                 physics: const NeverScrollableScrollPhysics(),
-                padding: const EdgeInsets.symmetric(horizontal: 15),
+                padding: const EdgeInsets.only(top: 15, left: 15, right: 15),
                 itemCount: comments.length,
                 itemBuilder: (BuildContext context, int idx) {
                   final comment = comments[idx];
@@ -48,6 +53,20 @@ class CommentList extends ConsumerWidget {
                             ],
                           ),
                         ),
+                        if (userId == comment.author.id)
+                          CustomModal(
+                            icon: Icons.more_horiz,
+                            iconSize: 20,
+                            children: [
+                              TileTextButton(
+                                "댓글 삭제",
+                                onTap: () {
+                                  context.pop();
+                                  deleteComment(ref, comment.id);
+                                },
+                              ),
+                            ],
+                          ),
                       ],
                     ),
                   );
@@ -57,6 +76,12 @@ class CommentList extends ConsumerWidget {
       error: (err, stack) => const Text("댓글 조회를 실패하였습니다."),
       loading: () => const CustomIndicator(),
     );
+  }
+
+  Future<void> deleteComment(WidgetRef ref, String commentId) async {
+    await ref
+        .read(commentsActionProvider.notifier)
+        .deleteComment(commentId, postId);
   }
 
   Widget _profileImage(String image) {

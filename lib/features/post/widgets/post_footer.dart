@@ -14,7 +14,7 @@ class PostFooter extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 15),
+      padding: const EdgeInsets.only(left: 15, right: 15, bottom: 15),
       child: Align(
         alignment: Alignment.centerLeft,
         child: Row(

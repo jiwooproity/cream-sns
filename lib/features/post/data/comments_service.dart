@@ -26,4 +26,8 @@ class CommentsClient {
   Future<Response> addComment(String postId, String content) async {
     return await _dio.post(path: "/comment/$postId", data: {'content': content});
   }
+
+  Future<Response> deleteComment(String commentId, String postId) async {
+    return await _dio.delete("/comment/$commentId", data: {'postId': postId});
+  }
 }

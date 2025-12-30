@@ -50,15 +50,11 @@ class PostDetail extends ConsumerWidget {
           child: CommentInput(postId: post.id),
         ),
       ),
-      body: SingleChildScrollView(
-        padding: const EdgeInsets.only(top: 15),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            PostCard(post: post),
-            CommentList(postId: post.id),
-          ],
-        ),
+      body: CustomScrollView(
+        slivers: [
+          SliverToBoxAdapter(child: PostCard(post: post)),
+          SliverFillRemaining(child: CommentList(postId: post.id)),
+        ],
       ),
     );
   }

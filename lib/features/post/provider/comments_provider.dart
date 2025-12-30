@@ -47,6 +47,27 @@ class CommentsActionNotifier extends StateNotifier<CommentsActionState> {
       return null;
     }
   }
+
+  Future<Response?> deleteComment(String commentId, String postId) async {
+    state = state.copyWith(isLoading: true);
+
+    try {
+      final response = await ref
+          .read(commentsClientProvider)
+          .deleteComment(commentId, postId);
+
+      if (response.statusCode == 200) {
+        state = state.copyWith(isLoading: false);
+        ref.invalidate(commentsProvider(postId));
+        ref.read(postStoreProvider.notifier).decreaseCommentCount(postId);
+      }
+
+      return response;
+    } on DioException catch (e) {
+      state = state.copyWith(isLoading: false);
+      return null;
+    }
+  }
 }
 
 class CommentsActionState {
