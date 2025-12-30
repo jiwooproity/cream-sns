@@ -25,7 +25,7 @@ class PostHeader extends ConsumerWidget {
     final myId = ref.watch(authStateProvider).userId!;
 
     return Padding(
-      padding: const EdgeInsets.only(left: 15, right: 15, bottom: 12),
+      padding: const EdgeInsets.only(top: 15, left: 15, right: 15, bottom: 12),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [

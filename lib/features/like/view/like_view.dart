@@ -25,20 +25,19 @@ class LikeView extends ConsumerWidget {
       body: state.ids.isEmpty
           ? const Center(child: Text("좋아요를 누른 게시글이 없습니다."))
           : ListView.builder(
-        padding: const EdgeInsets.only(top: 15),
-        itemCount: state.ids.length,
-        itemBuilder: (BuildContext context, int idx) {
-          final post = ref.watch(postStoreProvider)[state.ids[idx]];
-          if (post == null) return const CustomIndicator();
-          return GestureDetector(
-            behavior: HitTestBehavior.translucent,
-            onTap: () {
-              context.push("/post/detail", extra: post.id);
-            },
-            child: PostCard(post: post),
-          );
-        },
-      ),
+              itemCount: state.ids.length,
+              itemBuilder: (BuildContext context, int idx) {
+                final post = ref.watch(postStoreProvider)[state.ids[idx]];
+                if (post == null) return const CustomIndicator();
+                return GestureDetector(
+                  behavior: HitTestBehavior.translucent,
+                  onTap: () {
+                    context.push("/post/detail", extra: post.id);
+                  },
+                  child: PostCard(post: post),
+                );
+              },
+            ),
     );
   }
 }
